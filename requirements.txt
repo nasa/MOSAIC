@@ -1,0 +1,11 @@
+numpy>=1.12
+pulp
+matplotlib>=2.0.0,<3.0.0
+networkx==2.1
+setuptools>=12
+setuptools_scm
+git+git://github.com/bradfordboyle/pyglpk.git@41b3809c2cd9d6c962e2c8f4409c71cb11c94b92#egg=glpk
+subprocess32
+EasyProcess
+pyscipopt>2.0.0,<3.0.0
+pandas
