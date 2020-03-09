@@ -20,9 +20,7 @@ Scheduler = HEFT.Scheduler(
 Schedule = Scheduler.schedule()
 ```
 
-## Input-Output format
-
-See the [schdulers README](../README.md) for a detailed description of the I/O format.
+See the [schedulers README](../../../README.md) for a detailed description of the I/O format.
 
 ## References
 

@@ -14,6 +14,8 @@ Scheduler = MOSAICSolver.JSONSolver(
 Schedule = Scheduler.schedule()
 ```
 
+See the [schedulers README](../../../README.md) for a detailed description of the I/O format.
+
 ## References
 
 [1] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch, Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien, ["Mars On-Site Shared Analytics Information and Computing,"](https://aaai.org/ojs/index.php/ICAPS/article/view/3556) in Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.

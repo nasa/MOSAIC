@@ -1,6 +1,8 @@
 # MOSAIC centralized time-invariant task allocator
 
-The time-invariant task allocation algorithm presented in Rossi, Vaquero et al's paper under review.
+The time-invariant task allocation algorithm presented in Rossi, Vaquero et al's paper under review \[1\].
+
+## Usage
 
 ```python
 Scheduler = MOSAICTISolver.JSONSolver(
