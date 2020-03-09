@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<launch>
+
+	<!-- Arguments for this launch file -->
+	<!-- To use from CLI: roslaunch package_name file.launch id:=agent1 -->
+	<arg name="agent_id" default="node_91"/>
+	<arg name="log_output" default="screen"/>
+	<arg name="resource_ids" default="{'basic': ['nav', 'img', 'drive'], 'chained': ['process']}"/>
+
+
+	<!-- Define global parameters. Access with rospy.get_param('global_p1') -->
+	<!-- <param name="global_p1" value=""/> -->
+
+	<!-- Single PDRA agent definition -->
+	<group ns='$(arg agent_id)'>
+
+		<!-- List of parameters for this agent. Access with rospy.get_param('~private_p1') -->
+
+		<!-- Nodes for the distware layer -->
+		<group ns='distware'>
+		    <node pkg='pdra' name="dispatcher" type="test_dispatcher.py" output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='source_dir' value='$(find pdra)/src/tests'/>
+				<param name='chandler' value='chandler.TestCommHandler'/>
+				<param name='ohandlers' value='{"img": "ohandlers.TestObligationHandler",
+				                                "nav": "ohandlers.TestObligationHandler",
+												"drive": "ohandlers.TestObligationHandler",
+												"process": "ohandlers.TestChainedObligationHandler",
+												"store": "ohandlers.TestChainedObligationHandler"}'/>
+				<param name='ohandler_params' value='{"drive": {"timeout": 1}}'/>
+                <param name='rhandlers' value='{"img": "rhandlers.TestResourceHandler",
+                                                "nav": "rhandlers.TestResourceHandler",
+												"drive": "rhandlers.TestResourceHandler",
+												"process": "rhandlers.TestResourceHandler",
+												"store": "rhandlers.TestResourceHandler"}'/>
+			</node>
+		</group>
+
+
+		<!-- Nodes for the autonomy layer -->
+		<group ns='autonomy'>
+			<param name='agent_id' value='$(arg agent_id)'/>
+			<node pkg='pdra' name='activity_planner' type='test_activity_planner.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+			</node>
+
+			<node pkg='pdra' name='autonomy_brain' type='test_autonomy_brain.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_ids' value='$(arg resource_ids)'/>
+			</node>
+		</group>
+
+		<!-- List of resources in this agent -->
+		<group ns='resource'>
+			<node pkg='pdra' name='resource_img' type='test_resource.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_id' value='img'/>
+				<param name='duration' value='10'/>
+			</node>
+			<node pkg='pdra' name='resource_nav' type='test_resource.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_id' value='nav'/>
+				<param name='duration' value='10'/>
+			</node>
+			<node pkg='pdra' name='resource_drive' type='test_resource.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_id' value='drive'/>
+				<param name='duration' value='10'/>
+			</node>
+			<node pkg='pdra' name='resource_process' type='test_resource.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_id' value='process'/>
+				<param name='duration' value='10'/>
+			</node>
+			<node pkg='pdra' name='resource_store' type='test_resource.py' output='$(arg log_output)'>
+				<param name='agent_id' value='$(arg agent_id)'/>
+				<param name='resource_id' value='store'/>
+				<param name='duration' value='10'/>
+			</node>
+		</group>
+		<!-- <resource name=''  value=''/> -->
+	</group>
+
+</launch>
