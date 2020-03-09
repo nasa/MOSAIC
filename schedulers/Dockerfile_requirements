@@ -1,0 +1,29 @@
+# To build, run 'docker build --tag=mosaic/schedulers_requirements -f Dockerfile_requirements .'
+
+# Use an Ubuntu build as a parent image
+FROM ubuntu:bionic
+
+# Path for SCIP
+ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+# Avoid tzdata trying to interact with the user. https://askubuntu.com/a/1129284
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Los_Angeles
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Set the working directory to /home
+WORKDIR /home
+
+# Copy the current directory contents into the container at /app
+RUN mkdir -p /home/schedulers/
+COPY . /home/schedulers/
+
+# Install any needed packages
+RUN /home/schedulers/docker_resources/install_scripts/00_python_deps.sh
+RUN /home/schedulers/docker_resources/install_scripts/02_scheduler_reqs_1.sh
+RUN /home/schedulers/docker_resources/install_scripts/03_SCIP.sh
+RUN /home/schedulers/docker_resources/install_scripts/04_scheduler_reqs_2.sh
+RUN /home/schedulers/docker_resources/install_scripts/04b_scheduler_server_reqs.sh
+
+# Startup command
+CMD ["/bin/bash"]

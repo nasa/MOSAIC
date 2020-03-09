@@ -22,7 +22,7 @@ Schedule = Scheduler.schedule()
 
 ## Input-Output format
 
-See the [README of the time-varying MILP scheduler](../tv_milp/README.md) for a detailed description of the I/O format.
+See the [schdulers README](../README.md) for a detailed description of the I/O format.
 
 ## References
 

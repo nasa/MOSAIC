@@ -1,3 +1,5 @@
+# pylint:disable=E1101
+
 """
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
  United  States  Government  sponsorship  acknowledged.   Any commercial use
@@ -18,8 +20,4 @@
  
 """
 
-from . import tv_milp
-from . import ti_milp
-from . import pddl
-from . import heft
-from . import ti_milp_heft
+from .MOSAICTISolver import *
