@@ -20,6 +20,5 @@
 
 from . import tv_milp
 from . import ti_milp
-from . import pddl
 from . import heft
 from . import ti_milp_heft
