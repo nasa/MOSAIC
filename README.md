@@ -16,6 +16,8 @@ Maintainers:
 
 ## [MOSAIC schedulers](schedulers)
 
+![MOSAIC schedules](images/examples.png)
+
 We propose scheduling and task-allocation algorithms to share computational tasks among heterogeneous agents over time-varying communication links.
 
 Specifically, we propose:
@@ -28,6 +30,7 @@ Specifically, we propose:
 
 ## [Pluggable Distributed Resource Allocator](distributed_resource_allocator)
 
+![Animation of the Pluggable Distributed Resource Allocator in action](images/pdra.gif)
 
 The Pluggable Distributed Resource Allocator (PDRA) is a middleware for distributed computing in heterogeneous mobile robotic networks. It allows the MOSAIC schedulers to be easily "plugged" in existing autonomy executives with minimal software changes. PDRA sits between an existing single-agent planner/executor and existing computational resources (e.g. ROS packages). It intercepts the executor’s requests and, if needed, transparently routes them to other nodes for execution.
 Simulation results show that PDRA can reduce energy and CPU usage by over 50\% in representative multi-robot scenarios compared to a naive scheduler; runs on embedded platforms; and performs well in delay- and disruption-tolerant networks (DTNs). PDRA is available to the community under an open-source license.
