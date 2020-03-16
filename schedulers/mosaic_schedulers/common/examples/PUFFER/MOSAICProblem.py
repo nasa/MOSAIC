@@ -20,6 +20,7 @@
 
 import mosaic_schedulers.schedulers.tv_milp as MOSAICSolver
 from mosaic_schedulers.common.utilities import NetworkPartitioning
+from mosaic_schedulers.common.plotting import SchedulePlotter
 
 import networkx as nx
 import numpy as np
@@ -123,7 +124,7 @@ class MOSAICProblem:
 
         Links_list = []
         if mode == 'Latency':
-            for key, val in self.problemState['link_state'].iteritems():
+            for key, val in self.problemState['link_state'].items():
                 node0 = key[0]
                 node1 = key[1]
                 _val = val.copy()
@@ -136,7 +137,7 @@ class MOSAICProblem:
             self.ConnectedComponents = NetworkPartitioning.partition_by_latency(
                 G, max_diameter=self.maxLatency, distance_label='LoS latency')
         elif mode == 'Bandwidth':
-            for key, val in self.problemState['link_state'].iteritems():
+            for key, val in self.problemState['link_state'].items():
                 node0 = key[0]
                 node1 = key[1]
                 if val['bandwidth'] >= self.minBandwidth:
@@ -146,7 +147,7 @@ class MOSAICProblem:
             self.ConnectedComponents = NetworkPartitioning.partition_by_latency(
                 G, max_diameter=len(G.nodes()))
         elif mode == 'Hops':
-            for key, val in self.problemState['link_state'].iteritems():
+            for key, val in self.problemState['link_state'].items():
                 node0 = key[0]
                 node1 = key[1]
                 _val = val.copy()
@@ -157,7 +158,7 @@ class MOSAICProblem:
             self.ConnectedComponents = NetworkPartitioning.partition_by_latency(
                 G, max_diameter=self.maxHops, distance_label='length')
         elif mode == 'BandwidthHops':
-            for key, val in self.problemState['link_state'].iteritems():
+            for key, val in self.problemState['link_state'].items():
                 node0 = key[0]
                 node1 = key[1]
                 if val['bandwidth'] >= self.minBandwidth:
@@ -323,17 +324,17 @@ class MOSAICProblem:
 
         # Map from seconds to time steps
         BaseComputationTimeP_housekeeping = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in BaseComputationTimeP_housekeeping.iteritems()}
+            v) / float(TimeStep))) for k, v in BaseComputationTimeP_housekeeping.items()}
         BaseComputationTimeP_science = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in BaseComputationTimeP_science.iteritems()}
+            v) / float(TimeStep))) for k, v in BaseComputationTimeP_science.items()}
         PufferComputationTimeP_self_housekeeping = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in PufferComputationTimeP_self_housekeeping.iteritems()}
+            v) / float(TimeStep))) for k, v in PufferComputationTimeP_self_housekeeping.items()}
         PufferComputationTimeP_self_science = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in PufferComputationTimeP_self_science.iteritems()}
+            v) / float(TimeStep))) for k, v in PufferComputationTimeP_self_science.items()}
         PufferComputationTimeP_other_housekeeping = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in PufferComputationTimeP_other_housekeeping.iteritems()}
+            v) / float(TimeStep))) for k, v in PufferComputationTimeP_other_housekeeping.items()}
         PufferComputationTimeP_other_science = {k: int(np.ceil(float(
-            v) / float(TimeStep))) for k, v in PufferComputationTimeP_other_science.iteritems()}
+            v) / float(TimeStep))) for k, v in PufferComputationTimeP_other_science.items()}
 
         # Dependency map for the PUFFERs. Recall that dependencies are in CNF.
         PufferDependencyList_housekeeping = {
@@ -364,27 +365,27 @@ class MOSAICProblem:
         for pufferName in PufferNames:
             # Add tasks
             Temp_PufferOptionalTask = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferOptionalTask_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferOptionalTask_housekeeping.items()}
             Temp_PufferTaskReward = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferTaskReward_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferTaskReward_housekeeping.items()}
             Temp_PufferProductSizes = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferProductSizes_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferProductSizes_housekeeping.items()}
 
             for scienceNo in range(pufferScienceAvailability[pufferName]):
                 Temp_PufferOptionalTask.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferOptionalTask_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferOptionalTask_science.items()})
 
                 # if pufferScienceReward is None:
                 Temp_PufferTaskReward.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferTaskReward_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferTaskReward_science.items()})
                 # else:
                 #    assert pufferScienceReward[pufferName][scienceNo].keys() == PufferTaskReward_science.keys(), "ERROR: PUFFER science reward has inconsistent keys"
-                #    Temp_PufferTaskReward.update({'{}:{}'.format(pufferName, scienceNo) + k: v for k, v in pufferScienceReward[pufferName][scienceNo].iteritems()})
+                #    Temp_PufferTaskReward.update({'{}:{}'.format(pufferName, scienceNo) + k: v for k, v in pufferScienceReward[pufferName][scienceNo].items()})
 
                 Temp_PufferProductSizes.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferProductSizes_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferProductSizes_science.items()})
 
-            for k, v in PufferDependencyList_housekeeping.iteritems():
+            for k, v in PufferDependencyList_housekeeping.items():
                 AllDeps = []
                 for ConjDependency in v:
                     AllDeps.append(
@@ -393,7 +394,7 @@ class MOSAICProblem:
                     {'{}:'.format(pufferName) + k: AllDeps})
 
             for scienceNo in range(pufferScienceAvailability[pufferName]):
-                for k, v in PufferDependencyList_science.iteritems():
+                for k, v in PufferDependencyList_science.items():
                     AllDeps = []
                     for ConjDependency in v:
                         AllDeps.append(['{}:{}'.format(
@@ -420,7 +421,7 @@ class MOSAICProblem:
         AllInitialInformation = {}
 
         for pufferName in PufferNames:
-            for task, tasktime in PufferComputationTimeP_self_housekeeping.iteritems():
+            for task, tasktime in PufferComputationTimeP_self_housekeeping.items():
                 AllComputationTime.update(
                     {'{}:'.format(pufferName) + task: {pufferName: tasktime}})
                 AllComputationLoad.update(
@@ -428,7 +429,7 @@ class MOSAICProblem:
                 AllInitialInformation.update(
                     {'{}:'.format(pufferName) + task: {pufferName: False}})
             if BaseStationName in AgentNames:  # If the base station is in the group
-                for task, tasktime in BaseComputationTimeP_housekeeping.iteritems():
+                for task, tasktime in BaseComputationTimeP_housekeeping.items():
                     AllComputationTime['{}:'.format(
                         pufferName) + task][BaseStationName] = tasktime
                     AllComputationLoad['{}:'.format(pufferName) +
@@ -438,7 +439,7 @@ class MOSAICProblem:
 
             for otherPuffer in PufferNames:
                 if otherPuffer != pufferName:
-                    for task, tasktime in PufferComputationTimeP_other_housekeeping.iteritems():
+                    for task, tasktime in PufferComputationTimeP_other_housekeeping.items():
                         AllComputationTime['{}:'.format(
                             pufferName) + task][otherPuffer] = tasktime
                         AllComputationLoad['{}:'.format(pufferName) +
@@ -447,7 +448,7 @@ class MOSAICProblem:
                             pufferName) + task][otherPuffer] = False
 
             for scienceNo in range(pufferScienceAvailability[pufferName]):
-                for task, tasktime in PufferComputationTimeP_self_science.iteritems():
+                for task, tasktime in PufferComputationTimeP_self_science.items():
                     AllComputationTime.update(
                         {'{}:{}'.format(pufferName, scienceNo) + task: {pufferName: tasktime}})
                     AllComputationLoad.update(
@@ -455,7 +456,7 @@ class MOSAICProblem:
                     AllInitialInformation.update(
                         {'{}:{}'.format(pufferName, scienceNo) + task: {pufferName: False}})
                 if BaseStationName in AgentNames:  # If the base station is in the group
-                    for task, tasktime in BaseComputationTimeP_science.iteritems():
+                    for task, tasktime in BaseComputationTimeP_science.items():
                         AllComputationTime['{}:{}'.format(
                             pufferName, scienceNo) + task][BaseStationName] = tasktime
                         AllComputationLoad['{}:{}'.format(
@@ -465,7 +466,7 @@ class MOSAICProblem:
 
                 for otherPuffer in PufferNames:
                     if otherPuffer != pufferName:
-                        for task, tasktime in PufferComputationTimeP_other_science.iteritems():
+                        for task, tasktime in PufferComputationTimeP_other_science.items():
                             AllComputationTime['{}:{}'.format(
                                 pufferName, scienceNo) + task][otherPuffer] = tasktime
                             AllComputationLoad['{}:{}'.format(
@@ -489,7 +490,7 @@ class MOSAICProblem:
             PufferTaskCounter = 0
 
             NumPufferTasks = len(
-                PufferTaskList_housekeeping + PufferTaskList_science)
+                list(PufferTaskList_housekeeping) + list(PufferTaskList_science))
             for PufferTask in PufferTaskList_housekeeping:
                 TempTaskHSVColor = np.array(
                     [0., .2 + .8 * (1. - float(PufferTaskCounter) / float(NumPufferTasks - 1)), 0.])
@@ -509,7 +510,8 @@ class MOSAICProblem:
         self.AllTaskColors = AllTaskColors
 
         # Create a feasible solution
-        HousekeepingTasks = PufferComputationTimeP_self_housekeeping.keys()
+        HousekeepingTasks = list(
+            PufferComputationTimeP_self_housekeeping.keys())
         HousekeepingTasks.sort()
 
         MIP_vars = []
@@ -593,7 +595,8 @@ class MOSAICProblem:
         TasksList = list(Tasks.OptionalTasks.keys())
         AgentsList = list(
             AgentCapabilities.ComputationLoad[TasksList[0]].keys())
-        HousekeepingTasks = PufferComputationTimeP_self_housekeeping.keys()
+        HousekeepingTasks = list(
+            PufferComputationTimeP_self_housekeeping.keys())
         HousekeepingTasks.sort()
         FeasibleStart = {}
         X_name = []
@@ -642,7 +645,7 @@ class MOSAICProblem:
         return self.schedulerTerminator
 
     def schedule(self):
-        setup_start_time = time.clock()
+        setup_start_time = time.process_time()
         if self.isSetUp is False:
             self.buildScheduler()
         # Set feasible solution
@@ -656,14 +659,15 @@ class MOSAICProblem:
                     "WARNING: default feasible solution is problematic. This should never happen")
                 pass
 
-        setup_end_time = time.clock() - setup_start_time
+        setup_end_time = time.process_time() - setup_start_time
         remaining_solver_time = self.solverClockLimit - setup_end_time
         if remaining_solver_time < 0:
             print("ERROR: Not enough time to solve - timeout while building the problem. Consider increasing ClockTimeLimit")
             return
         self.scheduler.setTimeLimits(
             ClockTimeLimit=remaining_solver_time, DetTicksLimit=self.solverDetTicksLimit)
-        self.Schedule = self.scheduler.schedule()
+        self.scheduler.schedule()
+        self.Schedule = self.scheduler.formatOutput(version=2)
         self.isScheduled = True
         return self.Schedule
 
@@ -677,12 +681,12 @@ class MOSAICProblem:
 def stringifyState(problemState):
     stringState = problemState.copy()
     newLinkState = {}
-    for key, val in problemState['link_state'].iteritems():
+    for key, val in problemState['link_state'].items():
         # Translate to string. Better hope names do not contain semicolons...
         newKey = key[0] + ':' + key[1]
         newLinkState[newKey] = val
     newContactPlan = {}
-    for key, val in problemState['contact_plan'].iteritems():
+    for key, val in problemState['contact_plan'].items():
         # Translate to string. Better hope names do not contain semicolons...
         newKey = key[0] + ':' + key[1]
         newContactPlan[newKey] = val
@@ -694,7 +698,7 @@ def stringifyState(problemState):
 def destringifyState(stringState):
     problemState = stringState.copy()
     newLinkState = {}
-    for key, val in stringState['link_state'].iteritems():
+    for key, val in stringState['link_state'].items():
         linkEnds = key.split(':')
         assert len(
             linkEnds) == 2, 'ERROR: could not convert keys in problemState to strings. Do the agent names contain colons?'
@@ -703,7 +707,7 @@ def destringifyState(stringState):
         linkID = (linkHead, linkTail)
         newLinkState[linkID] = val
     newContactPlan = {}
-    for key, val in stringState['contact_plan'].iteritems():
+    for key, val in stringState['contact_plan'].items():
         linkEnds = key.split(':')
         assert len(
             linkEnds) == 2, 'ERROR: could not convert keys in problemState to strings. Do the agent names contain colons?'
@@ -719,7 +723,7 @@ def destringifyState(stringState):
 
 def stringifyTupleDict(tuple_dict):
     json_dict = {}
-    for key, val in tuple_dict.iteritems():
+    for key, val in tuple_dict.items():
         str_key = ":".join([entry for entry in key])
         json_dict[str_key] = val
     return json_dict
@@ -727,7 +731,7 @@ def stringifyTupleDict(tuple_dict):
 
 def destringifyJSONDict(json_dict):
     tuple_dict = {}
-    for key, val in json_dict.iteritems():
+    for key, val in json_dict.items():
         tup_key = tuple(key.split(':'))
         tuple_dict[tup_key] = val
     return tuple_dict
@@ -818,4 +822,4 @@ if __name__ == "__main__":
     # Get task colors (for plotting)
     TaskColors = MProblem.getTaskColors()
     # Plot the schedule
-    MOSAICSolver.SchedulePlotter(Schedule, TaskColors)
+    SchedulePlotter(Schedule, TaskColors, show=True, save=False)

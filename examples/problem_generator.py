@@ -28,7 +28,6 @@ import numpy as np
 import matplotlib.colors as plt_colors
 import time
 import json
-import sys
 
 
 class MOSAICProblem_ICAPS2019:
@@ -44,7 +43,7 @@ class MOSAICProblem_ICAPS2019:
     def __init__(self,
                  ScenarioParameters,
                  minBandwidth=0.01,
-                 maxHops=sys.maxint,
+                 maxHops=float("inf"),
                  TimeStep=2,
                  solverClockLimit=1e75,
                  solverDetTicksLimit=1e75,
@@ -56,7 +55,7 @@ class MOSAICProblem_ICAPS2019:
         - minBandwidth, also used to cluster the network in groups if mode
             'Bandwidth' or 'BandwidthHops' is used. Default = 0.01
         - maxHops,  used to cluster the network in groups if mode
-            'Hops' or 'BandwidthHops' is used. Default = sys.maxint
+            'Hops' or 'BandwidthHops' is used. Default = float("inf")
         - TimeStep: the time step of the MILP solver
         - solverClockLimit (default=1e75), the maximum time allotted to the solver
             (in seconds). Note that this is NOT a deterministic time limit.
@@ -105,7 +104,7 @@ class MOSAICProblem_ICAPS2019:
         Links_list = []
         if mode == 'Bandwidth':
             for link in self.ScenarioParameters['CommunicationNetwork']:
-                # for key, val in self.problemState['link_state'].iteritems():
+                # for key, val in self.problemState['link_state'].items():
                 node0 = link['origin']
                 node1 = link['destination']
                 if link['bandwidth'] >= self.minBandwidth:
@@ -307,21 +306,21 @@ class MOSAICProblem_ICAPS2019:
         for pufferName in PufferNames:
             # Add tasks
             Temp_PufferOptionalTask = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferOptionalTask_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferOptionalTask_housekeeping.items()}
             Temp_PufferTaskReward = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferTaskReward_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferTaskReward_housekeeping.items()}
             Temp_PufferProductSizes = {'{}:'.format(
-                pufferName) + k: v for k, v in PufferProductSizes_housekeeping.iteritems()}
+                pufferName) + k: v for k, v in PufferProductSizes_housekeeping.items()}
 
             for scienceNo in range(pufferScienceAvailability[pufferName]):
                 Temp_PufferOptionalTask.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferOptionalTask_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferOptionalTask_science.items()})
                 Temp_PufferTaskReward.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferTaskReward_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferTaskReward_science.items()})
                 Temp_PufferProductSizes.update({'{}:{}'.format(
-                    pufferName, scienceNo) + k: v for k, v in PufferProductSizes_science.iteritems()})
+                    pufferName, scienceNo) + k: v for k, v in PufferProductSizes_science.items()})
 
-            for k, v in PufferDependencyList_housekeeping.iteritems():
+            for k, v in PufferDependencyList_housekeeping.items():
                 AllDeps = []
                 for ConjDependency in v:
                     AllDeps.append(
@@ -330,7 +329,7 @@ class MOSAICProblem_ICAPS2019:
                     {'{}:'.format(pufferName) + k: AllDeps})
 
             for scienceNo in range(pufferScienceAvailability[pufferName]):
-                for k, v in PufferDependencyList_science.iteritems():
+                for k, v in PufferDependencyList_science.items():
                     AllDeps = []
                     for ConjDependency in v:
                         AllDeps.append(['{}:{}'.format(
@@ -435,9 +434,9 @@ class MOSAICProblem_ICAPS2019:
                                 pufferName, scienceNo) + task][otherPuffer] = False
 
         # Map from seconds to time steps
-        # AllComputationTime = {k: int(np.ceil(float(v) / float(TimeStep))) for k, v in AllComputationTime.iteritems()}
-        # for task, val in AllComputationTime.iteritems():
-        #     for agent, tasktime in val.iteritems():
+        # AllComputationTime = {k: int(np.ceil(float(v) / float(TimeStep))) for k, v in AllComputationTime.items()}
+        # for task, val in AllComputationTime.items():
+        #     for agent, tasktime in val.items():
         #         AllComputationTime[task][agent] = int(
         #             np.ceil(float(tasktime) / float(TimeStep)))
 
@@ -457,7 +456,7 @@ class MOSAICProblem_ICAPS2019:
             PufferTaskCounter = 0
 
             NumPufferTasks = len(
-                PufferTaskList_housekeeping + PufferTaskList_science)
+                list(PufferTaskList_housekeeping) + list(PufferTaskList_science))
             for PufferTask in PufferTaskList_housekeeping:
                 TempTaskHSVColor = np.array(
                     [0., .2 + .8 * (1. - float(PufferTaskCounter) / float(NumPufferTasks - 1)), 0.])

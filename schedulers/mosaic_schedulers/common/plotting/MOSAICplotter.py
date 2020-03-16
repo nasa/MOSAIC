@@ -1,3 +1,13 @@
+from matplotlib import transforms
+import matplotlib.colors as plt_colors
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import random
+import json
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+
 """
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
  United  States  Government  sponsorship  acknowledged.   Any commercial use
@@ -17,16 +27,6 @@
  are welcome and should be sent to the software's maintainer.
 
 """
-import matplotlib
-matplotlib.use("Agg")
-import numpy as np
-import json
-import random
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.colors as plt_colors
-from matplotlib import transforms
-
 
 
 def _randomTaskColors(Schedule):
@@ -154,7 +154,10 @@ def SchedulePlotter(JSONSchedule, TaskColors=None, TaskShortNames=None, show=Tru
             ax.plot([Rect1Center[0], Rect2Center[0]], [
                     Rect1Center[1], Rect2Center[1]], color=TaskColors.get(Product, [.1, .1, .1]))
 
-    fig = plt.figure(figsize=(24, 16), dpi=120)
+    if save is True:
+        fig = plt.figure(figsize=(24, 16), dpi=120)
+    else:
+        fig = plt.figure()
     ax = fig.add_subplot(111)  # , aspect='equal')
 
     if start_time_plot is None:

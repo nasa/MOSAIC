@@ -21,17 +21,26 @@
 # pylint:disable=E1101
 import numpy as np
 import time
+
 try:
     import cplex  # This will be problematic on ARM
     CPLEXAvailable = True
 except:
     CPLEXAvailable = False
-import glpk  # Install pyglpk by bradforboyle. Will not work with Python-GLPK.
+
+try:
+    # Install pyglpk by bradforboyle. Will not work with Python-GLPK.
+    import glpk
+    GLPKAvailable = True
+except:
+    GLPKAvailable = False
+
 try:
     import pyscipopt as scip
     SCIPAvailable = True
 except:
     SCIPAvailable = False
+
 import json
 from mosaic_schedulers.common.utilities.contact_plan_handler import compute_time_invariant_bandwidth
 
@@ -183,6 +192,10 @@ class JSONSolver:
             print("WARNING: SCIP not available. Switching to GLPK")
             solver = "GLPK"
 
+        if solver == "GLPK" and (GLPKAvailable is False):
+            print("WARNING: GLPK not available. Aborting.")
+            return
+
         if type(JSONProblemDescription) is dict:
             JSONInput = JSONProblemDescription
         else:  # Attempt to deserialize
@@ -190,7 +203,6 @@ class JSONSolver:
 
         # Time
         Thor = JSONInput["Time"]["Thor"]
-        TimeStep = JSONInput["Time"]["TimeStep"]
 
         # Tasks
         # Translate tasks to TI format. Check that disjunctive requirements are not included
@@ -312,7 +324,7 @@ class JSONSolver:
 
     def schedule(self):
         self.Scheduler.schedule()
-        return self.Scheduler._formatToBenchmarkIO()
+        return self.Scheduler.formatToBenchmarkIO()
 
 
 class MOSAICMILPSolver:
@@ -400,7 +412,7 @@ class MOSAICMILPSolver:
         ''' Gets an object that can be called to stop the optimization process '''
         raise NotImplementedError
 
-    def _formatToBenchmarkIO(self):
+    def formatToBenchmarkIO(self):
         tasks_output = []
         ''' Formats the scheduler output to JSON '''
         if self.problemIsSolved is False:
@@ -876,656 +888,683 @@ else:
                 propset.set(Properties[param])
 
 
-class MOSAICGLPKSolver(MOSAICMILPSolver):
-    """
-    An implementation of the MILP scheduler that uses the GLPK solver.
-    """
+if GLPKAvailable is False:
+    class MOSAICGLPKSolver(MOSAICMILPSolver):
+        '''
+        A dummy implementation of the MILP scheduler if GLPK is not available.
+        '''
 
-    def solverSpecificInit(self):
-        # Create the GLPK problem
-        self.cpx = glpk.LPX()
-        # self.cpx.kind = int
-        self.cpx.obj.maximize = False
-        self.aborter = None  # No aborter for now
-        self.TimeLimit = 1e75
+        def solverSpecificInit(self):
+            print("WARNING: GLPK not installed. This will not work.")
+else:
+    class MOSAICGLPKSolver(MOSAICMILPSolver):
+        """
+        An implementation of the MILP scheduler that uses the GLPK solver.
+        """
 
-    def setUp(self):
-        if self.problemIsSetUp:
-            return
-        SetupStartTime = time.time()
+        def solverSpecificInit(self):
+            # Create the GLPK problem
+            self.cpx = glpk.LPX()
+            # self.cpx.kind = int
+            self.cpx.obj.maximize = False
+            self.aborter = None  # No aborter for now
+            self.TimeLimit = 1e75
 
-        # This used to be a part of a larger function.
-        # By redefining these variables as local, we save a lot of typing
-        #  and possible errors.
-        AgentCapabilities = self.AgentCapabilities
-        Tasks = self.Tasks
-        CommBandwidth = self.CommNetwork.Bandwidth
-        LinkLatency = self.CommNetwork.Latency
-        # Options = self.Options
+        def setUp(self):
+            if self.problemIsSetUp:
+                return
+            SetupStartTime = time.time()
 
-        TasksList = list(Tasks.ProductsBandwidth.keys())
-        AgentsList = list(AgentCapabilities.ComputationLoad.keys())
+            # This used to be a part of a larger function.
+            # By redefining these variables as local, we save a lot of typing
+            #  and possible errors.
+            AgentCapabilities = self.AgentCapabilities
+            Tasks = self.Tasks
+            CommBandwidth = self.CommNetwork.Bandwidth
+            LinkLatency = self.CommNetwork.Latency
+            # Options = self.Options
 
-        # We find things
-        ix = 0
+            TasksList = list(Tasks.ProductsBandwidth.keys())
+            AgentsList = list(AgentCapabilities.ComputationLoad.keys())
 
-        X = {}
-        X_cost_energy = []
-        X_cost_optional = []
-        X_name = []
-        for i in AgentsList:
-            X[i] = {}
-            for m in TasksList:
-                X[i][m] = ix
-                ix += 1
-                X_cost_energy.append(AgentCapabilities.EnergyCost[i][m])
-                X_cost_optional.append(
-                    -float(Tasks.OptionalTasks[m])*Tasks.TaskReward[m])
-                X_name.append('X[{},{}]'.format(i, m))
-        x_vars_len = ix
+            # We find things
+            ix = 0
 
-        B = {}
-        B_name = []
-        B_cost_energy = []
-        B_cost_optional = []
-        B_upper_bound = []
-        for i in AgentsList:
-            B[i] = {}
-            for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    B[i][j] = {}
-                    for m in Tasks.RequiringTasks.keys():
-                        B[i][j][m] = ix
-                        B_name.append('B[{},{},{}]'.format(i, j, m))
-                        B_cost_energy.append(
-                            (self.CommNetwork.EnergyCost[i][j])*self.CommNetwork.Bandwidth[i][j])
-                        B_cost_optional.append(0.)
-                        B_upper_bound.append(self.CommNetwork.Bandwidth[i][j])
-                        ix += 1
+            X = {}
+            X_cost_energy = []
+            X_cost_optional = []
+            X_name = []
+            for i in AgentsList:
+                X[i] = {}
+                for m in TasksList:
+                    X[i][m] = ix
+                    ix += 1
+                    X_cost_energy.append(AgentCapabilities.EnergyCost[i][m])
+                    X_cost_optional.append(
+                        -float(Tasks.OptionalTasks[m])*Tasks.TaskReward[m])
+                    X_name.append('X[{},{}]'.format(i, m))
+            x_vars_len = ix
 
-        b_vars_len = ix - x_vars_len
-
-        communication_cost_optional_tasks = 1e-8
-        C = {}
-        C_name = []
-        C_cost_energy = []
-        C_cost_optional = []
-        C_upper_bound = []
-        for i in AgentsList:
-            C[i] = {}
-            for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    C[i][j] = {}
-                    for m in Tasks.RequiringTasks.keys():
-                        C[i][j][m] = {}
-                        for mm in Tasks.RequiringTasks[m]:
-                            C[i][j][m][mm] = ix
-                            C_name.append('C[{},{},{},{}]'.format(i, j, m, mm))
-                            C_cost_energy.append(0)
-                            C_cost_optional.append(
-                                communication_cost_optional_tasks)
-                            C_upper_bound.append(
+            B = {}
+            B_name = []
+            B_cost_energy = []
+            B_cost_optional = []
+            B_upper_bound = []
+            for i in AgentsList:
+                B[i] = {}
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        B[i][j] = {}
+                        for m in Tasks.RequiringTasks.keys():
+                            B[i][j][m] = ix
+                            B_name.append('B[{},{},{}]'.format(i, j, m))
+                            B_cost_energy.append(
+                                (self.CommNetwork.EnergyCost[i][j])*self.CommNetwork.Bandwidth[i][j])
+                            B_cost_optional.append(0.)
+                            B_upper_bound.append(
                                 self.CommNetwork.Bandwidth[i][j])
                             ix += 1
 
-        comm_vars_length = ix - b_vars_len - x_vars_len
+            b_vars_len = ix - x_vars_len
 
-        if "CostFunction" in self.Options.keys():
-            CostFunction = self.Options["CostFunction"]
-        else:
-            CostFunction = {"energy": 0.0,
-                            "total_task_reward": 1.0, "total_time": 0.0}
-            print("WARNING: default cost function used.")
-        if CostFunction["total_time"] != 0:
-            print("WARNING: minimum-makespan optimization is not supported at this time.")
+            communication_cost_optional_tasks = 1e-8
+            C = {}
+            C_name = []
+            C_cost_energy = []
+            C_cost_optional = []
+            C_upper_bound = []
+            for i in AgentsList:
+                C[i] = {}
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        C[i][j] = {}
+                        for m in Tasks.RequiringTasks.keys():
+                            C[i][j][m] = {}
+                            for mm in Tasks.RequiringTasks[m]:
+                                C[i][j][m][mm] = ix
+                                C_name.append(
+                                    'C[{},{},{},{}]'.format(i, j, m, mm))
+                                C_cost_energy.append(0)
+                                C_cost_optional.append(
+                                    communication_cost_optional_tasks)
+                                C_upper_bound.append(
+                                    self.CommNetwork.Bandwidth[i][j])
+                                ix += 1
 
-        X_cost = CostFunction["total_task_reward"] * np.array(
-            X_cost_optional, dtype=float) + CostFunction["energy"] * np.array(X_cost_energy, dtype=float)
-        B_cost = CostFunction["total_task_reward"] * np.array(
-            B_cost_optional, dtype=float) + CostFunction["energy"] * np.array(B_cost_energy, dtype=float)
-        C_cost = CostFunction["total_task_reward"] * np.array(
-            C_cost_optional, dtype=float) + CostFunction["energy"] * np.array(C_cost_energy, dtype=float)
+            comm_vars_length = ix - b_vars_len - x_vars_len
 
-        # We create the variables
+            if "CostFunction" in self.Options.keys():
+                CostFunction = self.Options["CostFunction"]
+            else:
+                CostFunction = {"energy": 0.0,
+                                "total_task_reward": 1.0, "total_time": 0.0}
+                print("WARNING: default cost function used.")
+            if CostFunction["total_time"] != 0:
+                print(
+                    "WARNING: minimum-makespan optimization is not supported at this time.")
 
-        self.cpx.cols.add(len(X_cost))
-        for col_ix in range(len(X_cost)):
-            c = self.cpx.cols[col_ix]
-            # c.bounds = 0., 1.
-            c.kind = bool
-            c.name = X_name[col_ix]
-            self.cpx.obj[col_ix] = X_cost[col_ix]
+            X_cost = CostFunction["total_task_reward"] * np.array(
+                X_cost_optional, dtype=float) + CostFunction["energy"] * np.array(X_cost_energy, dtype=float)
+            B_cost = CostFunction["total_task_reward"] * np.array(
+                B_cost_optional, dtype=float) + CostFunction["energy"] * np.array(B_cost_energy, dtype=float)
+            C_cost = CostFunction["total_task_reward"] * np.array(
+                C_cost_optional, dtype=float) + CostFunction["energy"] * np.array(C_cost_energy, dtype=float)
 
-        if len(B_cost):
-            self.cpx.cols.add(len(B_cost))
-            for col_ix in range(len(B_cost)):
-                c = self.cpx.cols[col_ix+len(X_cost)]
-                c.kind = float
-                c.bounds = 0., B_upper_bound[col_ix]
-                c.name = B_name[col_ix]
-                self.cpx.obj[col_ix+len(X_cost)] = B_cost[col_ix]
+            # We create the variables
 
-        if len(C_cost):
-            self.cpx.cols.add(len(C_cost))
-            for col_ix in range(len(C_cost)):
-                c = self.cpx.cols[col_ix+len(X_cost)+len(B_cost)]
-                c.kind = float
-                c.bounds = 0., C_upper_bound[col_ix]
-                c.name = C_name[col_ix]
-                self.cpx.obj[col_ix+len(X_cost)+len(B_cost)] = C_cost[col_ix]
+            self.cpx.cols.add(len(X_cost))
+            for col_ix in range(len(X_cost)):
+                c = self.cpx.cols[col_ix]
+                # c.bounds = 0., 1.
+                c.kind = bool
+                c.name = X_name[col_ix]
+                self.cpx.obj[col_ix] = X_cost[col_ix]
 
-        # Constraints
-        self._verbprint("Constraint: Getting the job done (1b)")
-        for m in TasksList:
-            if Tasks.OptionalTasks[m] == False:
-                self.cpx.rows.add(1)
-                self.cpx.rows[-1].matrix = [(X[i][m], 1.0) for i in AgentsList]
-                self.cpx.rows[-1].bounds = 1.0, None
+            if len(B_cost):
+                self.cpx.cols.add(len(B_cost))
+                for col_ix in range(len(B_cost)):
+                    c = self.cpx.cols[col_ix+len(X_cost)]
+                    c.kind = float
+                    c.bounds = 0., B_upper_bound[col_ix]
+                    c.name = B_name[col_ix]
+                    self.cpx.obj[col_ix+len(X_cost)] = B_cost[col_ix]
 
-        self._verbprint("Constraint: Getting the job done once")
-        for m in TasksList:
-            self.cpx.rows.add(1)
-            self.cpx.rows[-1].matrix = [(X[i][m], 1.) for i in AgentsList]
-            self.cpx.rows[-1].bounds = None, 1.
+            if len(C_cost):
+                self.cpx.cols.add(len(C_cost))
+                for col_ix in range(len(C_cost)):
+                    c = self.cpx.cols[col_ix+len(X_cost)+len(B_cost)]
+                    c.kind = float
+                    c.bounds = 0., C_upper_bound[col_ix]
+                    c.name = C_name[col_ix]
+                    self.cpx.obj[col_ix+len(X_cost) +
+                                 len(B_cost)] = C_cost[col_ix]
 
-        self._verbprint("Constraint: Data Transmission (1c)")
-        for j in AgentsList:
-            for t in Tasks.RequiringTasks.keys():
-                for tau in Tasks.RequiringTasks[t]:
-                    VarsList = [X[j][t],  X[j][tau]]
-                    CoeffsList = [Tasks.ProductsBandwidth[t], -
-                                  Tasks.ProductsBandwidth[t]]
-                    VarsList += [C[i][j][t][tau]
-                                 for i in AgentsList if CommBandwidth[i][j] > 0]
-                    CoeffsList += [1 for i in AgentsList if CommBandwidth[i][j] > 0]
-                    VarsList += [C[j][k][t][tau]
-                                 for k in AgentsList if CommBandwidth[j][k] > 0]
-                    CoeffsList += [-1 for k in AgentsList if CommBandwidth[j][k] > 0]
-                    self.cpx.rows.add(1)
-                    self.cpx.rows[-1].matrix = zip(VarsList, CoeffsList)
-                    self.cpx.rows[-1].bounds = 0., None
-
-        self._verbprint("Multiplexed bandwidth (1d)")
-        for i in AgentsList:
-            for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    for t in Tasks.RequiringTasks.keys():
-                        for tau in Tasks.RequiringTasks[t]:
-                            VarsList = [B[i][j][t], C[i][j][t][tau]]
-                            CoeffsList = [-1, 1]
-                            self.cpx.rows.add(1)
-                            self.cpx.rows[-1].matrix = zip(VarsList,
-                                                           CoeffsList)
-                            self.cpx.rows[-1].bounds = None, 0.
-
-        # Resource availability
-        self._verbprint("Constraint: Resource availability (1e)")
-        for j in AgentsList:
-            VarsList = [X[j][m] for m in TasksList]
-            CoeffsList = [AgentCapabilities.ComputationLoad[j][m]
-                          for m in TasksList]
-            VarsList += [B[i][j][m] for i in AgentsList if CommBandwidth[i]
-                         [j] > 0 for m in Tasks.RequiringTasks.keys()]
-            CoeffsList += [AgentCapabilities.LinkComputationalLoadIn[i][j]
-                           for i in AgentsList if CommBandwidth[i][j] > 0 for m in Tasks.RequiringTasks.keys()]
-            VarsList += [B[j][k][m] for k in AgentsList if CommBandwidth[j]
-                         [k] > 0 for m in Tasks.RequiringTasks.keys()]
-            CoeffsList += [AgentCapabilities.LinkComputationalLoadOut[j][k]
-                           for k in AgentsList if CommBandwidth[j][k] > 0 for m in Tasks.RequiringTasks.keys()]
-            self.cpx.rows.add(1)
-            self.cpx.rows[-1].matrix = zip(VarsList, CoeffsList)
-            self.cpx.rows[-1].bounds = None, AgentCapabilities.MaxComputationLoad[j]
-
-        self._verbprint("Constraint: Latency (1g)")
-        for mm in Tasks.DependencyList.keys():
-            for m in Tasks.DependencyList[mm]:
-                self.cpx.rows.add(1)
-                self.cpx.rows[-1].matrix = [(C[i][j][m][mm], (LinkLatency[i][j]+Tasks.ProductsDataSize[m]/self.CommNetwork.Bandwidth[i][j])/Tasks.ProductsBandwidth[m])
-                                            for i in AgentsList for j in AgentsList if CommBandwidth[i][j] > 0]
-                self.cpx.rows[-1].bounds = None, Tasks.MaxLatency[mm][m]
-
-        self.SetupEndTime = time.time() - SetupStartTime
-        self._verbprint('Setup time: {}'.format(self.SetupEndTime))
-        self.X = X
-        self.B = B
-        self.C = C
-        self.x_vars_len = x_vars_len
-        self.b_vars_len = b_vars_len
-        self.comm_vars_length = comm_vars_length
-        self.TasksList = TasksList
-        self.AgentsList = AgentsList
-        self.problemIsSetUp = True
-
-    def solve(self):
-        if self.problemIsSetUp is False:
-            self.setUp()
-        SolveStartTime = time.time()
-
-        if self.Verbose is False:
-            glpk.env.term_on = False
-
-        LPisFeasible = False
-        # We need this to build a feasible optimal basis. This is slow and annoying, and we will need a workaround.
-        # retval_lp = self.cpx.interior()
-        start_lp = time.time()
-        self._verbprint("Solving simplex")
-        cpx_kwargs = {'presolve': True}
-        if self.TimeLimit != 1e75:
-            cpx_kwargs['tm_lim'] = int(self.TimeLimit*1e3)  # Convert to ms
-        retval_lp = self.cpx.simplex(**cpx_kwargs)
-        end_lp = time.time() - start_lp
-        self._verbprint("Simplex solved in {} s".format(end_lp))
-
-        if retval_lp is None and (self.cpx.status == 'opt' or self.cpx.status == 'feas'):
-            self._verbprint("Solving IP")
-            LPisFeasible = True
-
-            start_ip = time.time()
-            self.cpx.integer(**cpx_kwargs)
-            end_ip = time.time() - start_ip
-            self._verbprint("MILP solved in {} s".format(end_ip))
-
-            self._verbprint(
-                'Solution status:                   %s' % self.cpx.status)
-
-        if LPisFeasible and (self.cpx.status == 'opt' or self.cpx.status == 'feas'):
-            self.opt_val = self.cpx.obj.value
-            self._verbprint(
-                'Optimal value:                     {}'.format(self.opt_val))
-            values = [cc.value_m for cc in self.cpx.cols]
-            self.values = values
-            self.problemIsFeasible = True
-        else:
-            self.opt_val = None
-            self.values = np.zeros([len(self.cpx.cols)])
-        self.SolveEndTime = time.time() - SolveStartTime
-        self._verbprint('Solve time: {}'.format(self.SolveEndTime))
-
-        # This is post-processing and should probably be moved to a different function so it can be called on an existing solution.
-        TaskAgent = {}
-
-        # This is a ugly hack. Sometimes the solver will return weird fractional solutions even if we require integral ones. Here, we round.
-        soleps = np.finfo(np.float32).eps
-        for m in self.TasksList:
-            FOUND_FLAG = False
-            for i in self.AgentsList:
-                if self.values[self.X[i][m]] >= 1. - soleps:
-                    TaskAgent[m] = i
-                    FOUND_FLAG = True
-                    break
-            if not FOUND_FLAG:
-                TaskAgent[m] = None
-        TaskAssignment = {'TaskAgent': TaskAgent, 'Cost': self.opt_val}
-
-        CommSchedule = []
-        for i in self.AgentsList:
-            for j in self.AgentsList:
-                for m in self.Tasks.RequiringTasks.keys():
-                    for mm in self.Tasks.RequiringTasks[m]:
-                        if self.CommNetwork.Bandwidth[i][j] > 0 and self.values[self.C[i][j][m][mm]] > 0:
-                            CommSchedule.append(
-                                [i, j, m, self.values[self.C[i][j][m][mm]]])
-
-        RawOutput = {}
-        RawOutput['X'] = self.values[0:self.x_vars_len]
-        RawOutput['B'] = self.values[self.x_vars_len:self.x_vars_len + self.b_vars_len]
-        RawOutput['C'] = self.values[self.x_vars_len + self.b_vars_len:]
-        RawOutput['Fval'] = self.opt_val
-        RawOutput['Exitflag'] = self.cpx.status
-        RawOutput['Exitstring'] = self.cpx.status
-        RawOutput['Setup time'] = self.SetupEndTime
-        RawOutput['Total time'] = self.SetupEndTime + self.SolveEndTime
-        RawOutput['GLPK problem'] = self.cpx
-        self.TaskAssignment = TaskAssignment
-        self.RawOutput = RawOutput
-        self.CommSchedule = CommSchedule
-        self.problemIsSolved = True
-
-    def schedule(self):
-        # Override to implement time limit
-        startSetupTime = time.time()
-        if self.problemIsSetUp is False:
-            self.setUp()
-        endSetupTime = time.time() - startSetupTime
-        startSolveTime = time.time()
-        self.solve()
-        endSolveTime = time.time() - startSolveTime
-        self._verbprint("Solution time: {}".format(endSolveTime))
-        self._verbprint("Overall time: {}".format(endSolveTime + endSetupTime))
-
-        if self.problemIsFeasible is False:
-            print("Problem infeasible!")
-            return (None, None)
-        return (self.TaskAssignment, self.CommSchedule)
-
-    def getSolverState(self):
-        if self.problemIsSolved is False:
-            return "Solver not called"
-        else:
-            return self.cpx.status
-
-    def getProblem(self):
-        return self.cpx
-
-    def writeSolution(self, filename='MIPstarts_GLPK'):
-        self.cpx.parameters.output.writelevel.set(4)
-        self.cpx.write(mps=filename + '_problem.mps')
-        self.cpx.write(mip=filename + '.mps')
-        self.cpx.write(sol=filename + '.sol')
-
-    def setTimeLimits(self, DetTicksLimit=1e75, ClockTimeLimit=1e75):
-        if DetTicksLimit != 1e75:
-            print("WARNING: deterministic ticks limit ignored by GLPK")
-        if ClockTimeLimit != 1e75:
-            print("WARNING: clock time limit partly nonfunctional in GLPK")
-            # pyglpk does not implement calling intop
-            # (it says it does but it calls .integer)
-            # The 'integer' solver requires a basis
-            # To solve the basis we need a simplex solver
-            #  which does not support a time limit
-        self.TimeLimit = ClockTimeLimit
-
-
-class MOSAICSCIPSolver(MOSAICMILPSolver):
-    """
-    An implementation of the MILP scheduler that uses the SCIP solver.
-    """
-
-    def solverSpecificInit(self):
-        # # Create the SCIP problem
-        self.cpx = scip.Model("ti-milp")
-        if self.Verbose is False:
-            self.cpx.hideOutput()
-        self.aborter = None  # No aborter for now
-        self.TimeLimit = None
-
-    def setUp(self):
-        if self.problemIsSetUp:
-            return
-        SetupStartTime = time.time()
-
-        # This used to be a part of a larger function.
-        # By redefining these variables as local, we save a lot of typing
-        #  and possible errors.
-        AgentCapabilities = self.AgentCapabilities
-        Tasks = self.Tasks
-        CommBandwidth = self.CommNetwork.Bandwidth
-        LinkLatency = self.CommNetwork.Latency
-        # Options = self.Options
-
-        TasksList = list(Tasks.ProductsBandwidth.keys())
-        AgentsList = list(AgentCapabilities.ComputationLoad.keys())
-
-        # Set up cost function
-        if "CostFunction" in self.Options.keys():
-            CostFunction = self.Options["CostFunction"]
-        else:
-            CostFunction = {"energy": 0.0,
-                            "total_task_reward": 1.0, "total_time": 0.0}
-            print("WARNING: default cost function used.")
-        if CostFunction["total_time"] != 0:
-            print("WARNING: minimum-makespan optimization is not supported at this time.")
-
-        # We create variables
-        ix = 0
-        X = {}
-        X_cost = {}
-        for i in AgentsList:
-            X[i] = {}
-            X_cost[i] = {}
+            # Constraints
+            self._verbprint("Constraint: Getting the job done (1b)")
             for m in TasksList:
-                ix += 1
-                X[i][m] = self.cpx.addVar(
-                    vtype="B",
-                    name='X[{},{}]'.format(i, m)
-                )
-                X_cost[i][m] = -CostFunction["total_task_reward"]*(float(
-                    Tasks.OptionalTasks[m])*Tasks.TaskReward[m]) + CostFunction["energy"]*float(AgentCapabilities.EnergyCost[i][m])
-        x_vars_len = ix
+                if Tasks.OptionalTasks[m] == False:
+                    self.cpx.rows.add(1)
+                    self.cpx.rows[-1].matrix = [(X[i][m], 1.0)
+                                                for i in AgentsList]
+                    self.cpx.rows[-1].bounds = 1.0, None
 
-        B = {}
-        B_cost = {}
-        for i in AgentsList:
-            B[i] = {}
-            B_cost[i] = {}
+            self._verbprint("Constraint: Getting the job done once")
+            for m in TasksList:
+                self.cpx.rows.add(1)
+                self.cpx.rows[-1].matrix = [(X[i][m], 1.) for i in AgentsList]
+                self.cpx.rows[-1].bounds = None, 1.
+
+            self._verbprint("Constraint: Data Transmission (1c)")
             for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    B[i][j] = {}
-                    B_cost[i][j] = {}
-                    for m in Tasks.RequiringTasks.keys():
-                        B[i][j][m] = self.cpx.addVar(
-                            vtype="C",
-                            lb=0,
-                            ub=self.CommNetwork.Bandwidth[i][j],
-                            name='B[{},{},{}]'.format(i, j, m)
-                        )
-                        B_cost[i][j][m] = CostFunction["energy"]*float(
-                            (self.CommNetwork.EnergyCost[i][j])*self.CommNetwork.Bandwidth[i][j])
-                        ix += 1
+                for t in Tasks.RequiringTasks.keys():
+                    for tau in Tasks.RequiringTasks[t]:
+                        VarsList = [X[j][t],  X[j][tau]]
+                        CoeffsList = [Tasks.ProductsBandwidth[t], -
+                                      Tasks.ProductsBandwidth[t]]
+                        VarsList += [C[i][j][t][tau]
+                                     for i in AgentsList if CommBandwidth[i][j] > 0]
+                        CoeffsList += [1 for i in AgentsList if CommBandwidth[i][j] > 0]
+                        VarsList += [C[j][k][t][tau]
+                                     for k in AgentsList if CommBandwidth[j][k] > 0]
+                        CoeffsList += [-1 for k in AgentsList if CommBandwidth[j][k] > 0]
+                        self.cpx.rows.add(1)
+                        self.cpx.rows[-1].matrix = zip(VarsList, CoeffsList)
+                        self.cpx.rows[-1].bounds = 0., None
 
-        b_vars_len = ix - x_vars_len
+            self._verbprint("Multiplexed bandwidth (1d)")
+            for i in AgentsList:
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        for t in Tasks.RequiringTasks.keys():
+                            for tau in Tasks.RequiringTasks[t]:
+                                VarsList = [B[i][j][t], C[i][j][t][tau]]
+                                CoeffsList = [-1, 1]
+                                self.cpx.rows.add(1)
+                                self.cpx.rows[-1].matrix = zip(VarsList,
+                                                               CoeffsList)
+                                self.cpx.rows[-1].bounds = None, 0.
 
-        communication_cost_optional_tasks = 1e-8
-        C = {}
-        C_cost = {}
-        for i in AgentsList:
-            C[i] = {}
-            C_cost[i] = {}
+            # Resource availability
+            self._verbprint("Constraint: Resource availability (1e)")
             for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    C[i][j] = {}
-                    C_cost[i][j] = {}
-                    for m in Tasks.RequiringTasks.keys():
-                        C[i][j][m] = {}
-                        C_cost[i][j][m] = {}
-                        for mm in Tasks.RequiringTasks[m]:
-                            C[i][j][m][mm] = self.cpx.addVar(
+                VarsList = [X[j][m] for m in TasksList]
+                CoeffsList = [AgentCapabilities.ComputationLoad[j][m]
+                              for m in TasksList]
+                VarsList += [B[i][j][m] for i in AgentsList if CommBandwidth[i]
+                             [j] > 0 for m in Tasks.RequiringTasks.keys()]
+                CoeffsList += [AgentCapabilities.LinkComputationalLoadIn[i][j]
+                               for i in AgentsList if CommBandwidth[i][j] > 0 for m in Tasks.RequiringTasks.keys()]
+                VarsList += [B[j][k][m] for k in AgentsList if CommBandwidth[j]
+                             [k] > 0 for m in Tasks.RequiringTasks.keys()]
+                CoeffsList += [AgentCapabilities.LinkComputationalLoadOut[j][k]
+                               for k in AgentsList if CommBandwidth[j][k] > 0 for m in Tasks.RequiringTasks.keys()]
+                self.cpx.rows.add(1)
+                self.cpx.rows[-1].matrix = zip(VarsList, CoeffsList)
+                self.cpx.rows[-1].bounds = None, AgentCapabilities.MaxComputationLoad[j]
+
+            self._verbprint("Constraint: Latency (1g)")
+            for mm in Tasks.DependencyList.keys():
+                for m in Tasks.DependencyList[mm]:
+                    self.cpx.rows.add(1)
+                    self.cpx.rows[-1].matrix = [(C[i][j][m][mm], (LinkLatency[i][j]+Tasks.ProductsDataSize[m]/self.CommNetwork.Bandwidth[i][j])/Tasks.ProductsBandwidth[m])
+                                                for i in AgentsList for j in AgentsList if CommBandwidth[i][j] > 0]
+                    self.cpx.rows[-1].bounds = None, Tasks.MaxLatency[mm][m]
+
+            self.SetupEndTime = time.time() - SetupStartTime
+            self._verbprint('Setup time: {}'.format(self.SetupEndTime))
+            self.X = X
+            self.B = B
+            self.C = C
+            self.x_vars_len = x_vars_len
+            self.b_vars_len = b_vars_len
+            self.comm_vars_length = comm_vars_length
+            self.TasksList = TasksList
+            self.AgentsList = AgentsList
+            self.problemIsSetUp = True
+
+        def solve(self):
+            if self.problemIsSetUp is False:
+                self.setUp()
+            SolveStartTime = time.time()
+
+            if self.Verbose is False:
+                glpk.env.term_on = False
+
+            LPisFeasible = False
+            # We need this to build a feasible optimal basis. This is slow and annoying, and we will need a workaround.
+            # retval_lp = self.cpx.interior()
+            start_lp = time.time()
+            self._verbprint("Solving simplex")
+            cpx_kwargs = {'presolve': True}
+            if self.TimeLimit != 1e75:
+                cpx_kwargs['tm_lim'] = int(self.TimeLimit*1e3)  # Convert to ms
+            retval_lp = self.cpx.simplex(**cpx_kwargs)
+            end_lp = time.time() - start_lp
+            self._verbprint("Simplex solved in {} s".format(end_lp))
+
+            if retval_lp is None and (self.cpx.status == 'opt' or self.cpx.status == 'feas'):
+                self._verbprint("Solving IP")
+                LPisFeasible = True
+
+                start_ip = time.time()
+                self.cpx.integer(**cpx_kwargs)
+                end_ip = time.time() - start_ip
+                self._verbprint("MILP solved in {} s".format(end_ip))
+
+                self._verbprint(
+                    'Solution status:                   %s' % self.cpx.status)
+
+            if LPisFeasible and (self.cpx.status == 'opt' or self.cpx.status == 'feas'):
+                self.opt_val = self.cpx.obj.value
+                self._verbprint(
+                    'Optimal value:                     {}'.format(self.opt_val))
+                values = [cc.value_m for cc in self.cpx.cols]
+                self.values = values
+                self.problemIsFeasible = True
+            else:
+                self.opt_val = None
+                self.values = np.zeros([len(self.cpx.cols)])
+            self.SolveEndTime = time.time() - SolveStartTime
+            self._verbprint('Solve time: {}'.format(self.SolveEndTime))
+
+            # This is post-processing and should probably be moved to a different function so it can be called on an existing solution.
+            TaskAgent = {}
+
+            # This is a ugly hack. Sometimes the solver will return weird fractional solutions even if we require integral ones. Here, we round.
+            soleps = np.finfo(np.float32).eps
+            for m in self.TasksList:
+                FOUND_FLAG = False
+                for i in self.AgentsList:
+                    if self.values[self.X[i][m]] >= 1. - soleps:
+                        TaskAgent[m] = i
+                        FOUND_FLAG = True
+                        break
+                if not FOUND_FLAG:
+                    TaskAgent[m] = None
+            TaskAssignment = {'TaskAgent': TaskAgent, 'Cost': self.opt_val}
+
+            CommSchedule = []
+            for i in self.AgentsList:
+                for j in self.AgentsList:
+                    for m in self.Tasks.RequiringTasks.keys():
+                        for mm in self.Tasks.RequiringTasks[m]:
+                            if self.CommNetwork.Bandwidth[i][j] > 0 and self.values[self.C[i][j][m][mm]] > 0:
+                                CommSchedule.append(
+                                    [i, j, m, self.values[self.C[i][j][m][mm]]])
+
+            RawOutput = {}
+            RawOutput['X'] = self.values[0:self.x_vars_len]
+            RawOutput['B'] = self.values[self.x_vars_len:self.x_vars_len + self.b_vars_len]
+            RawOutput['C'] = self.values[self.x_vars_len + self.b_vars_len:]
+            RawOutput['Fval'] = self.opt_val
+            RawOutput['Exitflag'] = self.cpx.status
+            RawOutput['Exitstring'] = self.cpx.status
+            RawOutput['Setup time'] = self.SetupEndTime
+            RawOutput['Total time'] = self.SetupEndTime + self.SolveEndTime
+            RawOutput['GLPK problem'] = self.cpx
+            self.TaskAssignment = TaskAssignment
+            self.RawOutput = RawOutput
+            self.CommSchedule = CommSchedule
+            self.problemIsSolved = True
+
+        def schedule(self):
+            # Override to implement time limit
+            startSetupTime = time.time()
+            if self.problemIsSetUp is False:
+                self.setUp()
+            endSetupTime = time.time() - startSetupTime
+            startSolveTime = time.time()
+            self.solve()
+            endSolveTime = time.time() - startSolveTime
+            self._verbprint("Solution time: {}".format(endSolveTime))
+            self._verbprint("Overall time: {}".format(
+                endSolveTime + endSetupTime))
+
+            if self.problemIsFeasible is False:
+                print("Problem infeasible!")
+                return (None, None)
+            return (self.TaskAssignment, self.CommSchedule)
+
+        def getSolverState(self):
+            if self.problemIsSolved is False:
+                return "Solver not called"
+            else:
+                return self.cpx.status
+
+        def getProblem(self):
+            return self.cpx
+
+        def writeSolution(self, filename='MIPstarts_GLPK'):
+            self.cpx.parameters.output.writelevel.set(4)
+            self.cpx.write(mps=filename + '_problem.mps')
+            self.cpx.write(mip=filename + '.mps')
+            self.cpx.write(sol=filename + '.sol')
+
+        def setTimeLimits(self, DetTicksLimit=1e75, ClockTimeLimit=1e75):
+            if DetTicksLimit != 1e75:
+                print("WARNING: deterministic ticks limit ignored by GLPK")
+            if ClockTimeLimit != 1e75:
+                print("WARNING: clock time limit partly nonfunctional in GLPK")
+                # pyglpk does not implement calling intop
+                # (it says it does but it calls .integer)
+                # The 'integer' solver requires a basis
+                # To solve the basis we need a simplex solver
+                #  which does not support a time limit
+            self.TimeLimit = ClockTimeLimit
+
+if SCIPAvailable is False:
+    class MOSAICSCIPSolver(MOSAICMILPSolver):
+        '''
+        A dummy implementation of the MILP scheduler if SCIP is not available.
+        '''
+
+        def solverSpecificInit(self):
+            print("WARNING: SCIP not installed. This will not work.")
+else:
+    class MOSAICSCIPSolver(MOSAICMILPSolver):
+        """
+        An implementation of the MILP scheduler that uses the SCIP solver.
+        """
+
+        def solverSpecificInit(self):
+            # # Create the SCIP problem
+            self.cpx = scip.Model("ti-milp")
+            if self.Verbose is False:
+                self.cpx.hideOutput()
+            self.aborter = None  # No aborter for now
+            self.TimeLimit = None
+
+        def setUp(self):
+            if self.problemIsSetUp:
+                return
+            SetupStartTime = time.time()
+
+            # This used to be a part of a larger function.
+            # By redefining these variables as local, we save a lot of typing
+            #  and possible errors.
+            AgentCapabilities = self.AgentCapabilities
+            Tasks = self.Tasks
+            CommBandwidth = self.CommNetwork.Bandwidth
+            LinkLatency = self.CommNetwork.Latency
+            # Options = self.Options
+
+            TasksList = list(Tasks.ProductsBandwidth.keys())
+            AgentsList = list(AgentCapabilities.ComputationLoad.keys())
+
+            # Set up cost function
+            if "CostFunction" in self.Options.keys():
+                CostFunction = self.Options["CostFunction"]
+            else:
+                CostFunction = {"energy": 0.0,
+                                "total_task_reward": 1.0, "total_time": 0.0}
+                print("WARNING: default cost function used.")
+            if CostFunction["total_time"] != 0:
+                print(
+                    "WARNING: minimum-makespan optimization is not supported at this time.")
+
+            # We create variables
+            ix = 0
+            X = {}
+            X_cost = {}
+            for i in AgentsList:
+                X[i] = {}
+                X_cost[i] = {}
+                for m in TasksList:
+                    ix += 1
+                    X[i][m] = self.cpx.addVar(
+                        vtype="B",
+                        name='X[{},{}]'.format(i, m)
+                    )
+                    X_cost[i][m] = -CostFunction["total_task_reward"]*(float(
+                        Tasks.OptionalTasks[m])*Tasks.TaskReward[m]) + CostFunction["energy"]*float(AgentCapabilities.EnergyCost[i][m])
+            x_vars_len = ix
+
+            B = {}
+            B_cost = {}
+            for i in AgentsList:
+                B[i] = {}
+                B_cost[i] = {}
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        B[i][j] = {}
+                        B_cost[i][j] = {}
+                        for m in Tasks.RequiringTasks.keys():
+                            B[i][j][m] = self.cpx.addVar(
                                 vtype="C",
                                 lb=0,
                                 ub=self.CommNetwork.Bandwidth[i][j],
-                                name='C[{},{},{},{}]'.format(i, j, m, mm)
+                                name='B[{},{},{}]'.format(i, j, m)
                             )
-                            C_cost[i][j][m][mm] = CostFunction["total_task_reward"] * \
-                                (communication_cost_optional_tasks)
+                            B_cost[i][j][m] = CostFunction["energy"]*float(
+                                (self.CommNetwork.EnergyCost[i][j])*self.CommNetwork.Bandwidth[i][j])
                             ix += 1
 
-        comm_vars_length = ix - b_vars_len - x_vars_len
+            b_vars_len = ix - x_vars_len
 
-        # We set the objective
-        self.cpx.setObjective(
-            scip.quicksum(X_cost[i][m] * X[i][m]
-                          for i in AgentsList for m in TasksList)
-            + scip.quicksum(B_cost[i][j][m]*B[i][j][m]
-                            for i in AgentsList for j in AgentsList for m in Tasks.RequiringTasks.keys() if CommBandwidth[i][j] > 0)
-            + scip.quicksum(C_cost[i][j][m][mm] * C[i][j][m][mm]
-                            for i in AgentsList for j in AgentsList for m in Tasks.RequiringTasks.keys() for mm in Tasks.RequiringTasks[m] if CommBandwidth[i][j] > 0),
-            "minimize")
+            communication_cost_optional_tasks = 1e-8
+            C = {}
+            C_cost = {}
+            for i in AgentsList:
+                C[i] = {}
+                C_cost[i] = {}
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        C[i][j] = {}
+                        C_cost[i][j] = {}
+                        for m in Tasks.RequiringTasks.keys():
+                            C[i][j][m] = {}
+                            C_cost[i][j][m] = {}
+                            for mm in Tasks.RequiringTasks[m]:
+                                C[i][j][m][mm] = self.cpx.addVar(
+                                    vtype="C",
+                                    lb=0,
+                                    ub=self.CommNetwork.Bandwidth[i][j],
+                                    name='C[{},{},{},{}]'.format(i, j, m, mm)
+                                )
+                                C_cost[i][j][m][mm] = CostFunction["total_task_reward"] * \
+                                    (communication_cost_optional_tasks)
+                                ix += 1
 
-        # Constraints
-        self._verbprint("Constraint: Getting the job done (1b)")
-        for m in TasksList:
-            if Tasks.OptionalTasks[m] == False:
+            comm_vars_length = ix - b_vars_len - x_vars_len
+
+            # We set the objective
+            self.cpx.setObjective(
+                scip.quicksum(X_cost[i][m] * X[i][m]
+                              for i in AgentsList for m in TasksList)
+                + scip.quicksum(B_cost[i][j][m]*B[i][j][m]
+                                for i in AgentsList for j in AgentsList for m in Tasks.RequiringTasks.keys() if CommBandwidth[i][j] > 0)
+                + scip.quicksum(C_cost[i][j][m][mm] * C[i][j][m][mm]
+                                for i in AgentsList for j in AgentsList for m in Tasks.RequiringTasks.keys() for mm in Tasks.RequiringTasks[m] if CommBandwidth[i][j] > 0),
+                "minimize")
+
+            # Constraints
+            self._verbprint("Constraint: Getting the job done (1b)")
+            for m in TasksList:
+                if Tasks.OptionalTasks[m] == False:
+                    self.cpx.addCons(scip.quicksum(
+                        X[i][m] for i in AgentsList) >= 1.)
+
+            self._verbprint("Constraint: Getting the job done once")
+            for m in TasksList:
                 self.cpx.addCons(scip.quicksum(
-                    X[i][m] for i in AgentsList) >= 1.)
+                    X[i][m] for i in AgentsList) <= 1.)
 
-        self._verbprint("Constraint: Getting the job done once")
-        for m in TasksList:
-            self.cpx.addCons(scip.quicksum(X[i][m] for i in AgentsList) <= 1.)
-
-        self._verbprint("Constraint: Data Transmission (1c)")
-        # DCConstraintsList = []
-        for j in AgentsList:
-            for t in Tasks.RequiringTasks.keys():
-                for tau in Tasks.RequiringTasks[t]:
-                    self.cpx.addCons(
-                        Tasks.ProductsBandwidth[t]*X[j][t] -
-                        Tasks.ProductsBandwidth[t]*X[j][tau]
-                        + scip.quicksum(C[i][j][t][tau]
-                                        for i in AgentsList if CommBandwidth[i][j] > 0)
-                        - scip.quicksum(C[j][k][t][tau]
-                                        for k in AgentsList if CommBandwidth[j][k] > 0)
-                        >= 0.
-                    )
-
-        self._verbprint("Multiplexed bandwidth (1d)")
-        # MPConstraintsList = []
-        for i in AgentsList:
+            self._verbprint("Constraint: Data Transmission (1c)")
+            # DCConstraintsList = []
             for j in AgentsList:
-                if CommBandwidth[i][j] > 0:
-                    for t in Tasks.RequiringTasks.keys():
-                        for tau in Tasks.RequiringTasks[t]:
-                            self.cpx.addCons(-B[i][j][t] +
-                                             C[i][j][t][tau] <= 0)
+                for t in Tasks.RequiringTasks.keys():
+                    for tau in Tasks.RequiringTasks[t]:
+                        self.cpx.addCons(
+                            Tasks.ProductsBandwidth[t]*X[j][t] -
+                            Tasks.ProductsBandwidth[t]*X[j][tau]
+                            + scip.quicksum(C[i][j][t][tau]
+                                            for i in AgentsList if CommBandwidth[i][j] > 0)
+                            - scip.quicksum(C[j][k][t][tau]
+                                            for k in AgentsList if CommBandwidth[j][k] > 0)
+                            >= 0.
+                        )
 
-        # Resource availability
-        self._verbprint("Constraint: Resource availability (1e)")
-        # RAConstraintList = []
-        # MaxAgentLoad = []
-        for j in AgentsList:
-            self.cpx.addCons(
-                scip.quicksum(AgentCapabilities.ComputationLoad[j][m]*X[j][m] for m in TasksList) +
-                scip.quicksum(AgentCapabilities.LinkComputationalLoadIn[i][j]*B[i][j][m] for i in AgentsList if CommBandwidth[i][j] > 0 for m in Tasks.RequiringTasks.keys()) +
-                scip.quicksum(AgentCapabilities.LinkComputationalLoadOut[j][k]*B[j][k][m]
-                              for k in AgentsList if CommBandwidth[j][k] > 0 for m in Tasks.RequiringTasks.keys())
-                <= AgentCapabilities.MaxComputationLoad[j]
-            )
+            self._verbprint("Multiplexed bandwidth (1d)")
+            # MPConstraintsList = []
+            for i in AgentsList:
+                for j in AgentsList:
+                    if CommBandwidth[i][j] > 0:
+                        for t in Tasks.RequiringTasks.keys():
+                            for tau in Tasks.RequiringTasks[t]:
+                                self.cpx.addCons(-B[i][j][t] +
+                                                 C[i][j][t][tau] <= 0)
 
-        self._verbprint("Constraint: Latency (1g)")
-        for mm in Tasks.DependencyList.keys():
-            for m in Tasks.DependencyList[mm]:
+            # Resource availability
+            self._verbprint("Constraint: Resource availability (1e)")
+            # RAConstraintList = []
+            # MaxAgentLoad = []
+            for j in AgentsList:
                 self.cpx.addCons(
-                    scip.quicksum(
-                        (LinkLatency[i][j]+Tasks.ProductsDataSize[m]/self.CommNetwork.Bandwidth[i][j])/Tasks.ProductsBandwidth[m]*C[i][j][m][mm] for i in AgentsList for j in AgentsList if CommBandwidth[i][j] > 0
-                    )
-                    <= Tasks.MaxLatency[mm][m]
+                    scip.quicksum(AgentCapabilities.ComputationLoad[j][m]*X[j][m] for m in TasksList) +
+                    scip.quicksum(AgentCapabilities.LinkComputationalLoadIn[i][j]*B[i][j][m] for i in AgentsList if CommBandwidth[i][j] > 0 for m in Tasks.RequiringTasks.keys()) +
+                    scip.quicksum(AgentCapabilities.LinkComputationalLoadOut[j][k]*B[j][k][m]
+                                  for k in AgentsList if CommBandwidth[j][k] > 0 for m in Tasks.RequiringTasks.keys())
+                    <= AgentCapabilities.MaxComputationLoad[j]
                 )
 
-        self.SetupEndTime = time.time() - SetupStartTime
-        self._verbprint('Setup time: {}'.format(self.SetupEndTime))
-        self.X = X
-        self.B = B
-        self.C = C
-        self.x_vars_len = x_vars_len
-        self.b_vars_len = b_vars_len
-        self.comm_vars_length = comm_vars_length
-        self.TasksList = TasksList
-        self.AgentsList = AgentsList
-        self.problemIsSetUp = True
+            self._verbprint("Constraint: Latency (1g)")
+            for mm in Tasks.DependencyList.keys():
+                for m in Tasks.DependencyList[mm]:
+                    self.cpx.addCons(
+                        scip.quicksum(
+                            (LinkLatency[i][j]+Tasks.ProductsDataSize[m]/self.CommNetwork.Bandwidth[i][j])/Tasks.ProductsBandwidth[m]*C[i][j][m][mm] for i in AgentsList for j in AgentsList if CommBandwidth[i][j] > 0
+                        )
+                        <= Tasks.MaxLatency[mm][m]
+                    )
 
-    def solve(self):
-        if self.problemIsSetUp is False:
-            self.setUp()
-        SolveStartTime = time.time()
-        self.cpx.setRealParam('limits/gap', 0.05)
-        if self.TimeLimit is not None:
-            self.cpx.setRealParam('limits/time', self.TimeLimit)
+            self.SetupEndTime = time.time() - SetupStartTime
+            self._verbprint('Setup time: {}'.format(self.SetupEndTime))
+            self.X = X
+            self.B = B
+            self.C = C
+            self.x_vars_len = x_vars_len
+            self.b_vars_len = b_vars_len
+            self.comm_vars_length = comm_vars_length
+            self.TasksList = TasksList
+            self.AgentsList = AgentsList
+            self.problemIsSetUp = True
 
-        self.cpx.optimize()
-        self._verbprint(
-            'Solution status:                   {}'.format(self.cpx.getStatus()))
-        if self.cpx.getStatus() != 'infeasible' and self.cpx.getStatus() != 'unbounded':
-            self.opt_val = self.cpx.getObjVal()
+        def solve(self):
+            if self.problemIsSetUp is False:
+                self.setUp()
+            SolveStartTime = time.time()
+            self.cpx.setRealParam('limits/gap', 0.05)
+            if self.TimeLimit is not None:
+                self.cpx.setRealParam('limits/time', self.TimeLimit)
+
+            self.cpx.optimize()
             self._verbprint(
-                'Optimal value:                     {}'.format(self.opt_val))
-        else:
-            self.opt_val = None
-        self.SolveEndTime = time.time() - SolveStartTime
-        self._verbprint('Solve time: {}'.format(self.SolveEndTime))
+                'Solution status:                   {}'.format(self.cpx.getStatus()))
+            if self.cpx.getStatus() != 'infeasible' and self.cpx.getStatus() != 'unbounded':
+                self.opt_val = self.cpx.getObjVal()
+                self._verbprint(
+                    'Optimal value:                     {}'.format(self.opt_val))
+            else:
+                self.opt_val = None
+            self.SolveEndTime = time.time() - SolveStartTime
+            self._verbprint('Solve time: {}'.format(self.SolveEndTime))
 
-        # This is post-processing and should probably be moved to a different function so it can be called on an existing solution.
-        TaskAgent = {}
+            # This is post-processing and should probably be moved to a different function so it can be called on an existing solution.
+            TaskAgent = {}
 
-        # This is a ugly hack. Sometimes SCIP will return weird fractional solutions even if we require integral ones. Here, we round.
-        soleps = np.finfo(np.float32).eps
-        for m in self.TasksList:
-            FOUND_FLAG = False
+            # This is a ugly hack. Sometimes SCIP will return weird fractional solutions even if we require integral ones. Here, we round.
+            soleps = np.finfo(np.float32).eps
+            for m in self.TasksList:
+                FOUND_FLAG = False
+                for i in self.AgentsList:
+                    if self.cpx.getVal(self.X[i][m]) >= 1. - soleps:
+                        TaskAgent[m] = i
+                        FOUND_FLAG = True
+                        break
+                if not FOUND_FLAG:
+                    TaskAgent[m] = None
+            TaskAssignment = {'TaskAgent': TaskAgent, 'Cost': self.opt_val}
+
+            CommSchedule = []
             for i in self.AgentsList:
-                if self.cpx.getVal(self.X[i][m]) >= 1. - soleps:
-                    TaskAgent[m] = i
-                    FOUND_FLAG = True
-                    break
-            if not FOUND_FLAG:
-                TaskAgent[m] = None
-        TaskAssignment = {'TaskAgent': TaskAgent, 'Cost': self.opt_val}
+                for j in self.AgentsList:
+                    for m in self.Tasks.RequiringTasks.keys():
+                        for mm in self.Tasks.RequiringTasks[m]:
+                            if self.CommNetwork.Bandwidth[i][j] > 0 and self.cpx.getVal(self.C[i][j][m][mm]) > 0:
+                                CommSchedule.append(
+                                    [i, j, m, self.cpx.getVal(self.C[i][j][m][mm])])
 
-        CommSchedule = []
-        for i in self.AgentsList:
-            for j in self.AgentsList:
-                for m in self.Tasks.RequiringTasks.keys():
-                    for mm in self.Tasks.RequiringTasks[m]:
-                        if self.CommNetwork.Bandwidth[i][j] > 0 and self.cpx.getVal(self.C[i][j][m][mm]) > 0:
-                            CommSchedule.append(
-                                [i, j, m, self.cpx.getVal(self.C[i][j][m][mm])])
+            RawOutput = {}
+            RawOutput['X'] = self.X
+            RawOutput['B'] = self.B
+            RawOutput['C'] = self.C
+            RawOutput['Fval'] = self.opt_val
+            RawOutput['Exitflag'] = self.cpx.getStatus()
+            RawOutput['Exitstring'] = self.cpx.getStatus()
+            RawOutput['Setup time'] = self.SetupEndTime
+            RawOutput['Total time'] = self.SetupEndTime + self.SolveEndTime
+            RawOutput['Cplex problem'] = self.cpx
+            self.TaskAssignment = TaskAssignment
+            self.RawOutput = RawOutput
+            self.CommSchedule = CommSchedule
+            self.problemIsSolved = True
+            if self.cpx.getStatus() != 'infeasible' and self.cpx.getStatus() != 'unbounded':
+                self.problemIsFeasible = True
 
-        RawOutput = {}
-        RawOutput['X'] = self.X
-        RawOutput['B'] = self.B
-        RawOutput['C'] = self.C
-        RawOutput['Fval'] = self.opt_val
-        RawOutput['Exitflag'] = self.cpx.getStatus()
-        RawOutput['Exitstring'] = self.cpx.getStatus()
-        RawOutput['Setup time'] = self.SetupEndTime
-        RawOutput['Total time'] = self.SetupEndTime + self.SolveEndTime
-        RawOutput['Cplex problem'] = self.cpx
-        self.TaskAssignment = TaskAssignment
-        self.RawOutput = RawOutput
-        self.CommSchedule = CommSchedule
-        self.problemIsSolved = True
-        if self.cpx.getStatus() != 'infeasible' and self.cpx.getStatus() != 'unbounded':
-            self.problemIsFeasible = True
+        def schedule(self):
+            # Override to implement time limit
+            startSetupTime = time.time()
+            if self.problemIsSetUp is False:
+                self.setUp()
+            endSetupTime = time.time() - startSetupTime
+            self._verbprint("Setup time (s): {}".format(endSetupTime))
+            # Set clock time limit
+            if self.TimeLimit is not None:
+                overallTimeLimit = self.TimeLimit
+                self._verbprint(
+                    "Overall time limit: {}".format(overallTimeLimit))
+                solverTimeLimit = overallTimeLimit - endSetupTime
+                if solverTimeLimit <= 0:
+                    return None
+                self._verbprint(
+                    "Setting solver time limit: {}".format(solverTimeLimit))
+                self.cpx.setRealParam('limits/time', solverTimeLimit)
+            startSolveTime = time.time()
+            self.solve()
+            endSolveTime = time.time() - startSolveTime
+            self._verbprint("Solution time: {}".format(endSolveTime))
+            self._verbprint("Overall time: {}".format(
+                endSolveTime + endSetupTime))
 
-    def schedule(self):
-        # Override to implement time limit
-        startSetupTime = time.time()
-        if self.problemIsSetUp is False:
-            self.setUp()
-        endSetupTime = time.time() - startSetupTime
-        self._verbprint("Setup time (s): {}".format(endSetupTime))
-        # Set clock time limit
-        if self.TimeLimit is not None:
-            overallTimeLimit = self.TimeLimit
-            self._verbprint("Overall time limit: {}".format(overallTimeLimit))
-            solverTimeLimit = overallTimeLimit - endSetupTime
-            if solverTimeLimit <= 0:
-                return None
-            self._verbprint(
-                "Setting solver time limit: {}".format(solverTimeLimit))
-            self.cpx.setRealParam('limits/time', solverTimeLimit)
-        startSolveTime = time.time()
-        self.solve()
-        endSolveTime = time.time() - startSolveTime
-        self._verbprint("Solution time: {}".format(endSolveTime))
-        self._verbprint("Overall time: {}".format(endSolveTime + endSetupTime))
+            if self.problemIsFeasible is False:
+                print("Problem infeasible!")
+                return (None, None)
+            return (self.TaskAssignment, self.CommSchedule)
 
-        if self.problemIsFeasible is False:
-            print("Problem infeasible!")
-            return (None, None)
-        return (self.TaskAssignment, self.CommSchedule)
+        def getSolverState(self):
+            if self.problemIsSolved is False:
+                return "Solver not called"
+            else:
+                return self.cpx.getStatus()
 
-    def getSolverState(self):
-        if self.problemIsSolved is False:
-            return "Solver not called"
-        else:
-            return self.cpx.getStatus()
+        def getProblem(self):
+            return self.cpx
 
-    def getProblem(self):
-        return self.cpx
+        # def writeSolution(self, filename='MIPstarts'):
+        #     # TODO
+        #     self.cpx.parameters.output.writelevel.set(4)
+        #     self.cpx.MIP_starts.write(filename + '.mps')
+        #     self.cpx.solution.write(filename + '.sol')
 
-    # def writeSolution(self, filename='MIPstarts'):
-    #     # TODO
-    #     self.cpx.parameters.output.writelevel.set(4)
-    #     self.cpx.MIP_starts.write(filename + '.mps')
-    #     self.cpx.solution.write(filename + '.sol')
+        def setTimeLimits(self, DetTicksLimit=None, ClockTimeLimit=None):
+            if DetTicksLimit is not None:
+                print("WARNING: deterministic ticks limit ignored by SCIP")
+            if ClockTimeLimit is not None:
+                self.TimeLimit = ClockTimeLimit
 
-    def setTimeLimits(self, DetTicksLimit=None, ClockTimeLimit=None):
-        if DetTicksLimit is not None:
-            print("WARNING: deterministic ticks limit ignored by SCIP")
-        if ClockTimeLimit is not None:
-            self.TimeLimit = ClockTimeLimit
-
-    def setSolverParameters(self, Properties):
-        for param in Properties:
-            self.cpx.setRealParam(param, Properties[param])
+        def setSolverParameters(self, Properties):
+            for param in Properties:
+                self.cpx.setRealParam(param, Properties[param])
 
 
 def flipNestedDictionary(_dictionary):

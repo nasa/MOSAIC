@@ -31,7 +31,12 @@ try:
 except:
     CPLEXAvailable = False
 import json
-import glpk  # Install pyglpk by bradforboyle. Will not work with Python-GLPK.
+try:
+    # Install pyglpk by bradforboyle. Will not work with Python-GLPK.
+    import glpk
+    GLPKAvailable = True
+except:
+    GLPKAvailable = False
 try:
     import pyscipopt as scip
     SCIPAvailable = True
@@ -170,6 +175,10 @@ class JSONSolver:
         if solver == "SCIP" and (SCIPAvailable is False):
             print("WARNING: SCIP not available. Switching to GLPK")
             solver = "GLPK"
+
+        if solver == "GLPK" and (GLPKAvailable is False):
+            print("WARNING: GLPK not available. Aborting.")
+            return
 
         # Timing
         Thor_s = JSONInput["Time"]["Thor"]
@@ -577,6 +586,9 @@ class MOSAICCPLEXScheduler(MOSAICMILPScheduler):
     """
 
     def solverSpecificInit(self):
+        if CPLEXAvailable is False:
+            print("CPLEX not available. This will not work")
+            return
         # Create the CPLEX problem
         self.cpx = cplex.Cplex()
         self.cpx.objective.set_sense(self.cpx.objective.sense.maximize)
@@ -1045,6 +1057,9 @@ class MOSAICSCIPScheduler(MOSAICMILPScheduler):
     """
 
     def solverSpecificInit(self):
+        if SCIPAvailable is False:
+            print("SCIP not available. This will not work")
+            return
         # # Create the SCIP problem
         self.cpx = scip.Model("tv-milp")
         if self.Verbose is False:
@@ -1765,6 +1780,9 @@ class MOSAICGLPKScheduler(MOSAICMILPScheduler):
     """
 
     def solverSpecificInit(self):
+        if GLPKAvailable is False:
+            print("GLPK not available. This will not work")
+            return
         # Create the GLPK problem
         self.cpx = glpk.LPX()
         #self.cpx.kind = int
@@ -2202,4 +2220,3 @@ class MOSAICGLPKScheduler(MOSAICMILPScheduler):
         #     for prop in param:
         #         propset = getattr(propset, prop)
         #     propset.set(Properties[param])
-

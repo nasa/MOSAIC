@@ -256,4 +256,4 @@ if __name__ == "__main__":
         current_time=problem_state["time"],
         time_horizon=problem_state["time_horizon"]
     )
-    print scenario_params
+    print(scenario_params)

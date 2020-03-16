@@ -21,11 +21,18 @@
 import mosaic_schedulers.schedulers.ti_milp as MOSAICTISolver
 from mosaic_schedulers.common.utilities import NetworkPartitioning
 from mosaic_schedulers.common.examples.PUFFER import MOSAICProblem
+from mosaic_schedulers.common.plotting import TaskAllocationPlotter
 
 import networkx as nx
 import numpy as np
 import time
 import json
+
+try:
+    import cplex
+    CPLEX_Available = True
+except:
+    CPLEX_Available = False
 
 
 class MOSAICTIProblem:
@@ -114,11 +121,11 @@ class MOSAICTIProblem:
                         assert len(
                             dep) == 1, 'Disjunctive prerequirements are not supported'
                         DepList[task] += [dep[0]]
-        # Products size
-        PrSize = {}
+        # Products bandwidth
+        PrBandwidth = {}
         for task in self.TVProblem.Tasks.ProductsSize.keys():
             # Average bandwidth to finish by the end of the horizon
-            PrSize[task] = float(
+            PrBandwidth[task] = float(
                 self.TVProblem.Tasks.ProductsSize[task])/float(self.TVProblem.Thor)
         # Max. latency
         MaxLat = {}
@@ -176,7 +183,8 @@ class MOSAICTIProblem:
         Tasks = MOSAICTISolver.MILPTasks(
             OptionalTasks=self.TVProblem.Tasks.OptionalTasks,
             TaskReward=self.TVProblem.Tasks.TaskReward,
-            ProductsSize=PrSize,
+            ProductsBandwidth=PrBandwidth,
+            ProductsDataSize=self.TVProblem.Tasks.ProductsSize,
             DependencyList=DepList,
             MaxLatency=MaxLat,
         )
@@ -193,9 +201,13 @@ class MOSAICTIProblem:
         self.Tasks = Tasks
         self.CommunicationNetwork = CommunicationNetwork
 
-        self.scheduler = MOSAICTISolver.MOSAICGLPKSolver(
-            self.AgentCapabilities, self.Tasks, self.CommunicationNetwork, Options)
-        # self.schedulerTerminator = self.scheduler.getOptimizationTerminator()
+        if CPLEX_Available:
+            self.scheduler = MOSAICTISolver.MOSAICCPLEXSolver(
+                self.AgentCapabilities, self.Tasks, self.CommunicationNetwork, Options)
+        else:
+            self.scheduler = MOSAICTISolver.MOSAICGLPKSolver(
+                self.AgentCapabilities, self.Tasks, self.CommunicationNetwork, Options)
+            # self.schedulerTerminator = self.scheduler.getOptimizationTerminator()
 
         self.AllTaskColors = self.TVProblem.AllTaskColors
 
@@ -210,7 +222,7 @@ class MOSAICTIProblem:
     #     return self.schedulerTerminator
 
     def schedule(self):
-        setup_start_time = time.clock()
+        setup_start_time = time.process_time()
         if self.isSetUp is False:
             self.buildScheduler()
         # # Set feasible solution
@@ -220,15 +232,17 @@ class MOSAICTIProblem:
         # except cplex.exceptions.CplexSolverError:
         #     print("WARNING: default feasible solution is problematic. This should never happen")
         #     pass
-        setup_end_time = time.clock() - setup_start_time
+        setup_end_time = time.process_time() - setup_start_time
         remaining_solver_time = self.solverClockLimit - setup_end_time
         if remaining_solver_time < 0:
             print("ERROR: Not enough time to solve - timeout while building the problem. Consider increasing ClockTimeLimit")
             return
         self.scheduler.setTimeLimits(
             ClockTimeLimit=remaining_solver_time, DetTicksLimit=self.solverDetTicksLimit)
-        self.Schedule = self.scheduler.schedule()
+        self.scheduler.schedule()
+        self.Schedule = self.scheduler.formatToBenchmarkIO()
         self.isScheduled = True
+
         return self.Schedule
 
     def getTaskColors(self):
@@ -326,5 +340,5 @@ if __name__ == "__main__":
     # Get task colors (for plotting)
     TaskColors = MProblem.getTaskColors()
     # Plot the schedule
-    MOSAICTISolver.SchedulePlotter(
-        Schedule, NodesLocations, TaskColors, BandwidthScale=10)
+    TaskAllocationPlotter(Schedule, NodesLocations,
+                          TaskColors, BandwidthScale=10, show=True, save=False)
