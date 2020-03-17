@@ -1,6 +1,8 @@
 **Pluggable Distributed Resource Allocator (PDRA)**
 ===================================================
 
+![Animation of the Pluggable Distributed Resource Allocator in action](../images/pdra.gif)
+
 # Background
 
 Traditional monolithic autonomous systems typically have a layered architecture that includes:

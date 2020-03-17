@@ -1,16 +1,17 @@
 # MOSAIC: Mars On Site Shared Analytics, Information, and Computing
 
-![The MOSAIC scheduler in action](images/preview.png)
+![The MOSAIC scheduler in action](images/preview.gif)
 
 This repository contains MOSAIC schedulers and the Pluggable Distributed Resource Allocator (PDRA).
 
 Together, the tools in this repository enable heterogeneous multi-robot systems to share computational tasks with complex dependencies among agents with heterogeneous computation capabilities over time-varying communication links.
 
-Maintainers: 
+Maintainers:
 
 - [Federico Rossi](https://github.com/federico3) `federico.rossi@jpl.nasa.gov`
 - [Tiago Stegun Vaquero](https://github.com/tvaquero) `tiago.stegun.vaquero@jpl.nasa.gov`
 - [Marc Sanchez Net](https://github.com/msancheznet) `marc.sanchez.net@jpl.nasa.gov`
+- [Joshua Vander Hook](https://github.com/jodavaho/) `hook@jpl.nasa.gov`
 
 ![MOSAIC live demo](images/MOSAIC_demo.png)
 
@@ -42,10 +43,6 @@ Simulation results show that PDRA can reduce energy and CPU usage by over 50\% i
 \[1\] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch, Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien, ["Mars On-Site Shared Analytics Information and Computing,"](https://aaai.org/ojs/index.php/ICAPS/article/view/3556) in Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.
 
 \[2\] Federico Rossi\*, Tiago Stegun Vaquero\*, Marc Sanchez Net, Maíra Saboia da Silva, and Joshua Vander Hook, "The Pluggable Distributed Resource Allocator (PDRA):a Middleware for Distributed Computing in Mobile Robotic Networks", under review.
-
-\[3\] H. Topcuoglu, S. Hariri and Min-You Wu, ["Performance-effective and low-complexity task scheduling for heterogeneous computing,"](https://ieeexplore.ieee.org/document/993206) in IEEE Transactions on Parallel and Distributed Systems, vol. 13, no. 3, pp. 260-274, March 2002.
-doi: [10.1109/71.993206](https://dx.doi.org/10.1109/71.993206)
-
 
 ## Copyright
 
