@@ -1,0 +1,9 @@
+#goal definition
+string request
+string dependents
+---
+#result definition
+string result
+---
+#feedback
+float32 progress

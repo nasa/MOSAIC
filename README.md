@@ -1,62 +1,48 @@
 # MOSAIC: Mars On Site Shared Analytics, Information, and Computing
 
-![The MOSAIC scheduler in action](images/preview.png)
+![The MOSAIC scheduler in action](images/preview.gif)
 
-This repository contains MOSAIC schedulers and usage examples.
+This repository contains MOSAIC schedulers and the Pluggable Distributed Resource Allocator (PDRA).
 
-Maintainers: 
+Together, the tools in this repository enable heterogeneous multi-robot systems to share computational tasks with complex dependencies among agents with heterogeneous computation capabilities over time-varying communication links.
 
-- Federico Rossi `federico.rossi@jpl.nasa.gov`
-- Tiago Stegun Vaquero `tiago.stegun.vaquero@jpl.nasa.gov`
+Maintainers:
+
+- [Federico Rossi](https://github.com/federico3) `federico.rossi@jpl.nasa.gov`
+- [Tiago Stegun Vaquero](https://github.com/tvaquero) `tiago.stegun.vaquero@jpl.nasa.gov`
+- [Marc Sanchez Net](https://github.com/msancheznet) `marc.sanchez.net@jpl.nasa.gov`
+- [Joshua Vander Hook](https://github.com/jodavaho/) `hook@jpl.nasa.gov`
 
 ![MOSAIC live demo](images/MOSAIC_demo.png)
 
-## Requirements
+## [MOSAIC schedulers](schedulers)
 
-### Libraries
+![MOSAIC schedules](images/examples.png)
 
-The scheduler depends on the [GLPK](https://www.gnu.org/software/glpk/) (MI)LP solver.
-GLPK and its dependencies can be installed by running `ubuntu_requirements.sh` (on Debian and derivatives, including Ubuntu) or `fedora_requirements.sh` (on Fedora and derivatives, including CentOS). This will also install some of the requirements to compile the SCIP solver from source (see below).
+We propose scheduling and task-allocation algorithms to share computational tasks among heterogeneous agents over time-varying communication links.
 
-If available, the scheduler can also make use of the following commercial solvers, which both offer academic licensing options:
-- [SCIP](https://scip.zib.de)
-- [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio)
+Specifically, we propose:
 
-SCIP provides [RPM and Deb binaries](https://scip.zib.de/index.php#download) for x86. On ARM, we recommend compiling from source. Place the SCIP source code in a folder (e.g., `scipoptsuite-6.0.1`), and then run:
-```
-cd scipoptsuite-6.0.1
-mkdir build
-cd build
-cmake ..
-make
-make install
-```
+- A mixed-integer programming algorithm for scheduling tasks in heterogeneous robotic networks with time-varying communication links. The scheduler can accommodate any non-cyclical dependencies between tasks and arbitrary time-varying communication links, handle optional tasks with associated rewards, and optimize cost functions including rewards for optional tasks, makespan, and energy usage. The scheduler is presented in \[1\].
 
-If CPLEX is not available, the solvers will fall back to GLPK.
-An academic license for CPLEX can be obtained from [IBM](https://www-03.ibm.com/isc/esd/dswdown/searchPartNumber.wss?partNumber=CJ4Z5ML) after registering for the [IBM Academic Initiative](https://my15.digitalexperience.ibm.com/b73a5759-c6a6-4033-ab6b-d9d4f9a6d65b/dxsites/151914d1-03d2-48fe-97d9-d21166848e65/home). Using the academic license is acceptable for non-commercial research: specifically, _"Noncommercial research purposes are defined as conducting not-for-profit research projects whose results would be considered to be in the public domain and suitable for submission to a peer-reviewed journal or conference for publication. IBM Products may be used in noncommercial research that is focused on the business concepts, science, math or technology upon which the product is based."_ (per the [IBM Academic Initiative Software Usage guidelines](https://my15.digitalexperience.ibm.com/b73a5759-c6a6-4033-ab6b-d9d4f9a6d65b/dxsites/151914d1-03d2-48fe-97d9-d21166848e65/faqs/guidelines)).
+- A mixed-integer programming algorithm for task allocation in  heterogeneous robotic networks with *periodic* communication links. The task allocation algorithm also accommodates any non-cyclical dependencies between tasks and handles optional tasks with associated rewards and maximum latency requirements; it can maximize reward from optional tasks or minimize energy use. The task allocation algorithm is presented in \[2\].
 
-### Python dependencies.
+<!-- [![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=VID) -->
 
-Python dependencies can be installed by running the script `pip_requirements.sh`.
+## [Pluggable Distributed Resource Allocator](distributed_resource_allocator)
 
-## Installation
+![Animation of the Pluggable Distributed Resource Allocator in action](images/pdra.gif)
 
-```python
-pip install .
-```
+The Pluggable Distributed Resource Allocator (PDRA) is a middleware for distributed computing in heterogeneous mobile robotic networks. It allows the MOSAIC schedulers to be easily "plugged" in existing autonomy executives with minimal software changes. PDRA sits between an existing single-agent planner/executor and existing computational resources (e.g. ROS packages). It intercepts the executor’s requests and, if needed, transparently routes them to other nodes for execution.
+Simulation results show that PDRA can reduce energy and CPU usage by over 50\% in representative multi-robot scenarios compared to a naive scheduler; runs on embedded platforms; and performs well in delay- and disruption-tolerant networks (DTNs). PDRA is available to the community under an open-source license.
 
-## Usage
+<!-- [![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=VID) -->
 
-See the `README`s of specific schedulers ([time-varying MILP](mosaic_schedulers/schedulers/tv_milp/README.md), [HEFT](mosaic_schedulers/schedulers/heft/README.md)) for a description of the I/O format.
+## References
 
-### Examples
-![Usage examples](images/examples.png)
-Usage examples and sample problems for the schedulers are contained in the [examples](examples/) folder in this repository.
-In particular, the [`example_scenarios`](examples/example_scenarios.ipynb) Jupyter notebook shows some interesting examples of cooperative behavior on a simple PUFFER-inspired problem.
+\[1\] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch, Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien, ["Mars On-Site Shared Analytics Information and Computing,"](https://aaai.org/ojs/index.php/ICAPS/article/view/3556) in Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.
 
-### Common tools
-
-Several plotting tools are available. They can be imported as `import mosaic_schedulers.common.plotting`.
+\[2\] Federico Rossi\*, Tiago Stegun Vaquero\*, Marc Sanchez Net, Maíra Saboia da Silva, and Joshua Vander Hook, "The Pluggable Distributed Resource Allocator (PDRA):a Middleware for Distributed Computing in Mobile Robotic Networks", under review.
 
 ## Copyright
 

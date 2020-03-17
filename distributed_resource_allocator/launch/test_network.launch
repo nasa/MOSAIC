@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<launch>
+
+	<!-- Arguments for this launch file -->
+	<!-- To use from CLI: roslaunch package_name file.launch id:=agent1 -->
+	<arg name="system_id" default="network"/>
+
+	<!-- Define global parameters. Access with rospy.get_param('global_p1') -->
+	<!-- <param name="global_p1" value=""/> -->
+
+	<!-- Launch global World State Monitor -->
+	<node pkg='pdra' name='wsm' type='test_world_state_monitor.py' output='screen'>
+	</node>
+
+	<!-- Launch multiple agents -->
+	<include file='$(find pdra)/launch/single_agent.launch'>
+		<arg name='agent_id' value='node_91'/>
+		<arg name='log_output' value='screen'/>
+	</include>
+	<include file='$(find pdra)/launch/single_agent.launch'>
+		<arg name='agent_id' value='node_92'/>
+		<arg name='log_output' value='screen'/>
+	</include>
+	<include file='$(find pdra)/launch/single_agent.launch'>
+		<arg name='agent_id' value='base_station'/>
+		<arg name='log_output' value='screen'/>
+	</include>
+
+</launch>

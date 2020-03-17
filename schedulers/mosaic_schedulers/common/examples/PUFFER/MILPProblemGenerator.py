@@ -1,36 +1,38 @@
 """
- This file creates a JSON problem description suitable for use by the various
- MILP solvers developed within the MOSAIC project.
- It uses a highly simplified task network for the ICAPS 2019 demo.
-
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
  United  States  Government  sponsorship  acknowledged.   Any commercial use
  must   be  negotiated  with  the  Office  of  Technology  Transfer  at  the
  California Institute of Technology.
-
+ 
  This software may be subject to  U.S. export control laws  and regulations.
  By accepting this document,  the user agrees to comply  with all applicable
  U.S. export laws and regulations.  User  has the responsibility  to  obtain
  export  licenses,  or  other  export  authority  as may be required  before
  exporting  such  information  to  foreign  countries or providing access to
  foreign persons.
-
+ 
  This  software  is a copy  and  may not be current.  The latest  version is
  maintained by and may be obtained from the Mobility  and  Robotics  Sytstem
  Section (347) at the Jet  Propulsion  Laboratory.   Suggestions and patches
  are welcome and should be sent to the software's maintainer.
-
+ 
 """
-
-import NetworkPartitioning
+import mosaic_schedulers.schedulers.tv_milp as MOSAICSolver
+from mosaic_schedulers.common.utilities import NetworkPartitioning
 import networkx as nx
 import numpy as np
-import matplotlib.colors as plt_colors
+import colorsys
 import time
 import json
+import sys
+try:
+    import cplex
+    CPLEX_Available = True
+except:
+    CPLEX_Available = False
 
 
-class MOSAICProblem_ICAPS2019:
+class MOSAICProblem:
     """ An instance of the MOSAIC scheduler.
     Exposes the following methods:
     - __init__
@@ -43,19 +45,18 @@ class MOSAICProblem_ICAPS2019:
     def __init__(self,
                  ScenarioParameters,
                  minBandwidth=0.01,
-                 maxHops=float("inf"),
+                 maxHops=sys.maxsize,
                  TimeStep=2,
                  solverClockLimit=1e75,
                  solverDetTicksLimit=1e75,
-                 solverParameters={},
-                 base_station_name='base_station'):
+                 solverParameters={}):
         '''Inputs:
         - ScenarioParameters, a description of the PUFFER scenario parameters in JSON format.
-        See sample_input for examples.
+        See sample_input and ScenarioGenerator.py for examples.
         - minBandwidth, also used to cluster the network in groups if mode
             'Bandwidth' or 'BandwidthHops' is used. Default = 0.01
         - maxHops,  used to cluster the network in groups if mode
-            'Hops' or 'BandwidthHops' is used. Default = float("inf")
+            'Hops' or 'BandwidthHops' is used. Default = sys.maxint
         - TimeStep: the time step of the MILP solver
         - solverClockLimit (default=1e75), the maximum time allotted to the solver
             (in seconds). Note that this is NOT a deterministic time limit.
@@ -76,7 +77,7 @@ class MOSAICProblem_ICAPS2019:
         self.solverDetTicksLimit = solverDetTicksLimit
         self.solverParameters = solverParameters
 
-        self.BaseStationName = base_station_name
+        self.BaseStationName = 'base_station'
 
         self.isPartitioned = False
         self.isSetUp = False
@@ -104,14 +105,11 @@ class MOSAICProblem_ICAPS2019:
         Links_list = []
         if mode == 'Bandwidth':
             for link in self.ScenarioParameters['CommunicationNetwork']:
-                # for key, val in self.problemState['link_state'].items():
+                # for key, val in self.problemState['link_state'].iteritems():
                 node0 = link['origin']
                 node1 = link['destination']
                 if link['bandwidth'] >= self.minBandwidth:
                     Links_list.append((node0, node1, link))
-                else:
-                    pass
-                    # print "Rejected link ", link, ": bandwidth too low"
             G.add_edges_from(Links_list)
             # Partition the network
             self.ConnectedComponents = NetworkPartitioning.partition_by_latency(
@@ -137,18 +135,12 @@ class MOSAICProblem_ICAPS2019:
             # Partition the network
             self.ConnectedComponents = NetworkPartitioning.partition_by_latency(
                 G, max_diameter=self.maxHops)
-        elif mode == 'None':
-            _connected_components = []
-            for link in self.ScenarioParameters['CommunicationNetwork']:
-                _connected_components.append(link['origin'])
-                _connected_components.append(link['destination'])
-            self.ConnectedComponents = [list(set(_connected_components))]
         else:
             # Mode 'latency' is not supported for this I/O format
             raise NotImplementedError
-        if mode != 'None':
-            NetworkPartitioning.label_connected_components(
-                G, self.ConnectedComponents, plot=False)
+
+        NetworkPartitioning.label_connected_components(
+            G, self.ConnectedComponents, plot=False)
         self.G = G
 
         self.isPartitioned = True
@@ -172,6 +164,7 @@ class MOSAICProblem_ICAPS2019:
             if agent in component:
                 AgentNames = component
                 break
+        # print "Agent names in partition:", AgentNames, "All partitions:", self.ConnectedComponents
         self.AgentNames = AgentNames
         self.agent = agent
 
@@ -202,13 +195,12 @@ class MOSAICProblem_ICAPS2019:
                     CommWindowsBandwidth[t][Agent1][Agent2] = link['bandwidth']
 
         # Extract the science availability
-        # Fallback: how many samples can you take within the given horizon (if not specified in config file)
-        achievable_science_in_horizon = 1
+        # TODO How many samples can you take within the given horizon
+        achievable_science_in_horizon = 3
 
         pufferScienceAvailability = {}
         for puffer in PufferNames:
-            in_science_zone = ScenarioParameters['AgentStates'][puffer].get(
-                'in_science_zone', False)
+            in_science_zone = ScenarioParameters['AgentStates'][puffer]['in_science_zone']
             if "samples" in ScenarioParameters['AgentStates'][puffer].keys():
                 puffer_samples = ScenarioParameters['AgentStates'][puffer]["samples"]
             else:
@@ -222,7 +214,8 @@ class MOSAICProblem_ICAPS2019:
         PufferTaskReward_housekeeping = {
             'short_range_image': ScenarioParameters['Tasks']['TaskReward']['short_range_image'],
             'vo_localization': ScenarioParameters['Tasks']['TaskReward']['vo_localization'],
-            'post_vo_localization': ScenarioParameters['Tasks']['TaskReward']['post_vo_localization'],
+            'plan_path': ScenarioParameters['Tasks']['TaskReward']['plan_path'],
+            'send_drive_cmd': ScenarioParameters['Tasks']['TaskReward']['send_drive_cmd'],
         }
 
         PufferTaskReward_science = {
@@ -238,7 +231,8 @@ class MOSAICProblem_ICAPS2019:
         PufferOptionalTask_housekeeping = {
             'short_range_image': False,
             'vo_localization': False,
-            'post_vo_localization': False,
+            'plan_path': False,
+            'send_drive_cmd': False,
         }
 
         PufferOptionalTask_science = {
@@ -251,7 +245,8 @@ class MOSAICProblem_ICAPS2019:
         PufferProductSizes_housekeeping = {
             'short_range_image': ScenarioParameters['Tasks']['ProductsSize']['short_range_image'],
             'vo_localization': ScenarioParameters['Tasks']['ProductsSize']['vo_localization'],
-            'post_vo_localization': ScenarioParameters['Tasks']['ProductsSize']['post_vo_localization'],
+            'plan_path': ScenarioParameters['Tasks']['ProductsSize']['plan_path'],
+            'send_drive_cmd': ScenarioParameters['Tasks']['ProductsSize']['send_drive_cmd'],
         }
 
         PufferProductSizes_science = {
@@ -263,7 +258,8 @@ class MOSAICProblem_ICAPS2019:
         pufferOwnHousekeepingTasks = [
             'short_range_image',
             'vo_localization',
-            'post_vo_localization',
+            'plan_path',
+            'send_drive_cmd',
         ]
 
         pufferOwnScienceTasks = [
@@ -274,6 +270,7 @@ class MOSAICProblem_ICAPS2019:
 
         RelocatableTasks = [
             'vo_localization',
+            'plan_path',
             'analyze_sample',
             'store_sample'
         ]
@@ -282,7 +279,8 @@ class MOSAICProblem_ICAPS2019:
         PufferDependencyList_housekeeping = {
             'short_range_image': [[]],
             'vo_localization': [['short_range_image']],
-            'post_vo_localization': [['vo_localization']],
+            'plan_path': [['vo_localization']],
+            'send_drive_cmd': [['plan_path']]
         }
 
         PufferDependencyList_science = {
@@ -315,8 +313,14 @@ class MOSAICProblem_ICAPS2019:
             for scienceNo in range(pufferScienceAvailability[pufferName]):
                 Temp_PufferOptionalTask.update({'{}:{}'.format(
                     pufferName, scienceNo) + k: v for k, v in PufferOptionalTask_science.items()})
+
+                # if pufferScienceReward is None:
                 Temp_PufferTaskReward.update({'{}:{}'.format(
                     pufferName, scienceNo) + k: v for k, v in PufferTaskReward_science.items()})
+                # else:
+                #    assert pufferScienceReward[pufferName][scienceNo].keys() == PufferTaskReward_science.keys(), "ERROR: PUFFER science reward has inconsistent keys"
+                #    Temp_PufferTaskReward.update({'{}:{}'.format(pufferName, scienceNo) + k: v for k, v in pufferScienceReward[pufferName][scienceNo].iteritems()})
+
                 Temp_PufferProductSizes.update({'{}:{}'.format(
                     pufferName, scienceNo) + k: v for k, v in PufferProductSizes_science.items()})
 
@@ -434,11 +438,11 @@ class MOSAICProblem_ICAPS2019:
                                 pufferName, scienceNo) + task][otherPuffer] = False
 
         # Map from seconds to time steps
-        # AllComputationTime = {k: int(np.ceil(float(v) / float(TimeStep))) for k, v in AllComputationTime.items()}
-        # for task, val in AllComputationTime.items():
-        #     for agent, tasktime in val.items():
-        #         AllComputationTime[task][agent] = int(
-        #             np.ceil(float(tasktime) / float(TimeStep)))
+        #AllComputationTime = {k: int(np.ceil(float(v) / float(TimeStep))) for k, v in AllComputationTime.iteritems()}
+        for task, val in AllComputationTime.items():
+            for agent, tasktime in val.items():
+                AllComputationTime[task][agent] = int(
+                    np.ceil(float(tasktime) / float(TimeStep)))
 
         # We define task colors for plotting. This is not needed to get the schedule, just to plot it.
         AllTaskColors = {}
@@ -460,15 +464,25 @@ class MOSAICProblem_ICAPS2019:
             for PufferTask in PufferTaskList_housekeeping:
                 TempTaskHSVColor = np.array(
                     [0., .2 + .8 * (1. - float(PufferTaskCounter) / float(NumPufferTasks - 1)), 0.])
+                TaskRGBColor = np.array(colorsys.hsv_to_rgb(
+                    TempPufferHSVColor[0] + TempTaskHSVColor[0],
+                    TempPufferHSVColor[1] + TempTaskHSVColor[1],
+                    TempPufferHSVColor[2] + TempTaskHSVColor[2])
+                )
                 AllTaskColors['{}:'.format(
-                    pufferName) + PufferTask] = plt_colors.hsv_to_rgb(TempPufferHSVColor + TempTaskHSVColor)
+                    pufferName) + PufferTask] = TaskRGBColor
                 PufferTaskCounter += 1
             for PufferTask in PufferTaskList_science:
                 TempTaskHSVColor = np.array(
                     [0., .2 + .8 * (1. - float(PufferTaskCounter) / float(NumPufferTasks - 1)), 0.])
+                TaskRGBColor = np.array(colorsys.hsv_to_rgb(
+                    TempPufferHSVColor[0] + TempTaskHSVColor[0],
+                    TempPufferHSVColor[1] + TempTaskHSVColor[1],
+                    TempPufferHSVColor[2] + TempTaskHSVColor[2])
+                )
                 for scienceNo in range(pufferScienceAvailability[pufferName]):
                     AllTaskColors['{}:{}'.format(
-                        pufferName, scienceNo) + PufferTask] = plt_colors.hsv_to_rgb(TempPufferHSVColor + TempTaskHSVColor)
+                        pufferName, scienceNo) + PufferTask] = TaskRGBColor  # plt_colors.hsv_to_rgb(TempPufferHSVColor + TempTaskHSVColor)
                 PufferTaskCounter += 1
 
             PufferNo += 1
@@ -476,38 +490,58 @@ class MOSAICProblem_ICAPS2019:
         self.AllTaskColors = AllTaskColors
 
         # Assemble inputs for the solver constructor
-        # Tasks = MOSAICSolver.MILPTasks(
-        #     OptionalTasks=AllOptionalTasks,
-        #     TaskReward=AllTaskReward,
-        #     ProductsSize=AllProductSizes,
-        #     DependencyList=AllDependencyList,
-        #     IncompatibleTasks=AllIncompatibleTasks,
-        # )
+        Tasks = MOSAICSolver.MILPTasks(
+            OptionalTasks=AllOptionalTasks,
+            TaskReward=AllTaskReward,
+            ProductsSize=AllProductSizes,
+            DependencyList=AllDependencyList,
+            IncompatibleTasks=AllIncompatibleTasks,
+        )
 
-        Tasks = {
-            "OptionalTasks": AllOptionalTasks,
-            "TaskReward":  AllTaskReward,
-            "ProductsSize": AllProductSizes,
-            "DependencyList": AllDependencyList,
-            "IncompatibleTasks": AllIncompatibleTasks,
-        }
-
-        # AgentCapabilities = MOSAICSolver.MILPAgentCapabilities(
-        #     ComputationTime=AllComputationTime,
-        #     ComputationLoad=AllComputationLoad,
-        #     InitialInformation=AllInitialInformation
-        # )
-
-        AgentCapabilities = {
-            "ComputationTime": AllComputationTime,
-            "ComputationLoad": AllComputationLoad,
-            "InitialInformation": AllInitialInformation
-        }
+        AgentCapabilities = MOSAICSolver.MILPAgentCapabilities(
+            ComputationTime=AllComputationTime,
+            ComputationLoad=AllComputationLoad,
+            InitialInformation=AllInitialInformation
+        )
 
         self.Tasks = Tasks
         self.AgentCapabilities = AgentCapabilities
         self.Thor = Thor
 
+        # Create a feasible solution
+        # MIP_vars = []
+        # MIP_vals = []
+        # for pufferName in PufferNames:
+        #     actionTime = 0
+        #     for task in HousekeepingTasks:
+        #         MIP_vars += ["X[{0},{0}:{1},{2}]".format(pufferName, task, actionTime)]
+        #         MIP_vals += [1]
+        #         actionTime += PufferComputationTimeP_self_housekeeping[task]
+        #         for knowledgeTime in range(actionTime, Thor):
+        #             MIP_vars += ["D[{0},{0}:{1},{2}]".format(pufferName, task, knowledgeTime)]
+        #             MIP_vals += [1]
+        # self.FeasibleSolution = [MIP_vars, MIP_vals]
+
+        # if CPLEX_Available:
+        #     FeasibleStartDict = self._createFeasibleSolution(Tasks, AgentCapabilities, CommWindowsBandwidth, PufferNames, pufferOwnHousekeepingTasks, Thor)
+        #     MIP_vars = []
+        #     MIP_vals = []
+        #     for key in FeasibleStartDict:
+        #         MIP_vars.append(key)
+        #         MIP_vals.append(FeasibleStartDict[key])
+        #     self.FeasibleSolution = [MIP_vars, MIP_vals]
+
+        # Options = {'Packet Comms': False}  # Scheduler options/params
+
+        # if CPLEX_Available:
+        #     self.scheduler = MOSAICSolver.MOSAICCPLEXScheduler(Thor, AgentCapabilities, Tasks, CommWindowsBandwidth, self.TimeStep, Options, Verbose=False)
+        #     self.scheduler.setTimeLimits(DetTicksLimit=self.solverDetTicksLimit, ClockTimeLimit=self.solverClockLimit)
+        #     self.schedulerTerminator = self.scheduler.getOptimizationTerminator()
+        # else:
+        #     self.scheduler = MOSAICSolver.MOSAICGLPKScheduler(Thor, AgentCapabilities, Tasks, CommWindowsBandwidth, self.TimeStep, Options, Verbose=False)
+        # # timeLimit = {'Seconds': self.solverTimeLimit, 'Ticks per second': self.ticksPerSecond}
+
+        # self.scheduler.setSolverParameters(self.solverParameters)
         self.isSetUp = True
 
     def createJSON(self):
@@ -521,28 +555,28 @@ class MOSAICProblem_ICAPS2019:
 
         # Tasks
         MaxLatency = {}
-        for task in self.Tasks["DependencyList"].keys():
+        for task in self.Tasks.DependencyList.keys():
             MaxLatency[task] = {}
-            for disjTasks in self.Tasks["DependencyList"][task]:
+            for disjTasks in self.Tasks.DependencyList[task]:
                 for predecessor in disjTasks:
-                    MaxLatency[task][predecessor] = float(Thor_s)
+                    MaxLatency[task][predecessor] = 999.
         Tasks = {
-            "OptionalTasks": self.Tasks["OptionalTasks"],
-            "TaskReward": self.Tasks["TaskReward"],
-            "ProductsSize": self.Tasks["ProductsSize"],
-            "DependencyList": self.Tasks["DependencyList"],
-            "IncompatibleTasks": self.Tasks["IncompatibleTasks"],
+            "OptionalTasks": self.Tasks.OptionalTasks,
+            "TaskReward": self.Tasks.TaskReward,
+            "ProductsSize": self.Tasks.ProductsSize,
+            "DependencyList": self.Tasks.DependencyList,
+            "IncompatibleTasks": self.Tasks.IncompatibleTasks,
             "MaxLatency": MaxLatency,
         }
 
         # Agent capabilities
         # Energy cost is proportional to task duration
         EnergyCost = {}
-        for task in self.AgentCapabilities["ComputationTime"].keys():
+        for task in self.AgentCapabilities.ComputationTime.keys():
             EnergyCost[task] = {}
-            for agent in self.AgentCapabilities["ComputationTime"][task].keys():
+            for agent in self.AgentCapabilities.ComputationTime[task].keys():
                 EnergyCost[task][agent] = float(
-                    self.AgentCapabilities["ComputationTime"][task][agent]) / float(Thor_s)
+                    self.AgentCapabilities.ComputationTime[task][agent]) / float(Thor_s)
         # Max computation load is 1 for all
         MaxComputationLoad = {}
         for agent in self.AgentNames:
@@ -558,13 +592,13 @@ class MOSAICProblem_ICAPS2019:
                 LinkComputationalLoadOut[agent1][agent2] = 1.
 
         AgentCapabilities = {
-            "ComputationTime": self.AgentCapabilities["ComputationTime"],
-            "ComputationLoad": self.AgentCapabilities["ComputationLoad"],
+            "ComputationTime": self.AgentCapabilities.ComputationTime,
+            "ComputationLoad": self.AgentCapabilities.ComputationLoad,
             "EnergyCost": EnergyCost,
             "MaxComputationLoad": MaxComputationLoad,
             "LinkComputationalLoadIn": LinkComputationalLoadIn,
             "LinkComputationalLoadOut": LinkComputationalLoadOut,
-            "InitialInformation": self.AgentCapabilities["InitialInformation"],
+            "InitialInformation": self.AgentCapabilities.InitialInformation,
         }
         # Comm network
         CommunicationNetwork = []
@@ -593,18 +627,21 @@ class MOSAICProblem_ICAPS2019:
     def getTaskColors(self):
         if self.isSetUp is False:
             raise Exception(
-                "Please set up the problem [problem.buildScheduler()] before calling getTaskColors!")
+                "Please set up the problem [problem.setUp()] before calling getTaskColors!")
         return self.AllTaskColors
 
 
 def clean_up_schedule(schedule):
     if type(schedule) == str:
         schedule = json.loads(schedule)
+    if schedule is None:
+        return schedule
 
     PUFFER_task_names = [
         'short_range_image',
         'vo_localization',
-        'post_vo_localization',
+        'plan_path',
+        'send_drive_cmd',
         'take_sample',
         'analyze_sample',
         'store_sample',
@@ -636,129 +673,147 @@ def clean_up_schedule(schedule):
 
 
 if __name__ == "__main__":
+    from mosaic_schedulers.common.examples.PUFFER import ScenarioGenerator as PUFFERScenarioGenerator
     from mosaic_schedulers.schedulers.tv_milp import MOSAICSolver
     from mosaic_schedulers.schedulers.ti_milp import MOSAICTISolver
-    from mosaic_schedulers.schedulers.ti_milp_heft import Scheduler as MOSAICTIHEFTSolver
     from mosaic_schedulers.common.plotting import MOSAICplotter
-    import matplotlib.pyplot as plt
+    import random
 
-    # Alternatively, static input
-    ScenarioParams = {
-        "AgentCapabilities": {
-            "EnergyCost": {
-                "puffer1": {
-                    "short_range_image": 0.13333333,
-                    "vo_localization": 0.3333333333333333,
-                    "post_vo_localization": 0.0,
-                    "take_sample": 0.2,
-                    "analyze_sample": 0.3333333333333333,
-                },
-                "base_station": {
-                    "vo_localization": 0.03333333333333333,
-                    "store_sample": 0.003333333333333333,
-                    "analyze_sample": 0.03333333333333333,
-                }
-            },
-            "ComputationTime": {
-                "puffer1": {
-                    "short_range_image": 3,
-                    "vo_localization": 10,
-                    "post_vo_localization": 0.001,
-                    "take_sample": 5,
-                    "analyze_sample": 10,
-                },
-                "base_station": {
-                    "vo_localization": 1.0,
-                    "store_sample": 0.1,
-                    "analyze_sample": 1.0
-                }
-            }
-        },
-        "CommunicationNetwork": [
-            {
-                "origin": "puffer1",
-                "latency": 0.001,
-                "time_start": 831.2,
-                "destination": "puffer1",
-                "time_end": 1.7976931348623157e+308,
-                "bandwidth": 110.0,
-                "energy_cost": 0.0
-            },
-            {
-                "origin": "puffer1",
-                "latency": 0.001,
-                "time_start": 831.2,
-                "destination": "base_station",
-                "time_end": 1.7976931348623157e+308,
-                "bandwidth": 10.0,
-                "energy_cost": 0.0
-            },
-            {
-                "origin": "base_station",
-                "latency": 0.001,
-                "time_start": 831.2,
-                "destination": "puffer1",
-                "time_end": 1.7976931348623157e+308,
-                "bandwidth": 10.0,
-                "energy_cost": 0.0
-            },
-            {
-                "origin": "base_station",
-                "latency": 0.001,
-                "time_start": 831.2,
-                "destination": "base_station",
-                "time_end": 1.7976931348623157e+308,
-                "bandwidth": 11.0,
-                "energy_cost": 0.0
-            }
-        ],
-        "Tasks": {
-            "DomainSpecific": {},
-            "ProductsSize": {
-                "vo_localization": 0.1,
-                "post_vo_localization": 0.1,
-                "short_range_image": 8.0,
-                "store_sample": 0.1,
-                "take_sample": 15,
-                "analyze_sample": 1.0,
-            },
-            "TaskReward": {
-                "vo_localization": 0,
-                "post_vo_localization": 0,
-                "short_range_image": 0,
-                "store_sample": 20,
-                "take_sample": 0,
-                "analyze_sample": 10,
-            }
-        },
-        "AgentStates": {
-            "puffer1": {
-                "in_science_zone": True,
-                "samples": 1
-            },
-            "base_station": {}
-        },
-        "Agent": "puffer1",
-        "Agents": [
-            "puffer1",
-            "base_station"
-        ],
-        "Time": {
-            "CurrentTime": 1001,
-            "TimeHorizon": 30
-        },
-        "Options": {},
-        "CostFunction": {
-            "total_time": 0.5,
-            "energy": 0,
-            "total_task_reward": 1.0
-        }
+    random_input = True
+    # Create an input
+    if random_input:
+        random.seed(1)
+        ScenarioParams = PUFFERScenarioGenerator.create_scenario(
+            num_puffers=2,
+            base_station=True,
+            science_zone_probability=.6,
+            plot_scenario=False
+        )
+    else:
+        # Alternatively, static input
+        ScenarioParams = """
+{
+  "AgentCapabilities": {
+    "EnergyCost": {
+      "puffer1": {
+        "send_drive_cmd": 0.06666666666666667, 
+        "plan_path": 0.3333333333333333, 
+        "short_range_image": 0.13333333, 
+        "vo_localization": 0.3333333333333333, 
+        "take_sample": 0.2, 
+        "analyze_sample": 0.3333333333333333
+      }, 
+      "base_station": {
+        "plan_path": 0.03333333333333333, 
+        "vo_localization": 0.03333333333333333, 
+        "store_sample": 0.003333333333333333, 
+        "analyze_sample": 0.03333333333333333
+      }
+    }, 
+    "ComputationTime": {
+      "puffer1": {
+        "send_drive_cmd": 0.1, 
+        "plan_path": 10, 
+        "short_range_image": 3, 
+        "vo_localization": 10, 
+        "take_sample": 5, 
+        "analyze_sample": 10
+      }, 
+      "base_station": {
+        "plan_path": 0.1, 
+        "vo_localization": 1.0, 
+        "store_sample": 0.1, 
+        "analyze_sample": 1.0
+      }
     }
-    ScenarioParams = json.dumps(ScenarioParams)
+  }, 
+  "CommunicationNetwork": [
+    {
+      "origin": "puffer1", 
+      "latency": 0.001, 
+      "time_start": 831.2, 
+      "destination": "puffer1", 
+      "time_end": 1.7976931348623157e+308, 
+      "bandwidth": 11.0, 
+      "energy_cost": 0.0
+    }, 
+    {
+      "origin": "puffer1", 
+      "latency": 0.001, 
+      "time_start": 831.2, 
+      "destination": "base_station", 
+      "time_end": 1.7976931348623157e+308, 
+      "bandwidth": 10.0, 
+      "energy_cost": 0.0
+    }, 
+    {
+      "origin": "base_station", 
+      "latency": 0.001, 
+      "time_start": 831.2, 
+      "destination": "puffer1", 
+      "time_end": 1.7976931348623157e+308, 
+      "bandwidth": 10.0,
+      "energy_cost": 0.0
+    }, 
+    {
+      "origin": "base_station", 
+      "latency": 0.001, 
+      "time_start": 831.2, 
+      "destination": "base_station", 
+      "time_end": 1.7976931348623157e+308, 
+      "bandwidth": 11.0, 
+      "energy_cost": 0.0
+    }
+  ], 
+  "Tasks": {
+    "DomainSpecific": {}, 
+    "ProductsSize": {
+      "send_drive_cmd": 0.1, 
+      "plan_path": 0.1, 
+      "vo_localization": 0.1, 
+      "short_range_image": 8.0, 
+      "store_sample": 0.1, 
+      "take_sample": 15, 
+      "analyze_sample": 1.0
+    }, 
+    "TaskReward": {
+      "send_drive_cmd": 0, 
+      "plan_path": 0, 
+      "vo_localization": 0, 
+      "short_range_image": 0, 
+      "store_sample": 20, 
+      "take_sample": 0, 
+      "analyze_sample": 10
+    }
+  }, 
+  "AgentStates": {
+    "puffer1": {
+      "in_science_zone": true, 
+      "samples": 0
+    }, 
+    "base_station": {}
+  }, 
+  "Agent": "puffer1", 
+  "Agents": [
+    "puffer1", 
+    "base_station"
+  ], 
+  "Time": {
+    "CurrentTime": 1001, 
+    "TimeHorizon": 60
+  }, 
+  "Options": {}, 
+  "CostFunction": {
+    "total_time": 0.5, 
+    "energy": 0, 
+    "total_task_reward": 1.0
+  }
+}
+"""
 
     # Create the JSON
-    Problem = MOSAICProblem_ICAPS2019(
-        ScenarioParams, base_station_name="base_station")
+    Problem = MOSAICProblem(ScenarioParams)
+
     ConnectedComponents = Problem.partition()
     Problem.buildScheduler()
     JSONinput = Problem.createJSON()
@@ -771,24 +826,14 @@ if __name__ == "__main__":
     # Test with a TV solver
     Scheduler = MOSAICSolver.JSONSolver(JSONinput)
     Schedule = Scheduler.schedule()
-
-    print("TV SCHEDULE:\n", Schedule)
-    # if Schedule is not None:
-    #     MOSAICplotter.SchedulePlotter(Schedule,TaskColors)
+    MOSAICplotter.SchedulePlotter(Schedule, TaskColors)
 
     # # Test with default non-JSON solver to be sure
     # NonJSONSchedule = Problem.schedule()
     # print NonJSONSchedule
     # MOSAICSolver.SchedulePlotter(NonJSONSchedule,TaskColors)
 
-    # # Test with a TI solver
+    # Test with a TI solver
     TIScheduler = MOSAICTISolver.JSONSolver(JSONinput)
     TISchedule = TIScheduler.schedule()
-    print("TI SCHEDULE:\n", TISchedule)
-    # if TISchedule is not None:
-    #     MOSAICplotter.TaskAllocationPlotter(TISchedule,TaskColors=TaskColors)
-    #     plt.show()
-
-    TIHScheduler = MOSAICTIHEFTSolver(JSONinput)
-    TIHSchedule = TIHScheduler.schedule()
-    print("TI HEFT SCHEDULE:\n", TIHSchedule)
+    MOSAICplotter.TaskAllocationPlotter(TISchedule, TaskColors=TaskColors)

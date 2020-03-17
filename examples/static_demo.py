@@ -69,7 +69,8 @@ def create_problem_input(science_nodes_number=1, assist_nodes_number=1, inter_pu
                 "latency": 0.001,
                 "origin": link[0],
                 "time_end": 1.7976931348623157e+308,
-                "time_start": 0.}
+                "time_start": 0.,
+                "info_time": 0.}
         )
 
     return problem_state
@@ -147,13 +148,16 @@ def create_comm_network(problem_state):
     for link in problem_state['link_state'].keys():
         props = problem_state['link_state'][link]
         communication_network.append(
-            {"bandwidth": props['bandwidth'],
+            {
+                "bandwidth": props['bandwidth'],
                 "destination": link[1],
                 "energy_cost": 1.0,
                 "latency": 0.001,
                 "origin": link[0],
                 "time_end": 1.7976931348623157e+308,
-                "time_start": 0.}
+                "time_start": 0.,
+                "info_time": 0.,
+            }
         )
     return communication_network
 
@@ -220,10 +224,10 @@ def evaluate_output(JSONinput, Schedule, verbose=False, take_sample_name='take_s
                 outcome[query]['done'] += 1
 
     if verbose:
-        print "Samples:\n - Taken: {}/{}\n - Analyzed: {}/{}\n - Stored: {}/{}".format(
+        print("Samples:\n - Taken: {}/{}\n - Analyzed: {}/{}\n - Stored: {}/{}".format(
             outcome['take_sample']['done'], outcome['take_sample']['available'],
             outcome['analyze_sample']['done'], outcome['analyze_sample']['available'],
-            outcome['store_sample']['done'], outcome['store_sample']['available'])
+            outcome['store_sample']['done'], outcome['store_sample']['available']))
 
     return outcome
 
