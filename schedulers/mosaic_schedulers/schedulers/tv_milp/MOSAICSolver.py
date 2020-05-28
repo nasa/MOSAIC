@@ -1,4 +1,8 @@
 """
+A module that implements the MOSAIC MILP scheduling algorithm.
+"""
+
+"""
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
  United  States  Government  sponsorship  acknowledged.   Any commercial use
  must   be  negotiated  with  the  Office  of  Technology  Transfer  at  the
@@ -50,22 +54,27 @@ import os
 
 class MILPTasks:
     """A class containing a representation of the tasks for the MILP scheduler.
-    Attributes:
-    * OptionalTasks, a dict with Tasks as keys. OptionalTasks[Task] is True if
-       Task is optional and False otherwise.
-    * TaskReward, a dict with Tasks as keys. TaskReward[Task] is the reward
-      obtained for completing Task, a float.
-    * ProductsSize, a dict with Tasks as keys. PS[Task] is the size of the
-       products of Task (in storage units), a float.
-    * DependencyList, a dict with Tasks as keys. DL[Task] expresses the
-       pre-requisites  for each Task is conjunctive normal form. That is,
-       DependencyList[Task] is a list. Each entry of the List contains a
-       number of predecessor Tasks.
-       For each entry in DependencyList[Task][i], at least one task.
-    * IncompatibleTasks, a list of lists. IT[j] is a list of
-       tasks that are incompatible with each other (that is, only one can be
-       executed).
-       """
+    
+    :param OptionalTasks: a dict with Tasks as keys. OptionalTasks[Task] is True if
+                          Task is optional and False otherwise.
+    :type OptionalTasks: dict
+    :param TaskReward: a dict with Tasks as keys. TaskReward[Task] is the reward
+                       obtained for completing Task, a float.
+    :type OptionalTasks: dict
+    :param ProductsSize: a dict with Tasks as keys. PS[Task] is the size of the
+                         products of Task (in storage units), a float.
+    :type ProductsSize: dict
+    :param DependencyList: a dict with Tasks as keys. DL[Task] expresses the
+                           pre-requisites  for each Task is conjunctive normal form. That is,
+                           DependencyList[Task] is a list. Each entry of the List contains a
+                           number of predecessor Tasks.
+                           For each entry in DependencyList[Task][i], at least one task must
+                           be performed.
+    :type DependencyList: dict
+    :param OptionalTasks: a list of lists. IT[j] is a list of  tasks that are incompatible
+                          with each other (that is, only one can be executed).
+    :type OptionalTasks: list
+    """
 
     def __init__(self, OptionalTasks={},
                  TaskReward={},
@@ -87,22 +96,27 @@ class MILPTasks:
 class MILPAgentCapabilities:
     """A class containing a representation of the agent capabilities for the
     MILP scheduler.
-    Attributes:
-    * ComputationTime: a dictionary with keys Task, Agent. The value of
+    
+    :param ComputationTime: a dictionary with keys Task, Agent. The value of
       CT[Task][Agent] is the time (in time steps) required for Agent to
       complete Tasks, an int.
-    * ComputationLoad: a dictionary with keys Task, Agent. The value of
+    :type ComputationTime: dict
+    :param ComputationLoad: a dictionary with keys Task, Agent. The value of
       CT[Task][Agent] is the fraction of Agent's computational resources
       required to complete Task, a float between 0 and 1.
-    * InitialInformation: a dictionary with keys Task, Agent. II[Task][Agent]
+    :type ComputationLoad: dict
+    :param  InitialInformation: a dictionary with keys Task, Agent. II[Task][Agent]
       is a Bool. It is true iff Agent knows the output of Task at time t=0.
       This can be helpful to specify that only one agent can do a given task
-    * EnergyCost: a dictionary with keys Task, Agent. EnergyCost[T][A] is the
+    :type InitialInformation: dict
+    :param EnergyCost: a dictionary with keys Task, Agent. EnergyCost[T][A] is the
       energy cost when agent A computes task T.
-    # * CommEnergyCost: a dictionary witk keys Time, Sender, Receiver. CET[t][i][j]
-    #   is the energy cost to send one bit of information from i to j at time t.
-    #   The actual energy cost is computed as CET[t][i][j]*Bandwidth[t][i][j]*
-    #   *sum_m C[i][j][m][t]
+    :type EnergyCost: bool
+    :param CommEnergyCost: a dictionary witk keys Time, Sender, Receiver. CET[t][i][j]
+      is the energy cost to send one bit of information from i to j at time t.
+      The actual energy cost is computed as CET[t][i][j]\*Bandwidth[t][i][j]\*
+      \*sum_m C[i][j][m][t]
+    :type CommEnergyCost: bool
     """
 
     def __init__(self, ComputationTime={},
@@ -127,16 +141,18 @@ class MILPAgentCapabilities:
 
 class CommunicationNetwork:
     """ A class containing a representation of the communication network.
-    Attributes:
-    - CommWindowsBandwidth: a collection of communication windows.
+    
+    :param CommWindowsBandwidth: a collection of communication windows.
         CommWindows is a dictionary with keys [0...Thor-1], [Agent], [Agent].
         CommWindows[Time][Agent1][Agent2] is the bandwidth available
         to communicate between Agent1 and Agent2 at Time (in bits per
         unit time).
-    - CommEnergyCost: a dictionary witk keys Time, Sender, Receiver.
+    :type CommWindowsBandwidth: dict
+    :param  CommEnergyCost: a dictionary witk keys Time, Sender, Receiver.
         CET[t][i][j] is the energy cost to send one bit of information from
         i to j at time t. The actual energy cost is computed as
         CET[t][i][j]*Bandwidth[t][i][j]*sum_m C[i][j][m][t]
+    :type CommEnergyCost: dict
     """
 
     def __init__(self, CommWindowsBandwidth={}, CommEnergyCost=None):
@@ -154,6 +170,20 @@ class CommunicationNetwork:
 
 
 class JSONSolver:
+    """
+    The main interface to solve MOSAIC scheduling problems
+
+    :param JSONProblemDescription: a JSON description of the problem. See the :doc:`API` for a detailed description. Defaults to ''
+    :type JSONProblemDescription: str, optional
+    :param solver: the solver to use. Should be 'GLPK', 'CPLEX', 'PuLP' or 'SCIP', defaults to 'CPLEX'
+    :type solver: str, optional
+    :param Verbose: whether to print status and debug messages. Defaults to False
+    :type Verbose: bool, optional
+    :param TimeLimit: a time limit after which to stop the optimizer. Defaults to None (no time limit). Note that certain solvers (GLPK) 
+                      may not honor the time limit.
+    :type TimeLimit: float, optional
+    :raises ValueError: if the JSONProblemDescription is not valid.
+    """
     def __init__(self,
                  JSONProblemDescription='',
                  solver='CPLEX',
@@ -295,6 +325,42 @@ class JSONSolver:
 
 
 class MOSAICMILPScheduler:
+    """
+    .. warning ::
+       
+       For an easier-to-use and more consistent interface, you most likely want to call
+       :class:`JSONSolver` instead of this class and its subclasses.
+
+    Abstract implementation of a MILP solution to the MOSAIC scheduler.
+    Subclassed by the solvers :class:`MOSAICCPLEXScheduler`, :class:`MOSAICSCIPScheduler`,
+    :class:`MOSAICPULPScheduler`, and :class:`MOSAICGLPKScheduler`.
+    You probably want to call :class:`JSONSolver` instead of these.
+
+    Usage:
+    
+    * :func:`schedule`: creates the optimization problem, solves it, and returns a JSON representation of the solution (in non-standard format)
+    
+    * :func:`getOptimizationTerminator`: returns a function that can be called to stop the optimization process asynchronously
+    
+    
+    For a detailed description of the MILP problem we solve, see the IJRR
+    manuscript.
+
+    :param Thor: the time horizon of the optimization, an int.
+    :type Thor: int
+    :param AgentCapabilities: detailing what the agents can do
+    :type AgentCapabilities: MOSAICSolver.MILPAgentCapabilities
+    :param Tasks: detailing the tasks that must be achieved
+    :type Tasks: MOSAICSolver.MILPTasks
+    :param CommunicationNetwork: detailing the communication network availability
+    :type CommunicationNetwork: MOSAICSolver.CommunicationNetwork
+    :param TimeStep: The duration (in seconds) of a discrete time step.
+    :type TimeStep: float
+    :param Options: additional solver-specific options, defaults to {}
+    :type Options: dict, optional
+    :param Verbose: if True, prints status and debug messages. Defaults to False
+    :type Verbose: bool, optional
+    """
     def __init__(self,
                  Thor,
                  AgentCapabilities,
@@ -303,21 +369,6 @@ class MOSAICMILPScheduler:
                  TimeStep,
                  Options={},
                  Verbose=False):
-        """
-        Implements a MILP solution to the MOSAIC scheduler.
-        Inputs:
-         - Thor, the time horizon of the optimization, an int.
-         - AgentCapabilities, detailing what the agents can do
-         - Tasks, detailing the tasks that must be achieved
-         - CommunicationNetwork, detailing the communication network availability
-        Usage:
-        - schedule(): creates the optimization problem, solves it, and returns
-           a JSON representation of the solution
-        - getOptimizationTerminator(): returns a function that can be called
-           to stop the optimization process asynchronously
-        For a detailed description of the MILP problem we solve, see the DARS
-        paper.
-        """
         self.Thor = Thor
         self.AgentCapabilities = AgentCapabilities
         self.Tasks = Tasks
@@ -391,7 +442,6 @@ class MOSAICMILPScheduler:
             print(_str)
 
     def formatToJSON(self):
-        ''' Formats the scheduler output to JSON '''
         if self.problemIsSolved is False:
             self._verbprint("Calling solver")
             self.solve()
@@ -449,6 +499,7 @@ class MOSAICMILPScheduler:
         return self.Timeline
 
     def _formatToBenchmarkIO(self):
+        """ Formats the problem in the format defined in the :doc:`API`"""
         tasks_output = []
         ''' Formats the scheduler output to JSON '''
         if self.problemIsSolved is False:
@@ -516,11 +567,15 @@ class MOSAICMILPScheduler:
         out_dict = {"tasks": tasks_output}
         return json.dumps(out_dict)
 
-    def formatOutput(self, version=1):
+    def formatOutput(self, version=2):
         """
         Formats output.
-        V1: just a pass-through for formatToJSON.
-        V2: the standard I/O format defined in the scheduler comparison. 
+
+        :param version: V1: just a pass-through for formatToJSON.
+                        V2 (default): the standard I/O format defined in the :doc:`API`. 
+        :type version: int, optional
+        :return: JSON output
+        :rtype: str
         """
         if version == 1:
             if not self.JSONIsFormed:
@@ -530,11 +585,13 @@ class MOSAICMILPScheduler:
             return self._formatToBenchmarkIO()
 
     def getRawOutput(self):
+        """ Return the raw problem output from the solver """
         if self.problemIsSolved is False:
             self.solve()
         return self.TaskAssignment, self.CommSchedule, self.RawOutput
 
     def schedule(self):
+        """ Set up the problem, solve it, and return the solution (in an older, non-JSON I/O format) """
         self.setUp()
         self.solve()
         if self.problemIsFeasible is False:
@@ -573,6 +630,7 @@ class MOSAICMILPScheduler:
         raise NotImplementedError
 
     def getProblem(self):
+        """ Return the solver-specific problem object """
         raise NotImplementedError
 
     def getOptimizationTerminator(self):

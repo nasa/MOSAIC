@@ -1,4 +1,9 @@
 """
+The module ``ti_milp`` provides an implementation of the task allocation
+algorithm for for robotic networks with periodic connectivity.
+"""
+
+"""
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
  United  States  Government  sponsorship  acknowledged.   Any commercial use
  must   be  negotiated  with  the  Office  of  Technology  Transfer  at  the
@@ -47,22 +52,28 @@ from mosaic_schedulers.common.utilities.contact_plan_handler import compute_time
 
 class MILPTasks:
     """A class containing a representation of the tasks for the MILP scheduler.
-    Attributes:
-    * OptionalTasks, a dict with Tasks as keys. OT[Task] is True iff the task
+
+    :param OptionalTasks: a dict with Tasks as keys. OT[Task] is True iff the task
        is optional.
-    * TaskReward, a dict with Tasks as keys. TR[Task] is the reward obtained
+    :type OptionalTasks: dict
+    :param TaskReward: a dict with Tasks as keys. TR[Task] is the reward obtained
        for performing the task, a float.
-    * ProductsBandwidth, a dict with Tasks as keys. PB[Task] is the bandwidth
+    :type TaskReward: dict
+    :param ProductsBandwidth: a dict with Tasks as keys. PB[Task] is the bandwidth
        required to stream of the products of Task (in storage units per time
        units), a float.
-    * ProductsDataSize, a dict with Tasks as keys. PDS[Task] is the size of the
+    :type ProductsBandwidth: dict
+    :param ProductsDataSize: a dict with Tasks as keys. PDS[Task] is the size of the
        products of Task (in storage units), a float.
-    * DependencyList, a dict with Tasks as keys. DL[Task] is a list
+    :type ProductsDataSize: dict
+    :param DependencyList: a dict with Tasks as keys. DL[Task] is a list
        of tasks whose data products are required to compute Task.
-    * MaxLatency, a dict with keys task1, task2. MaxLatency[T1][T2] is the maximum
+    :type DependencyList: dict
+    :param MaxLatency: a dict with keys task1, task2. MaxLatency[T1][T2] is the maximum
        latency that the data products of T2 (a dependency of T1) can tolerate
        before they are ingested by task T1.
-       """
+    :type MaxLatency: dict
+    """
 
     def __init__(self,
                  OptionalTasks={},
@@ -82,6 +93,8 @@ class MILPTasks:
         self.validate()
 
     def validate(self):
+        """ Ensure the Tasks structure is valid, i.e. the keys to the various 
+        components are consistent """
         assert set(self.ProductsBandwidth.keys()) == set(
             self.ProductsDataSize.keys())
         assert set(self.DependencyList.keys()) <= (
@@ -112,20 +125,26 @@ class MILPTasks:
 class MILPAgentCapabilities:
     """A class containing a representation of the agent capabilities for the
     MILP scheduler.
-    Attributes:
-    * ComputationLoad: a dictionary with keys Agent, Task. The value of
+    
+    
+    :param ComputationLoad: a dictionary with keys Agent, Task. The value of
       ComputationLoad[Agent][Task] is the amount of Agent's computational
       resources required to complete Task.
-    * EnergyCost, a dictionary with keys Agent, Task. EnergyCost[A][T] is the
+    :type ComputationLoad: dict
+    :param EnergyCost: a dictionary with keys Agent, Task. EnergyCost[A][T] is the
       energy cost when agent A computes task T.
-    * MaxComputationLoad, a dict with keys Agents. MaxComputationLoad[A] is the
+    :type EnergyCost: dict
+    :param MaxComputationLoad: a dict with keys Agents. MaxComputationLoad[A] is the
       maximum computational resources of agent A.
-    * LinkComputationalLoadIn, a dict with keys Agent, Agent.
+    :type MaxComputationLoad: dict
+    :param LinkComputationalLoadIn: a dict with keys Agent, Agent.
       LinkComputationalLoadIn[A1][A2] is the computational load required to
       decode messages on link [A1][A2] at A2.
-    * LinkComputationalLoadOut, a dict with keys Agent, Agent.
+    :type LinkComputationalLoadIn: dict
+    :param LinkComputationalLoadOut: a dict with keys Agent, Agent.
       LinkComputationalLoadOut[A1][A2] is the computational load required to
       encode messages on link [A1][A2] at A1.
+    :type LinkComputationalLoadOut: dict
     """
 
     def __init__(self,
@@ -145,17 +164,20 @@ class MILPAgentCapabilities:
 class CommunicationNetwork:
     """ A class containing the properties of the communication network
     used by the time-invariant scheduler.
-    Attributes:
-    * Bandwidth: a dictionary with keys Agent, Agent. Bandwidth[A1][A2]
+    
+    :param Bandwidth: a dictionary with keys Agent, Agent. Bandwidth[A1][A2]
       is the bandwidth from agent A1 to agent A2. If Bandwidth[A1][A2]
       is zero, the link is not considered in the optimization problem.
-    * Latency: a dictionary with keys Agent, Agent. Latency[A1][A2] is
+    :type Bandwidth: dict
+    :param Latency: a dictionary with keys Agent, Agent. Latency[A1][A2] is
       the latency of the link. Note that the latency of a datagram should
       be (but isn't at this time) computed as Latency[A1][A2] +
       datagram_size/Bandwidth[A1][A2].
-    * EnergyCost: a dictionary with keys Agent, Agent. EnergyCost[A1][A2]
+    :type Latency: dict
+    :param EnergyCost: a dictionary with keys Agent, Agent. EnergyCost[A1][A2]
       is the energy cost to transmit one bit on link A1-A2. The actual
       energy cost is computed as EnergyCost[A1][A2]*bit_rate[A1][A2].
+    :type EnergyCost: dict
     """
 
     def __init__(self,
@@ -169,15 +191,33 @@ class CommunicationNetwork:
 
 
 class JSONSolver:
+    """
+    Creates an instance of the time-invariant problem based on a problem input in the format
+    described in the :doc:`API`.
+
+    :param JSONProblemDescription: a JSON description of the problem. See the :doc:`API` for a detailed description.
+    :type JSONProblemDescription: str, optional
+    :param Verbose: whether to print status and debug messages. Defaults to False
+    :type Verbose: bool, optional
+    :param solver: the solver to use. Should be 'GLPK', 'CPLEX', or 'SCIP', defaults to 'GLPK'.
+    :type solver: str, optional
+    :param TimeLimit: a time limit after which to stop the optimizer. Defaults to None (no time limit).
+                      Note that certain solvers (in particular, GLPK) may not honor the time limit.
+    :type TimeLimit: float, optional
+    :raises AssertionError: if the JSONProblemDescription is not valid.
+
+    .. warning ::
+       
+       This solver does not support disjunctive prerequirements (do this task OR that task).
+       If a problem with disjunctive prerequirement is passed, the solver will assert.
+    
+    """
     def __init__(self,
                  JSONProblemDescription,
                  Verbose=False,
                  solver='GLPK',
                  TimeLimit=None):
-        """
-        Creates an instance of the time-invariant problem based on the common JSON description.
-        """
-        if solver not in ['GLPK', 'CPLEX', 'PuLP', 'SCIP']:
+        if solver not in ['GLPK', 'CPLEX', 'SCIP']:
             if CPLEXAvailable:
                 print("WARNING: invalid solver. Defaulting to CPLEX")
                 solver = "CPLEX"
@@ -323,21 +363,44 @@ class JSONSolver:
             self.Scheduler.setTimeLimits(ClockTimeLimit=TimeLimit)
 
     def schedule(self):
+        """ Solve the scheduling problem.
+
+        :return: A solution in the JSON format described in the :doc:`API`.
+        :rtype: str
+        """
         self.Scheduler.schedule()
         return self.Scheduler.formatToBenchmarkIO()
 
 
 class MOSAICMILPSolver:
+    """
+    .. warning ::
+       
+       For an easier-to-use and more consistent interface, you most likely want to call
+       :class:`JSONSolver` instead of this class and its subclasses.
+
+    Abstract implementation of the MILP task allocator.
+    Subclassed by :class:`MOSAICCPLEXSolver`, :class:`MOSAICSCIPSolver`, and :class:`MOSAICGLPKSolver`.
+
+
+    :param AgentCapabilities: detailing what the agents can do
+    :type AgentCapabilities: MOSAICTISolver.MILPAgentCapabilities
+    :param Tasks: detailing the tasks that must be achieved
+    :type Tasks: MOSAICTISolver.MILPTasks
+    :param CommunicationNetwork: detailing the communication network availability
+    :type CommunicationNetwork: MOSAICTISolver.CommunicationNetwork
+    :param Options:  additional solver-specific options, defaults to {}
+    :type Options: dict, optional
+    :param Verbose: if True, prints status and debug messages. Defaults to False
+    :type Verbose: bool, optional
+    """
     def __init__(self,
                  AgentCapabilities,
                  Tasks,
                  CommunicationNetwork,
                  Options={},
                  Verbose=False):
-        """
-        Implements an instance of the time-invariant MILP solver. See the companion
-        notes for a description of the constraints.
-        """
+
         self.AgentCapabilities = AgentCapabilities
         self.Tasks = Tasks
         self.CommNetwork = CommunicationNetwork
@@ -368,11 +431,13 @@ class MOSAICMILPSolver:
             print(_str)
 
     def getRawOutput(self):
+        """ Return raw problem output from the scheduler """
         if self.problemIsSolved is False:
             self.solve()
         return self.TaskAssignment, self.CommSchedule, self.RawOutput
 
     def schedule(self):
+        """ Set up and solve the scheduling problem """
         self.setUp()
         self.solve()
         if self.problemIsFeasible is False:
@@ -394,18 +459,23 @@ class MOSAICMILPSolver:
         raise NotImplementedError
 
     def setUp(self):
+        """ Set up the optimization problem. Solver-specific. """
         raise NotImplementedError
 
     def solve(self):
+        """ Solve the optimization problem. Solver-specific. """
         raise NotImplementedError
 
     def setMIPStart(self, MIPStart):
+        """ Provide a warm start to the solver. Solver-specific. """
         raise NotImplementedError
 
     def getSolverState(self):
+        """ Get the solver state. Solver-specific. """
         raise NotImplementedError
 
     def getProblem(self):
+        """ Get the solver problem object. """
         raise NotImplementedError
 
     def getOptimizationTerminator(self):
@@ -413,8 +483,8 @@ class MOSAICMILPSolver:
         raise NotImplementedError
 
     def formatToBenchmarkIO(self):
+        ''' Formats the scheduler output to the JSON format described in the :doc:`API` '''
         tasks_output = []
-        ''' Formats the scheduler output to JSON '''
         if self.problemIsSolved is False:
             self._verbprint("Calling solver")
             self.solve()
@@ -1568,10 +1638,8 @@ else:
 
 
 def flipNestedDictionary(_dictionary):
-    """
-    An utility function to flip the keys of a dictionary. No error handling is deliberate:
-    this should only take as inputs dicts where all entries have the same (sub)keys.
-    """
+    # A utility function to flip the keys of a dictionary. No error handling is deliberate:
+    # this should only take as inputs dicts where all entries have the same (sub)keys.
     newDict = {}
     keys1 = list(_dictionary.keys())
     if len(keys1):
