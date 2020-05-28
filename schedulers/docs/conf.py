@@ -22,7 +22,7 @@ copyright = '2020, California Institute of Technology ("Caltech")'
 author = 'Federico Rossi, Tiago Vaquero, Joshua Vander Hook'
 
 # The full version, including alpha/beta/rc tags
-version = '2.0.0'
+version = '2.0'
 release = '2.0.0'
 
 # -- General configuration ---------------------------------------------------
@@ -41,7 +41,7 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'recommonmark'
+    'recommonmark',
 ]
 
 # Configuration for autosummary

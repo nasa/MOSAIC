@@ -24,18 +24,32 @@ Pluggable Distributed Resource Allocator
 	- Section 397, Planning and Execution Systems
 :Address: 4800 Oak Grove Dr. Pasadena, CA 91109
 :Release: |release|
+:Repository: https://github.com/nasa/mosaic
 :Licensing: Copyright (c) 2019, Jet Propulsion Laboratory.
 
 .. meta::
    :keywords: Distributed Systems, Multi-agent Robotic Systems, Task Planning 
    :description lang=en: PDRA is a distware layer to relocate tasks from an agent to another one.
 
+Introduction
+============
+
+.. raw:: html
+   
+   <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+   <iframe src="https://www.youtube-nocookie.com/embed/ufxmW0XsYDA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+   </div>
+
+
+
 Contents
 ========
+
 
 .. toctree::
    :maxdepth: 3
 
+   architecture.md
    core.rst
    testing.rst
 

@@ -7,26 +7,29 @@ PDRA Testing and Scaffolding
 PDRA Nodes
 ==========
 
-.. py:module:: src.tests.ohdlr_scaffolding
-.. autoclass:: ObligationHandlerAction
-.. autoclass:: OhdlrState
+.. py:module:: src.tests.ohandlers
+.. autoclass:: TestObligationHandler
+.. autoclass:: TestChainedObligationHandler
 
-.. py:module:: src.tests.rhdlr_scaffolding
-.. autoclass:: ResourceHandlerTest
+.. py:module:: src.tests.rhandlers
+.. autoclass:: TestResourceHandler
 
-.. py:module:: src.tests.chdlr_scaffolding
-.. autoclass:: CommHandlerTest
-
+.. py:module:: src.tests.chandler
+.. autoclass:: BroadcastRadio
+.. autoclass:: SimpleDTNRadio
 
 
 External Nodes
 ==============
 
-.. py:module:: src.tests.autonomy_brain_scaffolding
+.. py:module:: src.tests.test_autonomy_brain
 .. autoclass:: AutonomyBrain
 
-.. py:module:: src.tests.world_state_monitor_scaffolding
+.. py:module:: src.tests.test_world_state_monitor
 .. autoclass:: world_state_monitor
 
-.. py:module:: src.tests.activity_planner_scaffolding
+.. py:module:: src.tests.test_activity_planner
 .. autofunction:: activity_planner
+
+.. py:module:: src.tests.test_dispatcher
+.. autoclass:: TestDispatcher
