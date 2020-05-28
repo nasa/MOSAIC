@@ -9,3 +9,5 @@ subprocess32
 EasyProcess
 pyscipopt>2.0.0,<3.0.0
 pandas
+recommonmark
+sphinx_rtd_theme

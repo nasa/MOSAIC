@@ -2,7 +2,7 @@
 
 Examples in this repository encode the PUFFER FY18 problem in MOSAIC format. The software network for the problem is reported in the ICAPS 2019 paper and in the figure below.
 
-![The PUFFER FY18 demo software network](images/scenario_task_network.png)
+![The PUFFER FY18 demo software network](docs/images/scenario_task_network.png)
 
 ## PUFFER input format
 
