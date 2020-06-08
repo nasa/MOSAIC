@@ -114,7 +114,7 @@ The `JSONProblemDescription` input is a JSON dictionary containing six keys, `Ta
 - LinkComputationalLoadOut, a dict with keys Agent, Agent.
       LinkComputationalLoadOut[A1][A2] is the computational load required to
       encode messages on link [A1][A2] at A1.
-- [Optional] InitialInformation: a dictionary with keys Task, Agent. II[Task][Agent]
+- InitialInformation: a dictionary with keys Task, Agent. II[Task][Agent]
       is a Bool. It is true iff Agent knows the output of Task at time t=0.
       This can be helpful to specify that only one agent can do a given task
 

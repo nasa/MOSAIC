@@ -79,10 +79,10 @@ def compute_time_varying_bandwidth(AgentNames, TVBandwidth, time_horizon, time_s
             # Find the time step immediately after the start of the contact
             # Find the closest time
             just_after_time_start = np.argmin(
-                np.abs(times-link['time_start']))
+                np.abs(times-link_time_start))
             # If the closest discretized time is before the start time
             # pick the next time step
-            if times[just_after_time_start] <= link['time_start']:
+            if times[just_after_time_start] <= link_time_start:
                 just_after_time_start += 1
 
             assert just_after_time_start <= len(
@@ -90,6 +90,7 @@ def compute_time_varying_bandwidth(AgentNames, TVBandwidth, time_horizon, time_s
 
             # How much of this link is inside the block immediately before just_after_time_start?
             assert just_after_time_start > 0, "ERROR: link_time_start is > min(times), so just_after_time_start should never be the first entry"
+
             duration_in_interval = times[just_after_time_start] - \
                 link_time_start
             assert duration_in_interval >= 0, "ERROR: something wrong with calculation of durations in interval"
