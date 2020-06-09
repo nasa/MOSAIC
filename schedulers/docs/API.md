@@ -3,7 +3,7 @@
 
 ## Input format
 
-The `JSONProblemDescription` input is a JSON dictionary containing six keys, `Tasks`, `AgentCapabilities`, `CommunicationNetwork`, `Time`, `Options`, and `Cost`.
+The `JSONProblemDescription` input is a JSON dictionary containing six keys, `Tasks`, `AgentCapabilities`, `CommunicationNetwork`, `Time`, `Options`, and `CostFunction`.
 
 ### Tasks attributes
 
@@ -401,7 +401,12 @@ The cost components are:
     u'Time': {
         u'Thor': 30,
         u'TimeStep': 2
-    }
+    },
+    u'CostFunction': {
+        "energy": .1,
+        "total_task_reward": 1.,
+        "total_time": .0
+    },
 }
 ```
 

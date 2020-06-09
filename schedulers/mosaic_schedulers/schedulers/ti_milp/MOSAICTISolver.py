@@ -253,7 +253,7 @@ class JSONSolver:
                 for dep in JSONInput["Tasks"]["DependencyList"][task]:
                     if dep:
                         assert len(
-                            dep) == 1, 'Disjunctive prerequirements are not supported'
+                            dep) == 1, 'Disjunctive prerequirements are not supported yet'
                         DepList[task] += [dep[0]]
                 if not DepList[task]:  # If the list is empty, pop it
                     DepList.pop(task)
@@ -324,8 +324,16 @@ class JSONSolver:
             EnergyCost=EnergyCost,
         )
 
+        
+
         # Options
         Options = JSONInput["Options"]
+        
+        # Cost function
+        if 'CostFunction' in JSONInput.keys():
+            if 'CostFunction' in Options.keys():
+                disp("WARNING: overriding cost function in Options with 'CostFunction'")
+            Options['CostFunction'] = JSONInput['CostFunction']
 
         # Create the problem
         if solver == "GLPK":

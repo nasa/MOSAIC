@@ -1,12 +1,14 @@
-from matplotlib import transforms
-import matplotlib.colors as plt_colors
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
-import random
-import json
-import numpy as np
+"""
+Functions to plot MOSAIC schedules and task allocations.
+To run in headless mode, you may want to
+
+```python
 import matplotlib
 matplotlib.use("Agg")
+```
+
+before importing this library.
+"""
 
 """
  Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.
@@ -28,11 +30,23 @@ matplotlib.use("Agg")
 
 """
 
+from matplotlib import transforms
+import matplotlib.colors as plt_colors
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import random
+import json
+import numpy as np
 
-def _randomTaskColors(Schedule):
-    '''
-    Generate colors for a random list of tasks
-    '''
+def _randomTaskColors(Schedule: dict = {}):
+    """    Generate colors for a random list of tasks
+    
+    :param Schedule: a schedule produced by a MOSAIC scheduler (described in the :doc:`API`)
+    :type Schedule: dict
+    :return: a dictionary with a RGB color (i.e. a list of three floats in [0,1])
+             for each task in the schedule
+    :rtype: dict
+    """
     # Come up with a list of tasks
     TasksList = set()
     for task in Schedule:
@@ -51,6 +65,14 @@ def _randomTaskColors(Schedule):
 
 
 def _nodesLocations(Schedule):
+    """ Assign nodes locations in a circle.
+
+    :param Schedule: a schedule produced by a MOSAIC scheduler (described in the :doc:`API`)
+    :type Schedule: dict
+    :return: A dictionary with node names as keys. For each node, the value is a
+             dictionary with two keys, 'x' and 'y', with float values.
+    :rtype: dict
+    """
     nodes = set()
     for task in Schedule:
         agent = task["params"]["agent"]
@@ -74,7 +96,32 @@ def _nodesLocations(Schedule):
 
 
 def SchedulePlotter(JSONSchedule, TaskColors=None, TaskShortNames=None, show=True, save=False, save_path="schedule_plot.png", aspect_ratio=1., start_time_plot=None, end_time_plot=None):
-    ''' A function to plot the MOSAIC schedule '''
+    """ A function to plot the MOSAIC schedule
+
+    :param Schedule: a schedule produced by a MOSAIC scheduler (described in the :doc:`API`)
+    :type Schedule: dict
+    :param TaskColors: a dictionary with a RGB color (i.e. a list of three floats in [0,1])
+                       for each task in the schedule. If None (default), random colors are used
+    :type TaskColors: dict, optional
+    :param TaskShortNames: a dictionary with short names for every task. If None (default),
+                           the full names are printed.
+    :type TaskShortNames: dict, optional
+    :param show: whether to show the plot by calling plt.show(), defaults to True
+    :type show: bool, optional
+    :param save: whether to save the plot to disk. defaults to False
+    :type save: bool, optional
+    :param save_path: the file name and path where to save the plot if `save` is True.
+                      Defaults to "schedule_plot.png"
+    :type save_path: str, optional
+    :param aspect_ratio: the aspect ratio of the plot, defaults to 1.
+    :type aspect_ratio: float, optional
+    :param start_time_plot: the start time of the plot. If None (default), the earliest task
+                            start time is used.
+    :type start_time_plot: float, optional
+    :param end_time_plot: the end time of the plot. If None (default), the latest task
+                            end time is used.
+    :type end_time_plot: float, optional
+    """
     Schedule = JSONSchedule
     if type(JSONSchedule) == str:
         Schedule = json.loads(JSONSchedule)
@@ -190,7 +237,34 @@ def SchedulePlotter(JSONSchedule, TaskColors=None, TaskShortNames=None, show=Tru
 
 
 def TaskAllocationPlotter(JSONSchedule, NodesLocations=None, TaskColors=None, TaskShortNames=None, BandwidthScale=1., OffsetGap=2, show=True, save=False, save_path="schedule_plot.png"):
-    ''' A function to plot the allocation of tasks to agents '''
+    """A function to plot the allocation of tasks to agents
+
+    :param JSONSchedule: a schedule produced by a MOSAIC scheduler (described in the :doc:`API`)
+    :type JSONSchedule: dict
+    :param NodesLocations: A dictionary with node names as keys. For each node, the value is a
+             dictionary with two keys, 'x' and 'y', with float values. If None (default), nodes
+            are set in a circle.
+    :type NodesLocations: dict, optional
+    :param TaskColors: a dictionary with a RGB color (i.e. a list of three floats in [0,1])
+                       for each task in the schedule. If None (default), random colors are used
+    :type TaskColors: dict, optional
+    :param TaskShortNames: a dictionary with short names for every task. If None (default),
+                           the full names are printed.
+    :type TaskShortNames: dict, optional
+    :param BandwidthScale: a multiplier to apply to the width of the links denoting
+                           bandwidth between the agents, defaults to 1.
+    :type BandwidthScale: float, optional
+    :param OffsetGap: the offset between parallel links denoting bandwidth, defaults to 2
+    :type OffsetGap: int, optional
+    :param show: whether to show the plot by calling plt.show(), defaults to True
+    :type show: bool, optional
+    :param save: whether to save the plot to disk. defaults to False
+    :type save: bool, optional
+    :param save_path: the file name and path where to save the plot if `save` is True.
+                      Defaults to "schedule_plot.png"
+    :type save_path: str, optional
+    """
+
     if type(JSONSchedule) is str:
         Schedule = json.loads(JSONSchedule)
     else:
@@ -287,16 +361,48 @@ def TaskAllocationPlotter(JSONSchedule, NodesLocations=None, TaskColors=None, Ta
 
 def TaskAllocationPlotter_PGV(
     timeline,
-    TaskColors,
-    NodeColors,
-    NodesLocations,
-    TaskShortNames,
+    TaskColors: dict=None,
+    NodeColors: dict=None,
+    NodesLocations: dict=None,
+    TaskShortNames: dict=None,
     BandwidthScale=1.,
     PositionScale=1.,
     save_path="PGVallocation.pdf",
     node_filled=True,
-):
+):  
+    """ A function to plot the allocation of tasks to agents with GraphViz
+
+    :param timeline: a schedule produced by a MOSAIC scheduler (described in the :doc:`API`)
+    :type timeline: dict
+    :param TaskColors: a dictionary with a RGB color (i.e. a list of three floats in [0,1])
+                       for each task in the schedule. If None (default), random colors are used
+    :type TaskColors: dict, optional
+    :param NodeColors: a dictionary with a RGB color (i.e. a list of three floats in [0,1])
+                       for each agent in the schedule. If None (default), random colors are used
+    :type NodeColors: dict, optional
+    :param NodesLocations: A dictionary with node names as keys. For each node, the value is a
+             dictionary with two keys, 'x' and 'y', with float values. If None (default), nodes
+            are set in a circle.
+    :type NodesLocations: dict, optional
+    :param TaskShortNames: NOT USED. Kept for compatibility with TaskAllocationPlotter
+    :type TaskShortNames: dict, optional
+    :param BandwidthScale: a multiplier to apply to the width of the links denoting
+                           bandwidth between the agents, defaults to 1.
+    :type BandwidthScale: float, optional
+    :param PositionScale: A scaling factor applied to the nodes' locations. Defaults to 1.
+    :type PositionScale: float, optional
+    :param save_path: the file name and path where to save the plot if `save` is True.
+                      Defaults to "schedule_plot.png"
+    :type save_path: str, optional
+    :param node_filled: whether the nodes should be filled in the plot. Defaults to True
+    :type node_filled: bool, optional
+    """
     import pygraphviz as pgv
+
+    if type(timeline) == str:
+        timeline = json.loads(timeline)
+    if list(timeline.keys()) == ['tasks']:
+        timeline = timeline['tasks']
 
     # If the nodes locations are not specified, place in a circle
     # TODO arrange according to bandwidth
@@ -310,7 +416,7 @@ def TaskAllocationPlotter_PGV(
     if NodeColors is None:
         import random
         NodeColors = {}
-        for node in nodes.keys():
+        for node in nodes:
             NodeColors[node] = [random.random(), random.random(),
                                 random.random()]
 
@@ -319,7 +425,7 @@ def TaskAllocationPlotter_PGV(
 
     G = pgv.AGraph(strict=False, directed=True)
     for node in nodes:
-        G.add_node(node, color=matplotlib.colors.to_hex(NodeColors[node]), pos="{},{}!".format(
+        G.add_node(node, color=plt_colors.to_hex(NodeColors[node]), pos="{},{}!".format(
             NodesLocations[node]['x']*PositionScale, NodesLocations[node]['y']*PositionScale))
 
     for task in timeline:
@@ -334,7 +440,7 @@ def TaskAllocationPlotter_PGV(
                 G.add_edge(
                     sender,
                     receiver,
-                    color=matplotlib.colors.to_hex(TaskColors[taskName]),
+                    color=plt_colors.to_hex(TaskColors[taskName]),
                     penwidth=bandwidth*BandwidthScale
                 )
 
