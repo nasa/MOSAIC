@@ -1,0 +1,1144 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. API reference &mdash; MOSAIC schedulers 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="6. Modules documentation" href="class_documentation.html" />
+    <link rel="prev" title="4. Usage Examples" href="Examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MOSAIC schedulers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Allocation.html">3. Task allocation algorithm for robotic networks with periodic connectivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-format">5.1. Input format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tasks-attributes">5.1.1. Tasks attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">5.1.2. Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agentcapabilities-attributes">5.1.3. AgentCapabilities attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">5.1.4. Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#communicationnetwork-attributes">5.1.5. CommunicationNetwork attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.1.6. Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-attributes">5.1.7. Time attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.1.8. Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#options-attributes">5.1.9. Options attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cost-function">5.1.10. Cost function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.1.11. Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-input">5.1.12. Example Input</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#output-format">5.2. Output format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-output">5.2.1. Example output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="class_documentation.html">6. Modules documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MOSAIC schedulers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><span class="section-number">5. </span>API reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/API.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference">
+<h1><span class="section-number">5. </span>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="input-format">
+<h2><span class="section-number">5.1. </span>Input format<a class="headerlink" href="#input-format" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">JSONProblemDescription</span></code> input is a JSON dictionary containing six keys, <code class="docutils literal notranslate"><span class="pre">Tasks</span></code>, <code class="docutils literal notranslate"><span class="pre">AgentCapabilities</span></code>, <code class="docutils literal notranslate"><span class="pre">CommunicationNetwork</span></code>, <code class="docutils literal notranslate"><span class="pre">Time</span></code>, <code class="docutils literal notranslate"><span class="pre">Options</span></code>, and <code class="docutils literal notranslate"><span class="pre">Cost</span></code>.</p>
+<div class="section" id="tasks-attributes">
+<h3><span class="section-number">5.1.1. </span>Tasks attributes<a class="headerlink" href="#tasks-attributes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>OptionalTasks, a dict with Tasks as keys. OptionalTasks[Task] is True if
+Task is optional and False otherwise.</p></li>
+<li><p>TaskReward, a dict with Tasks as keys. TaskReward[Task] is the reward
+obtained for completing Task, a float.</p></li>
+<li><p>ProductsSize, a dict with Tasks as keys. PS[Task] is the size of the
+products of Task (in storage units), a float.</p></li>
+<li><p>DependencyList, a dict with Tasks as keys. DL[Task] expresses the
+pre-requisites  for each Task is conjunctive normal form. That is,
+DependencyList[Task] is a list. Each entry of the List contains a
+number of predecessor Tasks.
+For each entry in DependencyList[Task][i], at least one task.</p></li>
+<li><p>IncompatibleTasks, a list of lists. IT[j] is a list of
+tasks that are incompatible with each other (that is, only one can be
+executed).</p></li>
+<li><p>MaxLatency, a dict with keys task1, task2. MaxLatency[T1][T2] is the maximum
+latency that the data products of T2 (a dependency of T1) can tolerate
+before they are ingested by task T1.</p></li>
+</ul>
+</div>
+<div class="section" id="example">
+<h3><span class="section-number">5.1.2. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;DependencyList&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">]],</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]]},</span>
+ <span class="s1">&#39;ProductsSize&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+ <span class="s1">&#39;TaskReward&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+ <span class="s1">&#39;MaxLatency&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">},</span>
+ <span class="s1">&#39;IncompatibleTasks&#39;</span><span class="p">:</span> <span class="p">[],</span>
+ <span class="s1">&#39;OptionalTasks&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="agentcapabilities-attributes">
+<h3><span class="section-number">5.1.3. </span>AgentCapabilities attributes<a class="headerlink" href="#agentcapabilities-attributes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>ComputationTime: a dictionary with keys Task, Agent. The value of
+CT[Task][Agent] is the time (in time steps) required for Agent to
+complete Tasks, an int.</p></li>
+<li><p>ComputationLoad: a dictionary with keys Task, Agent. The value of
+CT[Task][Agent] is the fraction of Agent’s computational resources
+required to complete Task, a float between 0 and 1.</p></li>
+<li><p>EnergyCost, a dictionary with keys Task, Agent. EnergyCost[Task][Agent] is the
+energy cost when agent A computes task T.</p></li>
+<li><p>MaxComputationLoad, a dict with keys Agents. MaxComputationLoad[Agent] is the
+maximum computational resources of agent A.</p></li>
+<li><p>LinkComputationalLoadIn, a dict with keys Agent, Agent.
+LinkComputationalLoadIn[A1][A2] is the computational load required to
+decode messages on link [A1][A2] at A2.</p></li>
+<li><p>LinkComputationalLoadOut, a dict with keys Agent, Agent.
+LinkComputationalLoadOut[A1][A2] is the computational load required to
+encode messages on link [A1][A2] at A1.</p></li>
+<li><p>[Optional] InitialInformation: a dictionary with keys Task, Agent. II[Task][Agent]
+is a Bool. It is true iff Agent knows the output of Task at time t=0.
+This can be helpful to specify that only one agent can do a given task</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">5.1.4. </span>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;InitialInformation&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>
+ <span class="s1">&#39;EnergyCost&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">0.13333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">0.06666666666666667</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}},</span>
+ <span class="s1">&#39;ComputationTime&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+  <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
+ <span class="s1">&#39;MaxComputationLoad&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+ <span class="s1">&#39;LinkComputationalLoadIn&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}},</span>
+ <span class="s1">&#39;ComputationLoad&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">0.13333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">0.06666666666666667</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+   <span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}},</span>
+ <span class="s1">&#39;LinkComputationalLoadOut&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="communicationnetwork-attributes">
+<h3><span class="section-number">5.1.5. </span>CommunicationNetwork attributes<a class="headerlink" href="#communicationnetwork-attributes" title="Permalink to this headline">¶</a></h3>
+<p>CommunicationNetwork is a list of dictionaries. Each dictionary has the following keys:</p>
+<ul class="simple">
+<li><p>origin, the name of the origin node.</p></li>
+<li><p>destination, the name of the destination node.</p></li>
+<li><p>bandwidth, the bandwidth from agent Origin to agent Destination. If the bandwidth is zero, the link is not considered in the optimization.</p></li>
+<li><p>time_start, the time when the communication window opens.</p></li>
+<li><p>time_end, the time when the communication window closes.</p></li>
+<li><p>latency, the light-speed latency of the link during the window. Note that the latency of a datagram is
+computed as Latency[origin][destination]+datagram_size/bandwidth</p></li>
+<li><p>energy_cost, the energy cost to transmit one bit on the link.</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3><span class="section-number">5.1.6. </span>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="s1">&#39;puffer1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;latency&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+  <span class="s1">&#39;time_start&#39;</span><span class="p">:</span> <span class="mf">831.2</span><span class="p">,</span>
+  <span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="s1">&#39;puffer1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;time_end&#39;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+  <span class="s1">&#39;bandwidth&#39;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+  <span class="s1">&#39;energy_cost&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="time-attributes">
+<h3><span class="section-number">5.1.7. </span>Time attributes<a class="headerlink" href="#time-attributes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Thor, the time horizon of the optimization. Ignored by time-invariant solvers.</p></li>
+<li><p>TimeStep, the discretization time step. Ignored by time-invariant and continuous-time solvers.</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3><span class="section-number">5.1.8. </span>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;Thor&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;TimeStep&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="options-attributes">
+<h3><span class="section-number">5.1.9. </span>Options attributes<a class="headerlink" href="#options-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Options is reserved for solver-specific attributes. It can be left empty.</p>
+</div>
+<div class="section" id="cost-function">
+<h3><span class="section-number">5.1.10. </span>Cost function<a class="headerlink" href="#cost-function" title="Permalink to this headline">¶</a></h3>
+<p>A dictionary with keys corresponding to basic cost components and entries corresponding to the weight (coefficient) given to each cost function.
+The cost components are:</p>
+<ul class="simple">
+<li><p>energy: the energy required to complete the tasks;</p></li>
+<li><p>total_task_reward: the reward obtained for completing optional tasks;</p></li>
+<li><p>total_time: the total time (makespan) to complete all tasks;</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">5.1.11. </span>Example<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;energy&quot;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+<span class="s2">&quot;total_task_reward&quot;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span>
+<span class="s2">&quot;total_time&quot;</span><span class="p">:</span> <span class="o">.</span><span class="mi">5</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-input">
+<h3><span class="section-number">5.1.12. </span>Example Input<a class="headerlink" href="#example-input" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="sa">u</span><span class="s1">&#39;AgentCapabilities&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="sa">u</span><span class="s1">&#39;ComputationLoad&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+             <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+        <span class="p">},</span>
+          <span class="sa">u</span><span class="s1">&#39;ComputationTime&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+           <span class="p">},</span>
+          <span class="sa">u</span><span class="s1">&#39;EnergyCost&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.13333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.06666666666666667</span><span class="p">}</span>
+        <span class="p">},</span>
+          <span class="sa">u</span><span class="s1">&#39;InitialInformation&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;LinkComputationalLoadIn&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;LinkComputationalLoadOut&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;MaxComputationLoad&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="sa">u</span><span class="s1">&#39;CommunicationNetwork&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;energy_cost&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;latency&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;puffer1&#39;</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;time_end&#39;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+         <span class="sa">u</span><span class="s1">&#39;time_start&#39;</span><span class="p">:</span> <span class="mf">831.2</span><span class="p">}</span>
+       <span class="p">],</span>
+    <span class="sa">u</span><span class="s1">&#39;Options&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="sa">u</span><span class="s1">&#39;Tasks&#39;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="sa">u</span><span class="s1">&#39;DependencyList&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">]],</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">]]</span>
+       <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;IncompatibleTasks&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="sa">u</span><span class="s1">&#39;MaxLatency&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">100.0</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;OptionalTasks&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;ProductsSize&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mf">0.1</span>
+        <span class="p">},</span>
+        <span class="sa">u</span><span class="s1">&#39;TaskReward&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;puffer1:06. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:07. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:08. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:16. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:17. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:18. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:2. Short Range Image&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:26. Take Sample&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:27. Analyse Sample&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:28. Store Sample&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:3. VO Localization&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:4. Plan Path (VO)&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="sa">u</span><span class="s1">&#39;puffer1:5. Send Drive Command&#39;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="sa">u</span><span class="s1">&#39;Time&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="sa">u</span><span class="s1">&#39;Thor&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="sa">u</span><span class="s1">&#39;TimeStep&#39;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="output-format">
+<h2><span class="section-number">5.2. </span>Output format<a class="headerlink" href="#output-format" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="c1"># A list of tasks</span>
+    <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="c1"># Duration, in seconds</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+            <span class="c1"># Start time, in seconds</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="c1"># Additional task-specific parameters.</span>
+            <span class="c1"># Every task contains an `agent` key identifying the agent performing the task.</span>
+            <span class="c1">#  For a communication task, the dict also contains keys `transmitter`, `receiver`, `data_type`, and `bandwidth`.</span>
+            <span class="c1">#  `transmitter` and `receiver` are the transmitter and receiver. `data_type` identifies the</span>
+            <span class="c1">#  task whose data product is transmitted. `bandwidth` is the bandwidth used by the communication (in case a link is shared by multiple simultaneous communications).</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span>
+            <span class="p">},</span>
+            <span class="c1"># Task ID, from the inputs.</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="c1"># Task name</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;short_range_image&quot;</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example-output">
+<h3><span class="section-number">5.2.1. </span>Example output<a class="headerlink" href="#example-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;short_range_image&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;short_range_image&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;short_range_image&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">3.003</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;take_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">8.004</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">9.368</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">9.368</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;take_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">10.732</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">12.096</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;analyze_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">13.097</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">13.825</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vo_localization&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">13.825</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;11&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">14.553</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">14.826</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;13&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;plan_path&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">14.927</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;14&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">14.937</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;15&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;send_drive_cmd&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">15.038</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;16&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">15.766</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;17&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vo_localization&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">16.767</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;18&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;plan_path&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">16.868</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;19&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">16.878</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;20&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">16.888</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;21&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;send_drive_cmd&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">16.989</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;22&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.727</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">17.717</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;terrain_image&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;23&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">18.445</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;24&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;vo_localization&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.446</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;25&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;plan_path&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.547</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;26&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.557</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;27&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.567</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;28&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.577</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;29&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;send_drive_cmd&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.578</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;store_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">19.678</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;31&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">21.042</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;32&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">21.042</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;33&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;take_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">22.406</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;34&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">23.77</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;analyze_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">24.771</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;36&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;store_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">26.043</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;37&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">27.407</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer2&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;38&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.363</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">28.771</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;transmitter&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;puffer3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;39&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;transfer_data&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">30.135</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;40&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;analyze_sample&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mf">31.136</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;41&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;store_sample&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="class_documentation.html" class="btn btn-neutral float-right" title="6. Modules documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Examples.html" class="btn btn-neutral float-left" title="4. Usage Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. Installation &mdash; MOSAIC schedulers 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Time-varying scheduling algorithm" href="Scheduling.html" />
+    <link rel="prev" title="MOSAIC schedulers" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MOSAIC schedulers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">1.1. Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#libraries">1.1.1. Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optic-solver-binaries">1.1.2. OPTIC solver binaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-dependencies">1.1.3. Python dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">1.3. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Allocation.html">3. Task allocation algorithm for robotic networks with periodic connectivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">5. API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_documentation.html">6. Modules documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MOSAIC schedulers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1><span class="section-number">1. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2><span class="section-number">1.1. </span>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="libraries">
+<h3><span class="section-number">1.1.1. </span>Libraries<a class="headerlink" href="#libraries" title="Permalink to this headline">¶</a></h3>
+<p>The scheduler depends on the <a class="reference external" href="https://www.gnu.org/software/glpk/">GLPK</a> (MI)LP solver.
+GLPK and its dependencies can be installed by running <code class="docutils literal notranslate"><span class="pre">ubuntu_requirements.sh</span></code> (on Debian and derivatives, including Ubuntu) or <code class="docutils literal notranslate"><span class="pre">fedora_requirements.sh</span></code> (on Fedora and derivatives, including CentOS). This will also install some of the requirements to compile the SCIP solver from source (see below).</p>
+<p>If available, the scheduler can also make use of the following commercial solvers, which both offer academic licensing options:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scip.zib.de">SCIP</a></p></li>
+<li><p><a class="reference external" href="https://www.ibm.com/products/ilog-cplex-optimization-studio">CPLEX</a></p></li>
+</ul>
+<p>SCIP provides <a class="reference external" href="https://scip.zib.de/index.php#download">RPM and Deb binaries</a> for x86. On ARM, we recommend compiling from source (see below).
+Place the SCIP source code in a folder (e.g., <code class="docutils literal notranslate"><span class="pre">scipoptsuite-6.0.1</span></code>), and then run:</p>
+<p>If CPLEX is not available, the solvers will fall back to GLPK.
+An academic license for CPLEX can be obtained from <a class="reference external" href="https://ibm.onthehub.com/WebStore/OfferingDetails.aspx?o=613c3d21-0ce1-e711-80fa-000d3af41938">IBM</a> after registering for the <a class="reference external" href="https://my15.digitalexperience.ibm.com/b73a5759-c6a6-4033-ab6b-d9d4f9a6d65b/dxsites/151914d1-03d2-48fe-97d9-d21166848e65/home">IBM Academic Initiative</a>. Using the academic license is acceptable for non-commercial research: specifically, _”Noncommercial research purposes are defined as conducting not-for-profit research projects whose results would be considered to be in the public domain and suitable for submission to a peer-reviewed journal or conference for publication. IBM Products may be used in noncommercial research that is focused on the business concepts, science, math or technology upon which the product is based.”_ (per the <a class="reference external" href="https://my15.digitalexperience.ibm.com/b73a5759-c6a6-4033-ab6b-d9d4f9a6d65b/dxsites/151914d1-03d2-48fe-97d9-d21166848e65/faqs/guidelines">IBM Academic Initiative Software Usage guidelines</a>, retrieved on 2019-7-10).</p>
+</div>
+<div class="section" id="optic-solver-binaries">
+<h3><span class="section-number">1.1.2. </span>OPTIC solver binaries<a class="headerlink" href="#optic-solver-binaries" title="Permalink to this headline">¶</a></h3>
+<p>Binaries for the <a class="reference external" href="https://nms.kcl.ac.uk/planning/software/optic.html">OPTIC planner</a> for x64, armhf, and ppc32 are available in at <code class="docutils literal notranslate"><span class="pre">mosaic_schedulers/schedulers/pddl/planners/optic-clp</span></code>.</p>
+<p>OPTIC can also be compiled from source by following <a class="reference external" href="https://nms.kcl.ac.uk/planning/software/optic.html">these instructions</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If compiling OPTIC from source, make sure to download the most recent version of Optic (with the GCC 8 patch) from here. Do <strong>not</strong> follow the direct download link on the installation guide.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If compiling OPTIC from source, add <code class="docutils literal notranslate"><span class="pre">-llapack</span> <span class="pre">-lblas</span> <span class="pre">-lgfortran</span> <span class="pre">pthread</span></code> at the end of the linked libraries on line 60 of <code class="docutils literal notranslate"><span class="pre">src/optic/CMakeLists.txt</span></code>.</p>
+</div>
+</div>
+<div class="section" id="python-dependencies">
+<h3><span class="section-number">1.1.3. </span>Python dependencies<a class="headerlink" href="#python-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Python dependencies can be installed by running the script <code class="docutils literal notranslate"><span class="pre">pip_requirements.sh</span></code>.</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">1.2. </span>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>To install the package in pip, cd to the root folder of the repository and run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker">
+<h2><span class="section-number">1.3. </span>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Dockerfiles are provided to package the MOSAIC schedulers in a Docker container. The Docker container exposes a web server that receives requests containing MOSAIC problems (in JSON format) and returns the computed schedules.</p>
+<p>The Docker image is designed to use the SCIP scheduler and compile it from source. The SCIP source code should be placed in <code class="docutils literal notranslate"><span class="pre">docker_resources/scipoptsuite-6.0.1</span></code>.</p>
+<p>To build the MOSAIC docker image, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker build --tag<span class="o">=</span>mosaic/schedulers_requirements -f Dockerfile_requirements .
+docker build --tag<span class="o">=</span>mosaic/schedulers -f Dockerfile .
+</pre></div>
+</div>
+<p>When changes are made to the <code class="docutils literal notranslate"><span class="pre">mosaic_schedulers</span></code> package, only the second Docker image needs to be rebuilt.</p>
+<p>To run the Docker image and expose the MOSAIC service on the local network,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run --network<span class="o">=</span><span class="s2">&quot;host&quot;</span> mosaic/schedulers
+</pre></div>
+</div>
+<p>The service exposes an instance of <code class="docutils literal notranslate"><span class="pre">MOSAIC_server.py</span></code> at <code class="docutils literal notranslate"><span class="pre">localhost:4000</span></code>. The web interface accepts PUT requests containing <a class="reference internal" href="API.html"><span class="doc">a JSON description of the problem</span></a> and returns computed schedules.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Scheduling.html" class="btn btn-neutral float-right" title="2. Time-varying scheduling algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="MOSAIC schedulers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

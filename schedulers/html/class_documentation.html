@@ -1,0 +1,991 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Modules documentation &mdash; MOSAIC schedulers 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="5. API reference" href="API.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MOSAIC schedulers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Allocation.html">3. Task allocation algorithm for robotic networks with periodic connectivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">5. API reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Modules documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-mosaic_schedulers.schedulers.tv_milp.MOSAICSolver">6.1. Time-varying scheduling algorithm: full implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver">6.2. Task allocation algorithm for robotic networks with periodic connectivity: full implementation</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MOSAIC schedulers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><span class="section-number">6. </span>Modules documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/class_documentation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="modules-documentation">
+<span id="classes-documentation"></span><h1><span class="section-number">6. </span>Modules documentation<a class="headerlink" href="#modules-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mosaic_schedulers.schedulers.tv_milp.MOSAICSolver">
+<span id="time-varying-scheduling-algorithm-full-implementation"></span><span id="tv-class-documentation"></span><h2><span class="section-number">6.1. </span>Time-varying scheduling algorithm: full implementation<a class="headerlink" href="#module-mosaic_schedulers.schedulers.tv_milp.MOSAICSolver" title="Permalink to this headline">¶</a></h2>
+<p>A module that implements the MOSAIC MILP scheduling algorithm.</p>
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPTasks">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MILPTasks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OptionalTasks</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">TaskReward</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">ProductsSize</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">DependencyList</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">IncompatibleTasks</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MILPTasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPTasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing a representation of the tasks for the MILP scheduler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>OptionalTasks</strong> (<em>list</em>) – a dict with Tasks as keys. OptionalTasks[Task] is True if
+Task is optional and False otherwise.</p></li>
+<li><p><strong>TaskReward</strong> – a dict with Tasks as keys. TaskReward[Task] is the reward
+obtained for completing Task, a float.</p></li>
+<li><p><strong>ProductsSize</strong> (<em>dict</em>) – a dict with Tasks as keys. PS[Task] is the size of the
+products of Task (in storage units), a float.</p></li>
+<li><p><strong>DependencyList</strong> (<em>dict</em>) – a dict with Tasks as keys. DL[Task] expresses the
+pre-requisites  for each Task is conjunctive normal form. That is,
+DependencyList[Task] is a list. Each entry of the List contains a
+number of predecessor Tasks.
+For each entry in DependencyList[Task][i], at least one task must
+be performed.</p></li>
+<li><p><strong>OptionalTasks</strong> – a list of lists. IT[j] is a list of  tasks that are incompatible
+with each other (that is, only one can be executed).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPAgentCapabilities">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MILPAgentCapabilities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ComputationTime</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">ComputationLoad</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">InitialInformation</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">EnergyCost</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">CommEnergyCost</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MILPAgentCapabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPAgentCapabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing a representation of the agent capabilities for the
+MILP scheduler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ComputationTime</strong> (<em>dict</em>) – a dictionary with keys Task, Agent. The value of
+CT[Task][Agent] is the time (in time steps) required for Agent to
+complete Tasks, an int.</p></li>
+<li><p><strong>ComputationLoad</strong> (<em>dict</em>) – a dictionary with keys Task, Agent. The value of
+CT[Task][Agent] is the fraction of Agent’s computational resources
+required to complete Task, a float between 0 and 1.</p></li>
+<li><p><strong>InitialInformation</strong> (<em>dict</em>) – a dictionary with keys Task, Agent. II[Task][Agent]
+is a Bool. It is true iff Agent knows the output of Task at time t=0.
+This can be helpful to specify that only one agent can do a given task</p></li>
+<li><p><strong>EnergyCost</strong> (<em>bool</em>) – a dictionary with keys Task, Agent. EnergyCost[T][A] is the
+energy cost when agent A computes task T.</p></li>
+<li><p><strong>CommEnergyCost</strong> (<em>bool</em>) – a dictionary witk keys Time, Sender, Receiver. CET[t][i][j]
+is the energy cost to send one bit of information from i to j at time t.
+The actual energy cost is computed as CET[t][i][j]*Bandwidth[t][i][j]*
+*sum_m C[i][j][m][t]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.CommunicationNetwork">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">CommunicationNetwork</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">CommWindowsBandwidth</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">CommEnergyCost</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#CommunicationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.CommunicationNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing a representation of the communication network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CommWindowsBandwidth</strong> (<em>dict</em>) – a collection of communication windows.
+CommWindows is a dictionary with keys [0…Thor-1], [Agent], [Agent].
+CommWindows[Time][Agent1][Agent2] is the bandwidth available
+to communicate between Agent1 and Agent2 at Time (in bits per
+unit time).</p></li>
+<li><p><strong>CommEnergyCost</strong> (<em>dict</em>) – a dictionary witk keys Time, Sender, Receiver.
+CET[t][i][j] is the energy cost to send one bit of information from
+i to j at time t. The actual energy cost is computed as
+CET[t][i][j]*Bandwidth[t][i][j]*sum_m C[i][j][m][t]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">JSONSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">JSONProblemDescription</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">solver</span><span class="o">=</span><span class="default_value">'CPLEX'</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">TimeLimit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#JSONSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main interface to solve MOSAIC scheduling problems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>JSONProblemDescription</strong> (<em>str</em><em>, </em><em>optional</em>) – a JSON description of the problem. See the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a> for a detailed description. Defaults to ‘’</p></li>
+<li><p><strong>solver</strong> (<em>str</em><em>, </em><em>optional</em>) – the solver to use. Should be ‘GLPK’, ‘CPLEX’, ‘PuLP’ or ‘SCIP’, defaults to ‘CPLEX’</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to print status and debug messages. Defaults to False</p></li>
+<li><p><strong>TimeLimit</strong> (<em>float</em><em>, </em><em>optional</em>) – a time limit after which to stop the optimizer. Defaults to None (no time limit). Note that certain solvers (GLPK) 
+may not honor the time limit.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the JSONProblemDescription is not valid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MOSAICMILPScheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Thor</span></em>, <em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">TimeStep</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For an easier-to-use and more consistent interface, you most likely want to call
+<a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSolver</span></code></a> instead of this class and its subclasses.</p>
+</div>
+<p>Abstract implementation of a MILP solution to the MOSAIC scheduler.
+Subclassed by the solvers <a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICCPLEXScheduler</span></code></a>, <a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICSCIPScheduler</span></code></a>,
+<a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICPULPScheduler</span></code></a>, and <a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICGLPKScheduler</span></code></a>.
+You probably want to call <a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.JSONSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSolver</span></code></a> instead of these.</p>
+<p>Usage:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.schedule" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.schedule"><code class="xref py py-func docutils literal notranslate"><span class="pre">schedule()</span></code></a>: creates the optimization problem, solves it, and returns a JSON representation of the solution (in non-standard format)</p></li>
+<li><p><a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getOptimizationTerminator" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getOptimizationTerminator"><code class="xref py py-func docutils literal notranslate"><span class="pre">getOptimizationTerminator()</span></code></a>: returns a function that can be called to stop the optimization process asynchronously</p></li>
+</ul>
+<p>For a detailed description of the MILP problem we solve, see the IJRR
+manuscript.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Thor</strong> (<em>int</em>) – the time horizon of the optimization, an int.</p></li>
+<li><p><strong>AgentCapabilities</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPAgentCapabilities" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPAgentCapabilities"><em>MOSAICSolver.MILPAgentCapabilities</em></a>) – detailing what the agents can do</p></li>
+<li><p><strong>Tasks</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPTasks" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MILPTasks"><em>MOSAICSolver.MILPTasks</em></a>) – detailing the tasks that must be achieved</p></li>
+<li><p><strong>CommunicationNetwork</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.CommunicationNetwork" title="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.CommunicationNetwork"><em>MOSAICSolver.CommunicationNetwork</em></a>) – detailing the communication network availability</p></li>
+<li><p><strong>TimeStep</strong> (<em>float</em>) – The duration (in seconds) of a discrete time step.</p></li>
+<li><p><strong>Options</strong> (<em>dict</em><em>, </em><em>optional</em>) – additional solver-specific options, defaults to {}</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True, prints status and debug messages. Defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.formatOutput">
+<code class="sig-name descname">formatOutput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.formatOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.formatOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>version</strong> (<em>int</em><em>, </em><em>optional</em>) – V1: just a pass-through for formatToJSON.
+V2 (default): the standard I/O format defined in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON output</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getRawOutput">
+<code class="sig-name descname">getRawOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.getRawOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getRawOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the raw problem output from the solver</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the problem, solve it, and return the solution (in an older, non-JSON I/O format)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is set up here. At this time, the entire setup is repeated for each solver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is solved here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setMIPStart">
+<code class="sig-name descname">setMIPStart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MIPStart</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.setMIPStart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.setMIPStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Certain solvers allow the MIP to be “seeded” with a MIP start.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows extracting the internal MIP state for warm-starting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the solver-specific problem object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getOptimizationTerminator">
+<code class="sig-name descname">getOptimizationTerminator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICMILPScheduler.getOptimizationTerminator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICMILPScheduler.getOptimizationTerminator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an object that can be called to stop the optimization process</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MOSAICCPLEXScheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Thor</span></em>, <em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">TimeStep</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the IBM ILOG CPLEX solver.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is set up here. At this time, the entire setup is repeated for each solver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is solved here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setMIPStart">
+<code class="sig-name descname">setMIPStart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MIPStart</span></em>, <em class="sig-param"><span class="n">effort_level</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.setMIPStart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setMIPStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Certain solvers allow the MIP to be “seeded” with a MIP start.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the problem, solve it, and return the solution (in an older, non-JSON I/O format)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows extracting the internal MIP state for warm-starting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the solver-specific problem object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getOptimizationTerminator">
+<code class="sig-name descname">getOptimizationTerminator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.getOptimizationTerminator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.getOptimizationTerminator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an object that can be called to stop the optimization process.
+To actually terminate the problem, call the method abort() of the
+returned object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICCPLEXScheduler.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICCPLEXScheduler.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MOSAICSCIPScheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Thor</span></em>, <em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">TimeStep</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the SCIP solver.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is set up here. At this time, the entire setup is repeated for each solver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is solved here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setMIPStart">
+<code class="sig-name descname">setMIPStart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MIPStart</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.setMIPStart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setMIPStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Certain solvers allow the MIP to be “seeded” with a MIP start.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the problem, solve it, and return the solution (in an older, non-JSON I/O format)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows extracting the internal MIP state for warm-starting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the solver-specific problem object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICSCIPScheduler.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICSCIPScheduler.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MOSAICPULPScheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Thor</span></em>, <em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">TimeStep</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the PuLP modeling package.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is set up here. At this time, the entire setup is repeated for each solver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is solved here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows extracting the internal MIP state for warm-starting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICPULPScheduler.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICPULPScheduler.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the solver-specific problem object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.</code><code class="sig-name descname">MOSAICGLPKScheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Thor</span></em>, <em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">TimeStep</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the GLPK solver.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is set up here. At this time, the entire setup is repeated for each solver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The problem is solved here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the problem, solve it, and return the solution (in an older, non-JSON I/O format)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows extracting the internal MIP state for warm-starting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the solver-specific problem object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/tv_milp/MOSAICSolver.html#MOSAICGLPKScheduler.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.tv_milp.MOSAICSolver.MOSAICGLPKScheduler.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver">
+<span id="task-allocation-algorithm-for-robotic-networks-with-periodic-connectivity-full-implementation"></span><span id="ti-class-documentation"></span><h2><span class="section-number">6.2. </span>Task allocation algorithm for robotic networks with periodic connectivity: full implementation<a class="headerlink" href="#module-mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver" title="Permalink to this headline">¶</a></h2>
+<p>The module <code class="docutils literal notranslate"><span class="pre">ti_milp</span></code> provides an implementation of the task allocation
+algorithm for for robotic networks with periodic connectivity.</p>
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MILPTasks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OptionalTasks</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">TaskReward</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">ProductsBandwidth</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">ProductsDataSize</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">DependencyList</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">MaxLatency</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MILPTasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing a representation of the tasks for the MILP scheduler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>OptionalTasks</strong> (<em>dict</em>) – a dict with Tasks as keys. OT[Task] is True iff the task
+is optional.</p></li>
+<li><p><strong>TaskReward</strong> (<em>dict</em>) – a dict with Tasks as keys. TR[Task] is the reward obtained
+for performing the task, a float.</p></li>
+<li><p><strong>ProductsBandwidth</strong> (<em>dict</em>) – a dict with Tasks as keys. PB[Task] is the bandwidth
+required to stream of the products of Task (in storage units per time
+units), a float.</p></li>
+<li><p><strong>ProductsDataSize</strong> (<em>dict</em>) – a dict with Tasks as keys. PDS[Task] is the size of the
+products of Task (in storage units), a float.</p></li>
+<li><p><strong>DependencyList</strong> (<em>dict</em>) – a dict with Tasks as keys. DL[Task] is a list
+of tasks whose data products are required to compute Task.</p></li>
+<li><p><strong>MaxLatency</strong> (<em>dict</em>) – a dict with keys task1, task2. MaxLatency[T1][T2] is the maximum
+latency that the data products of T2 (a dependency of T1) can tolerate
+before they are ingested by task T1.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MILPTasks.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure the Tasks structure is valid, i.e. the keys to the various 
+components are consistent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPAgentCapabilities">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MILPAgentCapabilities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ComputationLoad</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">EnergyCost</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">MaxComputationLoad</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">LinkComputationalLoadIn</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">LinkComputationalLoadOut</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MILPAgentCapabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPAgentCapabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing a representation of the agent capabilities for the
+MILP scheduler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ComputationLoad</strong> (<em>dict</em>) – a dictionary with keys Agent, Task. The value of
+ComputationLoad[Agent][Task] is the amount of Agent’s computational
+resources required to complete Task.</p></li>
+<li><p><strong>EnergyCost</strong> (<em>dict</em>) – a dictionary with keys Agent, Task. EnergyCost[A][T] is the
+energy cost when agent A computes task T.</p></li>
+<li><p><strong>MaxComputationLoad</strong> (<em>dict</em>) – a dict with keys Agents. MaxComputationLoad[A] is the
+maximum computational resources of agent A.</p></li>
+<li><p><strong>LinkComputationalLoadIn</strong> (<em>dict</em>) – a dict with keys Agent, Agent.
+LinkComputationalLoadIn[A1][A2] is the computational load required to
+decode messages on link [A1][A2] at A2.</p></li>
+<li><p><strong>LinkComputationalLoadOut</strong> (<em>dict</em>) – a dict with keys Agent, Agent.
+LinkComputationalLoadOut[A1][A2] is the computational load required to
+encode messages on link [A1][A2] at A1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.CommunicationNetwork">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">CommunicationNetwork</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Bandwidth</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Latency</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">EnergyCost</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#CommunicationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.CommunicationNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class containing the properties of the communication network
+used by the time-invariant scheduler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Bandwidth</strong> (<em>dict</em>) – a dictionary with keys Agent, Agent. Bandwidth[A1][A2]
+is the bandwidth from agent A1 to agent A2. If Bandwidth[A1][A2]
+is zero, the link is not considered in the optimization problem.</p></li>
+<li><p><strong>Latency</strong> (<em>dict</em>) – a dictionary with keys Agent, Agent. Latency[A1][A2] is
+the latency of the link. Note that the latency of a datagram should
+be (but isn’t at this time) computed as Latency[A1][A2] +
+datagram_size/Bandwidth[A1][A2].</p></li>
+<li><p><strong>EnergyCost</strong> (<em>dict</em>) – a dictionary with keys Agent, Agent. EnergyCost[A1][A2]
+is the energy cost to transmit one bit on link A1-A2. The actual
+energy cost is computed as EnergyCost[A1][A2]*bit_rate[A1][A2].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">JSONSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">JSONProblemDescription</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">solver</span><span class="o">=</span><span class="default_value">'GLPK'</span></em>, <em class="sig-param"><span class="n">TimeLimit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#JSONSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the time-invariant problem based on a problem input in the format
+described in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>JSONProblemDescription</strong> (<em>str</em><em>, </em><em>optional</em>) – a JSON description of the problem. See the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a> for a detailed description.</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to print status and debug messages. Defaults to False</p></li>
+<li><p><strong>solver</strong> (<em>str</em><em>, </em><em>optional</em>) – the solver to use. Should be ‘GLPK’, ‘CPLEX’, or ‘SCIP’, defaults to ‘GLPK’.</p></li>
+<li><p><strong>TimeLimit</strong> (<em>float</em><em>, </em><em>optional</em>) – a time limit after which to stop the optimizer. Defaults to None (no time limit).
+Note that certain solvers (in particular, GLPK) may not honor the time limit.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – if the JSONProblemDescription is not valid.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This solver does not support disjunctive prerequirements (do this task OR that task).
+If a problem with disjunctive prerequirement is passed, the solver will assert.</p>
+</div>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#JSONSolver.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the scheduling problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A solution in the JSON format described in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MOSAICMILPSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For an easier-to-use and more consistent interface, you most likely want to call
+<a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSolver</span></code></a> instead of this class and its subclasses.</p>
+</div>
+<p>Abstract implementation of the MILP task allocator.
+Subclassed by <a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICCPLEXSolver</span></code></a>, <a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICSCIPSolver</span></code></a>, and <a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOSAICGLPKSolver</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AgentCapabilities</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPAgentCapabilities" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPAgentCapabilities"><em>MOSAICTISolver.MILPAgentCapabilities</em></a>) – detailing what the agents can do</p></li>
+<li><p><strong>Tasks</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MILPTasks"><em>MOSAICTISolver.MILPTasks</em></a>) – detailing the tasks that must be achieved</p></li>
+<li><p><strong>CommunicationNetwork</strong> (<a class="reference internal" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.CommunicationNetwork" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.CommunicationNetwork"><em>MOSAICTISolver.CommunicationNetwork</em></a>) – detailing the communication network availability</p></li>
+<li><p><strong>Options</strong> (<em>dict</em><em>, </em><em>optional</em>) – additional solver-specific options, defaults to {}</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True, prints status and debug messages. Defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getRawOutput">
+<code class="sig-name descname">getRawOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.getRawOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getRawOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return raw problem output from the scheduler</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up and solve the scheduling problem</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setMIPStart">
+<code class="sig-name descname">setMIPStart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MIPStart</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.setMIPStart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.setMIPStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide a warm start to the solver. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver state. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver problem object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getOptimizationTerminator">
+<code class="sig-name descname">getOptimizationTerminator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.getOptimizationTerminator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.getOptimizationTerminator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an object that can be called to stop the optimization process</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.formatToBenchmarkIO">
+<code class="sig-name descname">formatToBenchmarkIO</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICMILPSolver.formatToBenchmarkIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICMILPSolver.formatToBenchmarkIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the scheduler output to the JSON format described in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MOSAICCPLEXSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICCPLEXSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dummy implementation of the MILP scheduler if CPLEX is not available.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICCPLEXSolver.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICCPLEXSolver.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MOSAICGLPKSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the GLPK solver.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up and solve the scheduling problem</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver state. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver problem object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">1e+75</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICGLPKSolver.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICGLPKSolver.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver">
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">MOSAICSCIPSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AgentCapabilities</span></em>, <em class="sig-param"><span class="n">Tasks</span></em>, <em class="sig-param"><span class="n">CommunicationNetwork</span></em>, <em class="sig-param"><span class="n">Options</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implementation of the MILP scheduler that uses the SCIP solver.</p>
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.solverSpecificInit">
+<code class="sig-name descname">solverSpecificInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.solverSpecificInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.solverSpecificInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A place to define solver-specific initializations in subclasses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.solve">
+<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the optimization problem. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.schedule">
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up and solve the scheduling problem</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.getSolverState">
+<code class="sig-name descname">getSolverState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.getSolverState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.getSolverState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver state. Solver-specific.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.getProblem">
+<code class="sig-name descname">getProblem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.getProblem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.getProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the solver problem object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setTimeLimits">
+<code class="sig-name descname">setTimeLimits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DetTicksLimit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ClockTimeLimit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.setTimeLimits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setTimeLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a time limit for the overall process. May be ignored by certain
+solvers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setSolverParameters">
+<code class="sig-name descname">setSolverParameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Properties</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#MOSAICSCIPSolver.setSolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.MOSAICSCIPSolver.setSolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes a dictionary of parameters to the solver</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="API.html" class="btn btn-neutral float-left" title="5. API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

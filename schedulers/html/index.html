@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta content="Multi-robot systems, task allocation, scheduling, planning, planning for robotics" name="keywords" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MOSAIC schedulers &mdash; MOSAIC schedulers 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Installation" href="Installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> MOSAIC schedulers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Allocation.html">3. Task allocation algorithm for robotic networks with periodic connectivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">5. API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_documentation.html">6. Modules documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MOSAIC schedulers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>MOSAIC schedulers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mosaic-schedulers">
+<h1>MOSAIC schedulers<a class="headerlink" href="#mosaic-schedulers" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Federico Rossi, Tiago Stegun Vaquero, Joshua Vander Hook</p>
+</dd>
+<dt class="field-even">Address</dt>
+<dd class="field-even"><p>4800 Oak Grove Dr.
+Pasadena, CA 91109</p>
+</dd>
+<dt class="field-odd">Contact</dt>
+<dd class="field-odd"><p><a class="reference external" href="mailto:federico&#46;rossi&#37;&#52;&#48;jpl&#46;nasa&#46;gov">federico<span>&#46;</span>rossi<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a>, <a class="reference external" href="mailto:tiago&#46;stegun&#46;vaquero&#37;&#52;&#48;jpl&#46;nasa&#46;gov">tiago<span>&#46;</span>stegun<span>&#46;</span>vaquero<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a>, <a class="reference external" href="mailto:hook&#37;&#52;&#48;jpl&#46;nasa&#46;gov">hook<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p>
+</dd>
+<dt class="field-even">Organization</dt>
+<dd class="field-even"><p>Jet Propulsion Laboratory (JPL)</p>
+</dd>
+<dt class="field-odd">Release</dt>
+<dd class="field-odd"><p>2.0.0</p>
+</dd>
+<dt class="field-even">Repository</dt>
+<dd class="field-even"><p><a class="reference external" href="https://github.com/nasa/mosaic">https://github.com/nasa/mosaic</a></p>
+</dd>
+<dt class="field-odd">Abstract</dt>
+<dd class="field-odd"><p>Communication-aware dynamic task allocation in multi-robot systems</p>
+</dd>
+</dl>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+<iframe src="https://www.youtube-nocookie.com/embed/zTQ7Y4-ax2A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div><p>MOSAIC provides scheduling tools to allocate computational tasks to robots with heterogeneous computational capabilities and time-varying communication links.</p>
+<p>This package contains three+1 scheduling and task allocation algorithm.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="Scheduling.html#time-varying"><span class="std std-ref">Time-varying scheduling algorithm</span></a> (<code class="docutils literal notranslate"><span class="pre">tv_milp</span></code>).  A mixed-integer programming algorithm for scheduling tasks in heterogeneous robotic networks with time-varying communication links. The scheduler can accommodate any non-cyclical dependencies between tasks and arbitrary time-varying communication links, handle optional tasks with associated rewards, and optimize cost functions including rewards for optional tasks, makespan, and energy usage. The scheduler is presented in [1].</p></li>
+<li><p><a class="reference internal" href="Allocation.html#time-invariant"><span class="std std-ref">Task allocation algorithm for robotic networks with periodic connectivity</span></a>  (<code class="docutils literal notranslate"><span class="pre">ti_milp</span></code>). A mixed-integer programming algorithm for task allocation in  heterogeneous robotic networks with <em>periodic</em> communication links. The task allocation algorithm also accommodates any non-cyclical dependencies between tasks and handles optional tasks with associated rewards and maximum latency requirements; it can maximize reward from optional tasks or minimize energy use. The task allocation algorithm is presented in [2].</p></li>
+<li><p>For benchmarking purposes, we also provide a lightly modified version of Topcuoglu, Hariri, and Wu’s <a class="reference external" href="#references">Heterogeneous Earliest Finish Time (HEFT)</a> algorithm (<code class="docutils literal notranslate"><span class="pre">heft</span></code>).</p></li>
+<li><p>A scheduling algorithm (<code class="docutils literal notranslate"><span class="pre">ti_milp_heft</span></code>) that uses the proposed task allocation algorithm to assign tasks to agents, and HEFT (with fixed task allocation) to schedule task execution.</p></li>
+</ul>
+<p>For a full description of the algorithm, we refer the interested reader to <a class="reference external" href="#references">our papers</a>.</p>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">1. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#requirements">1.1. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#id1">1.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#docker">1.3. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Scheduling.html#problem-description">2.1. Problem Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scheduling.html#ilp-formulation">2.2. ILP formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scheduling.html#implementation">2.3. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scheduling.html#references">2.4. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Allocation.html">3. Task allocation algorithm for robotic networks with periodic connectivity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#problem-parameters">3.1. Problem Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#optimization-variables">3.2. Optimization Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#optimization-objective">3.3. Optimization Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#problem-formulation">3.4. Problem Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#implementation">3.5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Allocation.html#references">3.6. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#create-a-problem-instance">4.1. Create a problem instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#solve-with-a-time-varying-milp-solver">4.2. Solve with a time-varying MILP solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#allocate-tasks-with-a-time-invariant-solver">4.3. Allocate tasks with a “time-invariant” solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#selfish-agents">4.4. Selfish agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#node-assist">4.5. Node Assist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#base-station-assist">4.6. Base Station Assist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#assembly-line">4.7. Assembly Line</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">5. API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="API.html#input-format">5.1. Input format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API.html#output-format">5.2. Output format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="class_documentation.html">6. Modules documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_documentation.html#module-mosaic_schedulers.schedulers.tv_milp.MOSAICSolver">6.1. Time-varying scheduling algorithm: full implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class_documentation.html#module-mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver">6.2. Task allocation algorithm for robotic networks with periodic connectivity: full implementation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="copyright-and-licensing">
+<h2>Copyright and Licensing<a class="headerlink" href="#copyright-and-licensing" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (c) 2020, California Institute of Technology (“Caltech”).  U.S. Government sponsorship acknowledged.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mosaic-schedulers</span></code> is currently an open-source package distributed under the Apache 2.0 license.</p>
+</div>
+<div class="section" id="references">
+<span id="id1"></span><h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch, Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien, <a class="reference external" href="https://aaai.org/ojs/index.php/ICAPS/article/view/3556">“Mars On-Site Shared Analytics Information and Computing,”</a> in Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.</p>
+<p>[2] Federico Rossi*, Tiago Stegun Vaquero*, Marc Sanchez Net, Maíra Saboia da Silva, and Joshua Vander Hook, <a class="reference external" href="https://arxiv.org/abs/2003.13813">“The Pluggable Distributed Resource Allocator (PDRA): a Middleware for Distributed Computing in Mobile Robotic Networks,”</a> under review.</p>
+<p>[3] H. Topcuoglu, S. Hariri and Min-You Wu, <a class="reference external" href="https://ieeexplore.ieee.org/document/993206">“Performance-effective and low-complexity task scheduling for heterogeneous computing,”</a> in IEEE Transactions on Parallel and Distributed Systems, vol. 13, no. 3, pp. 260-274, March 2002.</p>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Installation.html" class="btn btn-neutral float-right" title="1. Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

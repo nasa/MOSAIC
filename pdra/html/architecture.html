@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pluggable Distributed Resource Allocator (PDRA) &#8212; PDRA 2.0a documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PDRA Core Classes" href="core.html" />
+    <link rel="prev" title="Pluggable Distributed Resource Allocator" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          PDRA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generic-system-goals">Generic System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reserved-terms">Reserved Terms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-system-goals">Specific System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-description">Implementation Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-test-case">Development Test Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-system-implementation">ROS System Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-classes">Python Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-node-specification">ROS Node Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-signature-specification">ROS Signature Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-limitations">Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.ohandlers">PDRA Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.test_autonomy_brain">External Nodes</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li><a class="reference internal" href="#background">Background</a><ul>
+<li><a class="reference internal" href="#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li><a class="reference internal" href="#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li><a class="reference internal" href="#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generic-system-goals">Generic System Goals</a></li>
+<li><a class="reference internal" href="#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li><a class="reference internal" href="#definitions">Definitions</a></li>
+<li><a class="reference internal" href="#reserved-terms">Reserved Terms</a></li>
+<li><a class="reference internal" href="#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#specific-system-goals">Specific System Goals</a></li>
+<li><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
+<li><a class="reference internal" href="#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#implementation-description">Implementation Description</a><ul>
+<li><a class="reference internal" href="#development-test-case">Development Test Case</a></li>
+<li><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li><a class="reference internal" href="#ros-system-implementation">ROS System Implementation</a></li>
+<li><a class="reference internal" href="#python-classes">Python Classes</a></li>
+<li><a class="reference internal" href="#ros-node-specification">ROS Node Specification</a></li>
+<li><a class="reference internal" href="#ros-signature-specification">ROS Signature Specification</a></li>
+<li><a class="reference internal" href="#known-limitations">Known Limitations</a></li>
+<li><a class="reference internal" href="#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: Pluggable Distributed Resource Allocator"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Pluggable Dis...</span>
+    </a>
+  </li>
+  <li>
+    <a href="core.html" title="Next Chapter: PDRA Core Classes"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">PDRA Core Classes &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generic-system-goals">Generic System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reserved-terms">Reserved Terms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-system-goals">Specific System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-description">Implementation Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-test-case">Development Test Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-system-implementation">ROS System Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-classes">Python Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-node-specification">ROS Node Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ros-signature-specification">ROS Signature Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-limitations">Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a></li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/architecture.md.txt"
+     rel="nofollow">Source</a>
+</div>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="pluggable-distributed-resource-allocator-pdra">
+<h1>Pluggable Distributed Resource Allocator (PDRA)<a class="headerlink" href="#pluggable-distributed-resource-allocator-pdra" title="Permalink to this headline">¶</a></h1>
+<p><img alt="Animation of the Pluggable Distributed Resource Allocator in action" src="_images/pdra.gif" /></p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Traditional monolithic autonomous systems typically have a layered architecture that includes:</p>
+<ol class="simple">
+<li><strong>Autonomy Layer</strong>: Represents the “brain” of the robot/mission. It is designed and implemented by each mission based on its specific needs (with a certain amount of legacy code in general).</li>
+<li><strong>Middleware Layer</strong>: Allows different parts of the autonomy layer to interact with each other and with other elements in robot. Ideally, it is provided by a COTS or COTS-like library (e.g. ROS Pub/Sub, DTN’s AMS)</li>
+<li><strong>Networking Layers</strong>: Set of protocols that enable the middleware layer to communicate with another entity with a certian level of service (e.g., reliable and in-order transfer for TCP, unreliable transfer for UDP).</li>
+</ol>
+<p>To improve the performance of monolithic autonomous systems, a well-known alternative is to distribute resources among multiple potentially heterogeneous systems. Each of them will perform part or all of the tasks required for mission success, as well as outsource some others to its peers. Furthermore, a robot will also contribute to its peer’s success by performing some of their tasks.</p>
+<p>Clearly, this approach only works if there is a certain level of coordination among peers in the distributed system. To achieve this, three competing approaches are possible:</p>
+<div class="section" id="centrally-controlled-distributed-system">
+<h3>Centrally Controlled Distributed System<a class="headerlink" href="#centrally-controlled-distributed-system" title="Permalink to this headline">¶</a></h3>
+<p>Knowledege about the state of the distributed system is provided to a central entity that then decides both the tasks that each mission must perform and how to allocate them among the different resources available in the system. Note that this approach maximizes system performance as long as a single “God-like” entity is making decisions with perfect (instantenous) information. However, both the problem of ensuring perfect information at any point in time, and the complexity of scheduling both which tasks to perform and where to do so  render this approach technically chanllenging to achieve when tasks exhibit dependencies. Therefore, it is typically used in the literature as a way to set upper bounds on system performance that can then be used as benchmarks (rather than in an operational context).</p>
+</div>
+<div class="section" id="single-layer-distributed-system">
+<h3>Single-Layer Distributed System<a class="headerlink" href="#single-layer-distributed-system" title="Permalink to this headline">¶</a></h3>
+<p>Knowledege about the state of the distributed system is proveided directly to each mission’s autonomy layer. Given this input, and its own requirements, the mission decide which tasks to execute and where to perform them (either locally or outsourced to a peer). Note that this approach can potentially match the performance of a centrally controlled distributed system assuming perfect information across the distributed system and unlimited resources for each mission. This is because, once again, the autonomy layer is charged with making decisions on both what to do and where to do them. Furtheremore, if the state information provided to each mission’s autonomy layer do not match, then performance degrades faster than in centrally controlled distributed systems.</p>
+</div>
+<div class="section" id="multi-layer-distributed-system">
+<h3>Multi-layer Distributed System<a class="headerlink" href="#multi-layer-distributed-system" title="Permalink to this headline">¶</a></h3>
+<p>In this type of system a new layer in the protocol stack is added to each robot:</p>
+<ol class="simple">
+<li><strong>Autonomy Layer</strong>: It decides which tasks need to be performed (and when to do them?)</li>
+<li><strong>Distware<sup><a class="reference external" href="##foot1">1</a></sup> Layer</strong>: Given a task that needs to be performed, it decides whether this task will be implemented locally or remotely.</li>
+<li><strong>Middleware Layer</strong>: Same as before, it enables the distware layer by facilitating messaage exchange within and accross robots.</li>
+<li><strong>Networking Layers</strong>: Same as before, it enables the middleware layer.</li>
+</ol>
+<p>By separating the autonomy and distware layers, both problems can be solved indepedently and therefore with less complex algorithms. However, decoupling them also generally incurs in a performance penalty, as the autonomy layer will never have perfect information to make its decisions. Finally, note that using a multi-layer distributed system is almost always the preferable alternative for systems with large portions of legacy code. Indeed, for these types of systems the autonomy layer is typically well-defined and mature. Therefore, it is undesirable to change it to accommotdate the needs to of running tasks over a distributed set of resources.</p>
+</div>
+</div>
+<div class="section" id="generic-system-goals">
+<h2>Generic System Goals<a class="headerlink" href="#generic-system-goals" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this subproject is to enable other missions to design, implement and operated multi-layer distributed systems by prototyping a distware layer using ROS. This distware layer, termed Pluggable Distributed Resource Allocator (PDRA) will be:</p>
+<ul class="simple">
+<li>Pluggable, i.e., it can be inserted underneath of an autonomy layer with minimal coding rework.</li>
+<li>Distributed, i.e. it will manage the allocation of tasks to local and remote resources with minial support from the autonomy layer.</li>
+<li>Extensible, i.e., it can be easily modified by the implementer of the autonomy layer to support distributing tasks other than the pre-defined ones.</li>
+</ul>
+</div>
+<div class="section" id="definitions-and-reserved-terms">
+<h2>Definitions and Reserved Terms<a class="headerlink" href="#definitions-and-reserved-terms" title="Permalink to this headline">¶</a></h2>
+<p>Next, we provide a set of definitions intended to normalize nomenclature in PDRA and minimize ambiguity. Then, we indicate terms that should preferably be left unused as they have caused confusion in the past.</p>
+<div class="section" id="definitions">
+<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>Agent</strong>: Any robotic or non-robotic entity capable of requesting, performing and potentially planning activities.</p>
+</li>
+<li><p class="first"><strong>Activity</strong>: Set of functions and/or actions that need to be performed by an agent to achieve mission success. Prior to its satisfaction, an activity is said to be in <em>pending state</em>. Afterwards, it is said to be in a <em>completed state</em>.</p>
+</li>
+<li><p class="first"><strong>Activity Plan</strong>: Set of activities, normally organized in a time-based fashion, that specify how an agent is operated. Activity plans are generated by either a central agent (e.g., a team of planners at JPL), or by each agent independently. Additionally, activity plans can be created solely by humans, using a mix of autonomy and human inputs, or by having an software autonomy layer.</p>
+</li>
+<li><p class="first"><strong>Activity Planner</strong>: Agent that creates the activity plan for one or multiple agents (including or excluding itself).</p>
+</li>
+<li><p class="first"><strong>Demand</strong>: Quantity of resources consumed by an activity when transitioning from a pending to a completed state.</p>
+</li>
+<li><p class="first"><strong>Resource</strong>: Physical/informational/energetical assets available in an agent to perform activities (both its own and on behalf of others).</p>
+</li>
+<li><p class="first"><strong>Obligation</strong>: Data product to encapsulate an activity whose execution needs to be allocated and dispatched through the distware system. Obligations must include at least the following data fields:</p>
+<ul class="simple">
+<li>Obligation identifier (typically a combination of a timestamp and the node identifier).</li>
+<li>Activity identifier, type and demand.</li>
+<li>Priority level.</li>
+<li>Expiration time.</li>
+</ul>
+<p>Additionally, other information in a obligation might include activity dependencies, metadata on how to process the activity and its dependent tasks, etc. Finally, obligations that refer to an activity that depends on another activity are referred to as <em>dependent obligations</em>.</p>
+</li>
+<li><p class="first"><strong>Result</strong>: Data product to encapsulate the results of having processed and obligation and performed its related activity. Results must include at least the following data fields:</p>
+<ul class="simple">
+<li>Result identifier (typically a combination of a timestamp and the node identifier).</li>
+<li>Obligation identifier for the obligation that generated this result.</li>
+<li>Activity Result.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Report</strong>: Data product to encapsulate control or management information required by any component in the distware to correctly perform its functionality.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="reserved-terms">
+<h3>Reserved Terms<a class="headerlink" href="#reserved-terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Task</strong>: It can refer to both an activity or a obligation, depending on the context.</li>
+<li><strong>Scheduler</strong>: It can refer to both the activity planner or the RAC, depending on the context.</li>
+<li><strong>Message</strong>: It can refer to either an activity, a obligation or a report, depeding on the context.</li>
+<li><strong>Packet</strong>: Typically used in the context of the networking layers.</li>
+<li><strong>Frame</strong>: Typically used in the context of the networking layers.</li>
+<li><strong>Request</strong>: It can refer to an obligation or a ROS service/action request.</li>
+<li><strong>TBD</strong></li>
+</ul>
+</div>
+<div class="section" id="pdra-scope">
+<h3>PDRA Scope<a class="headerlink" href="#pdra-scope" title="Permalink to this headline">¶</a></h3>
+<p>At present, the scope of the PDRA is restricted by the following set constraints:</p>
+<ol class="simple">
+<li>Any functionality required for an agent to create, input or process an activity plan is not considered part of PDRA. In other words, from the distware’s point of view, activity plans are generated by a quiescent agent and made available to the agent magically.</li>
+<li>This quiescent agent can optionally request information about the PDRA resources’ state for its task planning procedures.</li>
+<li>PDRA’s dispatcher will not chain execution of dependent obligations in neither local nor remote agents. This feature might be explored in the future, but it is known to significantly increase complexity (e.g., a mechanism to avoid obligation loops is required).</li>
+<li>The ability to interface with PDRA in a blocking/non-blocking manner (i.e. service vs. action in ROS) is an implementation specific problem and is therefore not prescribed in the system architecture definition. However, both interaction types should be applicable.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="specific-system-goals">
+<h2>Specific System Goals<a class="headerlink" href="#specific-system-goals" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this subproject is to prototype a distware layer to enable distributed computing and, more generally, distributed resource allocation, for existing and new autonomy layers using ROS by</p>
+<ul class="simple">
+<li>Exposing a ROS-like interface to the autonomy layer.</li>
+<li>Providing default (de)serialization mechanisms to minimize re-definition of ROS message and service types.</li>
+<li>Providing (de)serialization hooks to let agents work with their own ROS message/services types.</li>
+<li>Automatically and internally performing all control and management functions for all modules in the distware layer</li>
+<li>Automatically and internally allocating activities to either local or remote resources.</li>
+<li>Automatically and internally dispatching or canceling obligations, results and reports as needed.</li>
+<li>Providing results to the autonomy layer on the status of its currently managed obligations and underlying resources upon request or at regular intervals (TBR).</li>
+<li>Providing the autonomy layer with the set of feasible tasks given the state of the distributed resources upon request or at regular intervals (TBR).</li>
+</ul>
+</div>
+<div class="section" id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Permalink to this headline">¶</a></h2>
+<p>The system architecture details the primary components that need to be implemented for the PDRA protoype, as well as the information flows between them. It is broken down into the <em>execution plane</em>, which shows how obligations and results are handled in the system; the <em>control plane</em>, which focuses on how reports are disseminated through the distware; and the <em>consensus plane</em>, which ensures that all global information in the system is available at each agent in a synchronized manner (at least ideally). Also, for the purposes of the diagrams below, it is assumed that a single agent is developing the activity plan for everyone. This is not a constraints but rather a way to facilitate the system’s visual representation.</p>
+<div class="section" id="component-definitions">
+<h3>Component Definitions<a class="headerlink" href="#component-definitions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Resource-Allocation matCher (RAC)</strong>: Process that decides the best agent to perform the activity associated with a certain obligation given a known activity plan, and a set of agents with known available resources. This process can be executed in real-time as new activities arrive or resources change; or can be triggered at repeated time intervals and the resulting allocation kept constant for the duration of that time interval.</li>
+<li><strong>Dispatcher (DPT)</strong>: Process that, given a set of obligations and results, sends them to the necessary agent and resource (either local or remote) to perform (in response to) their associated activities.</li>
+<li><strong>Forwarder (FWR)</strong>: Process that pulls obligations or results from the <em>outgoing queue</em> and decides how to process them. For obligations, the RAC is called to see which agent and which resource should process it. For results, it directs them to the communications subsystem to be sent back to the agent that issued the obligation.</li>
+<li><strong>Acceptor (ACR)</strong>: Process that pulls obligations or requests from the <em>incoming queue</em> and decides how to process them. For obligations, they are immediately put in the <em>outgoing queue</em> so that the forwarder can proccess them. For results, two options are possible: A remote result (i.e., created as a response to a remote obligation) is delivered to the <em>outgoing queue</em> for further processing. Alternatively, a result for this agent is delivered to the upper layer through the RHR.</li>
+<li><strong>Obligation Handler (OH-x)</strong>: Process to keep track of the set of activities requested by an agent and their obligations. It at least provides the following functionality: Serialize an activity into an obligation; deserialize a result in an activity result; provide a blocking/non-blocking mechanism depending on whether how the user wants to execute the activity. One obligation handler must be defined for each type of activity that PDRA needs to recognize as distributable.</li>
+<li><strong>Resource Handler (RH-x)</strong>” Process to make requests and collect results from system resources. It at least provides the following functionality: Queue for all obligations for a given resource; deserialize an obligation to a resource request type; serialize a resource response type into a result; provide a blocking mechanism to avoid resource preemption. One resource handler must be defined for each type of activity that PDRA needs to recognize as distributable.</li>
+<li><strong>World State Monitor (WSM)</strong>: Process that monitors and updates the state of resources for all agents in the distributed system and deliver it to the RAC. It typically interfaces with one or multiple processes, all part of the consensus plane.</li>
+<li><strong>Activity Planner (APR)</strong>: Process that monitors and updates the activity plans for all agents in the distributed system and deliver it to the RAC. It typically interfaces with one or multiple processes, all part of the consensus plane.</li>
+</ul>
+<p>Each of these components should be implemented as one or multiple ROS nodes communicating via ROS’ Pub/Sub mechanism. Also, both the <em>incoming and outgoing queues</em> should be implemented using a FIFO policy with priorities.</p>
+</div>
+<div class="section" id="execution-and-control-planes">
+<h3>Execution and Control Planes<a class="headerlink" href="#execution-and-control-planes" title="Permalink to this headline">¶</a></h3>
+<p>The following image shows a high-level structure of the PDRA, its components and how they exchange information. At the core of the distware layer is the dispatcher with an <em>outgoing</em> and <em>incoming queue</em>. Obligations and results are enqueued in either of them depending on whether they are awaiting to be processed or they are the result of processing by an agent’s resource (not necessarily the local agent). Importantly, obligations and results arriving at an agent can be send directly to the <em>outgoing queue</em> without being delivered to the upper layer. This ensures that obligations arriving from a remote node can be directed to the appropriate resources transparently.</p>
+<p><img alt="alt text" src="_images/System_Architecture.jpg" /></p>
+</div>
+</div>
+<div class="section" id="implementation-description">
+<h2>Implementation Description<a class="headerlink" href="#implementation-description" title="Permalink to this headline">¶</a></h2>
+<p>ROS will be used to implement a first version of PDRA. Next, we briefly describe the test case assumed for development purposes decompose the system into the different ROS nodes, messages, services and actions required. Additionally, we also state the implementation limitations that have been identified but not addressed presently. Finally, we also briefly introduce and motivate the repository structure, and mention possible adaptations from past MOSAIC efforts such as the <em>ROS Service Manager</em>.</p>
+<div class="section" id="development-test-case">
+<h3>Development Test Case<a class="headerlink" href="#development-test-case" title="Permalink to this headline">¶</a></h3>
+<p>The test case for PDRA development purposes will contain 10 nodes in total encompassing the autonomy, distware and resource layer. It will include two nodes, notionally called Puffer and Base Station, each one having two resources, communications and navigation.</p>
+<p>In a first step, the test will be instantiated with a single agent (e.g., the Puffer). Its goal will be to demonstrate that all interfaces in the ROS system are working as expected, and activities are being allocated to local resources (i.e., within the Puffer itself) seamlessly. Additionally, the serialization/deseralization mechanisms, as well as the blocking/non-blocking semaphores will also be tested.</p>
+<p>Once step one has been completed, a second agent (the Base Station) will be introduced in the system. In this case, the goal of the testing procedures will be to ensure that all nav puffer activities are offloaded to the Base Station.</p>
+</div>
+<div class="section" id="naming-conventions">
+<h3>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h3>
+<p>The following naming conventions will be used to define PDRA ROS signatures<sup><a class="reference external" href="##foot2">2</a></sup>:</p>
+<ul class="simple">
+<li>Signatures applicable to all agents will be prefaced by <code class="docutils literal notranslate"><span class="pre">/all/signature_path</span></code>.</li>
+<li>Signatures applicable to a given agent will be prefaced by <code class="docutils literal notranslate"><span class="pre">/agent_id/signature_path</span></code>.</li>
+<li>Signatures applicable to a specific layer will be prefaced by <code class="docutils literal notranslate"><span class="pre">xxx/layer_id/signature_path</span></code>.</li>
+<li>Signatures applicable to a specific (layer, module) pair will be prefaced by <code class="docutils literal notranslate"><span class="pre">xxx/layer_id/module_id/signature_path</span></code>.</li>
+</ul>
+<p>For instance, the topic that distributes the activity plans for all agents should be named <code class="docutils literal notranslate"><span class="pre">/all/autonomy/activity_plans</span></code>. However, if a topic was only applicable to a single agent, then its name should be <code class="docutils literal notranslate"><span class="pre">/puffer1/autonomy/activity_plan</span></code>. This convention will be enforced using namespacing in the ROS <em>launch</em> files.</p>
+</div>
+<div class="section" id="ros-system-implementation">
+<h3>ROS System Implementation<a class="headerlink" href="#ros-system-implementation" title="Permalink to this headline">¶</a></h3>
+<p>NOTE: Gray shaded boxes represent a single ROS node. Sub-boxes contained within them are Python functions (or similar) within the ROS node.
+<img alt="alt text" src="_images/ROS_Architecture.jpg" /></p>
+</div>
+<div class="section" id="python-classes">
+<h3>Python Classes<a class="headerlink" href="#python-classes" title="Permalink to this headline">¶</a></h3>
+<p>The core of PDRA is implemented using two classes, an obligation and a result. They both inherit from a <em>dispatchable</em> interface as show in the following diagram.
+<img alt="alt text" src="_images/pdra_ros_classes.jpg" /></p>
+</div>
+<div class="section" id="ros-node-specification">
+<h3>ROS Node Specification<a class="headerlink" href="#ros-node-specification" title="Permalink to this headline">¶</a></h3>
+<p>The test case for PDRA development purposes will contain the following ROS nodes:</p>
+<ul class="simple">
+<li>Autonomy Layer:<ul>
+<li>Autonomy Brain: ROS node that, given a set of sequential activities, it loops through them and executes them one at a time. The set of activities to execute will be provided by the topic <code class="docutils literal notranslate"><span class="pre">/all/autonomy/activity_plans</span></code> encoded in a JSON format.</li>
+<li>Activity Planner: ROS node that reads from a file the set of activities to be performed by all agents, encodes them as a JSON dictionary and publishes them in the topic <code class="docutils literal notranslate"><span class="pre">/all/autonomy/activity_plans</span></code>.</li>
+</ul>
+</li>
+<li>Distware Layer:<ul>
+<li>Front-End:<ul>
+<li>Generic obligation handler providing common functionality such as blocking semaphores and obligation timout mechanisms. It is intended to be an abstract node that needs to be subclassed.</li>
+<li>Test-specific communication handler. It subclasses the generic obligation handler, converts a <code class="docutils literal notranslate"><span class="pre">comm.action</span></code> into a serialized obligation, and publishes it in <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_obligation</span></code>. The result of the action is published, when available, to <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_result</span></code>.</li>
+<li>Test-specific navigation handler. Idem with <code class="docutils literal notranslate"><span class="pre">nav.action</span></code>.</li>
+</ul>
+</li>
+<li>RAC: ROS node that, given the activity plans for all users and the state of the world and network, computes the match/allocation between the pair (resource, agent) and each activity type. To get its inputs, the RAC listens to the topics <code class="docutils literal notranslate"><span class="pre">/all/autonomy/activity_plans</span></code>, <code class="docutils literal notranslate"><span class="pre">/all/distware/agents_state</span></code> and <code class="docutils literal notranslate"><span class="pre">/all/distware/network_state</span></code>. At regular time intervals (e.g. 1 minute), the RAC recomputes the RA matching. Finally, the RAC publishes the compuited RA match also at regular time intervals (e.g. 1 second) using the topic <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/RAC/output</span></code>.</li>
+<li>Dispatcher: ROS node that contains both the forwarder and the acceptor (as previously defined). They listen to <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_obligation</span></code> and <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_dispatchable</span></code> respectively, and publish to <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/new_obligation</span></code>, <code class="docutils literal notranslate"><span class="pre">agent_id/distware/fwdr/comm_obligation</span></code> <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/comm_result</span></code>.</li>
+<li>Back-end:<ul>
+<li>Generic resource handler providing common functionality. It is intended to be an abstract node that needs to be subclassed. Any resource handler will interact with the underlying resource in a blocking fashion to avoid overloading it, even if this interaction occurs physically through a non-blocking mechanism such as a ROS action. Therefore, the generic RH should provide its own blocking mechanism. Also, different policies for how to handle resource preemption might be desired by the user as a function of the type of obligation under consideration (e.g., local obligations preempt, but remote obligations do not). Therefore, a generic policy mechanism to handle these constraints should also be included.</li>
+</ul>
+</li>
+<li>Test-specific communication handler. It subclasses the generic resource handler, and awaits for a new obligation or result to process from <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/comm_obligation</span></code> and <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/comm_result</span></code>. Then, it converts the dispatchable into a <code class="docutils literal notranslate"><span class="pre">comm.action</span></code>, triggers the request and, if necessary, awaits for the response. Any remote obligation or result is published to <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/comm/new_obligation</span></code> and <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/comm/new_result</span></code> respectively.<ul>
+<li>Test-specific navigation handler. Idem with <code class="docutils literal notranslate"><span class="pre">nav.action</span></code>, except that obligations are arrive through the <code class="docutils literal notranslate"><span class="pre">agent_id/distware/fwdr/new_obligation</span></code> topic and their responses are published to <code class="docutils literal notranslate"><span class="pre">agent_id/distware/rhdlr/new_result</span></code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Resource Layer:<ul>
+<li>Communications: ROS node that receives a request via <code class="docutils literal notranslate"><span class="pre">comm.action</span></code>, publishes the message in <code class="docutils literal notranslate"><span class="pre">/destination_agent/resource/comm</span></code>, sleeps for a while to simulate the transmission time, and returns.</li>
+<li>Science: ROS node that receives a request via <code class="docutils literal notranslate"><span class="pre">nav.action</span></code>, sleeps for a while to simulat the transmission time, and returns.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="ros-signature-specification">
+<h3>ROS Signature Specification<a class="headerlink" href="#ros-signature-specification" title="Permalink to this headline">¶</a></h3>
+<p>The test case for PDRA development purposes will contain the following ROS signatures:</p>
+<ul class="simple">
+<li>ROS messages (topics):<ul>
+<li><code class="docutils literal notranslate"><span class="pre">/all/autonomy/activity_plans</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with the activity plan for all agents encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/all/autonomy/agents_state</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with the state of all agents encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/all/autonomy/network_state</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with the state of the network between agents encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_obligation</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with an obligation encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_result</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with a result encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_dispatchable</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with either an obligation or result encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/RAC/output</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with the RAC output encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/new_obligation</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with an obligation encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/comm_obligation</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with a result encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/fwdr/comm_result</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with a result encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/comm/new_obligation</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with an obligation encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/comm/new_result</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with a result encoded in JSON.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/agent_id/distware/hdlrd/new_result</span></code>: A ROS <code class="docutils literal notranslate"><span class="pre">std_msgs.msg.String</span></code> with a result encoded in JSON.</li>
+</ul>
+</li>
+<li>ROS services:<ul>
+<li>N/A</li>
+</ul>
+</li>
+<li>ROS Actions:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">comm.action</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">nav.action</span></code></li>
+</ul>
+</li>
+</ul>
+<p>Note that the communications resource handler is implemented slightly differently from all other resource handlers. In particular, it interfaces with the dispatcher using 4 topics, two to send obligations and results to through the comm. subsystem, and another two to remote obligations and results through it. In contrast, all other resources only receive obligations and respond with results. Therefore, only two topics are needed.</p>
+</div>
+<div class="section" id="known-limitations">
+<h3>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">¶</a></h3>
+<p>The current implementation of PDRA assumes that both the autonomy layer and the resource layer interact with the distware layer through ROS actions exclusively. This is so due to legacy considerations, namely MOSAIC’s codebase used actions to interace the autonomy and resource layers originally.</p>
+<p>While ROS actions provide a non-blocking mechanism to request an action from another ROS node, they are known to internally implement a preemption mechanism that limits how PDRA can accept obligations from the autonomy brain. Specifically, if the autonomy system requests two comm actions 1 second apart, but the time to execute a comm action is 10 seconds, then the first request will be preempted and therefore lost. Note that this problem will not happen if one of the requests came from another agent, since PDRA’s back-end will include a blocking mechanism to avoid preemption (i.e. it will effectively make calls to resources in a ROS service-like fashion, blocking excution, even if the interface with the resource is a ROS action).</p>
+</div>
+<div class="section" id="repository-structure">
+<h3>Repository Structure<a class="headerlink" href="#repository-structure" title="Permalink to this headline">¶</a></h3>
+<p>PDRA’s code will be stored in two separate packages:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">pdra</span></code>: Contains all core ROS nodes and signatures for the distware layer. Specifically, it includes:<ul>
+<li>Generic front-end node</li>
+<li>RAC</li>
+<li>Dispatcher</li>
+<li>Generic back-end node</li>
+<li>Definition for message types <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_obligation</span></code>, <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/new_result</span></code>, <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/ra_match</span></code>, <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/resource_obligation</span></code>, <code class="docutils literal notranslate"><span class="pre">/agent_id/distware/resource_result</span></code></li>
+<li>Launch file to put together a PDRA system</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">tests</span></code>: Contains all ROS nodes and messages required for the test case to work. It includes:<ul>
+<li>Action-specific front-end nodes</li>
+<li>Action-specific back-end nodes</li>
+<li>All resource nodes.</li>
+<li>Autonomy Brain</li>
+<li>Activity Planner</li>
+<li>World State Monior</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="motivating-example">
+<h2>Motivating Example<a class="headerlink" href="#motivating-example" title="Permalink to this headline">¶</a></h2>
+<p>The following examples and first-order requirements motivate the above design choices.</p>
+<p>The <a class="reference external" href="https://www.jpl.nasa.gov/news/news.php?feature=6782">puffer autonomous micro-rover</a> is being designed to allow <em>risk-tolerant</em> exploration of dangerous or out-of-reach areas such as caves, craters, high slope / slip, etc. The conop is that a flagship lander or rover would deploy a handful of puffers to explore an area. They are:</p>
+<ol class="simple">
+<li>Resource constrained, especially power</li>
+<li>Communication constrained, because of 1</li>
+<li>Small, low-baseline, and lack large field of view with which to build situational awareness.</li>
+</ol>
+<p>As such, they are ideal candidates for multi-sensor fusion, multi-hop networks, resource-aware tasking, and collaborative motion planning. Given that those solutions often involve “more” computational resources (and therefore power), MOSAIC can be employed to intelligently relocate processing needs without requiring (but supporting) human intervention.</p>
+<p>Our proof of life is this example: Consider a shared-world autonomy and path planning solution. We are counting up communication steps (the arrows), the cost per communication in Joules (Jc), and the cost of processing a planning solution in Joules (Jp). We consider only the collect-plan step for brevity, because the broadcast step is at most 2x more communication steps that applies to all examples.</p>
+<p><img alt="All to All" src="_images/PUFFER-1.png" /></p>
+<p>In the above, all puffers trade data so that they can arrive at a consensus of the world and make consistent plans. This is the most robust to communication loss, ironically, since they can <em>estimate</em> the state of the world using sensor data in the absence of getting cues from their neighbors.</p>
+<p><img alt="Base Station" src="_images/PUFFER-2.png" /></p>
+<p>Many resource-constrained robots have a supporting asset or “base station”. In this case, the main parent rover probably has more resources, and can provide support. However, it still needs to know the states of all the puffers, so effort is made to pipe data back to the rover. Note, this has a <em>factor two reduction in total energy use</em></p>
+<p><img alt="MOSAIC" src="_images/PUFFER-3.png" /></p>
+<p>In some cases (like the bucket-brigade shown in the last three images), it might be safer and more resource-conservative to make the PUFFER in the middle do the processing. However, this is highly dependent on the topology of the network, the costs to compute and transmit data, and the resources available on each node. This is the problem of MOSAIC: To balance computation and communication to minimize impact to the network resources. <em>Compared to the top, this has a factor four reduction in energy impact</em>.</p>
+<hr class="docutils" />
+<p><a name="foot1">1</a>: Distware is not a common name in the literature. It comes from combining distributed+software.</p>
+<p><a name="foot2">2</a>: A ROS signature refers to the definition of a message, service or action (i.e. a signature is either of them).</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/architecture.md.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright (c) 2019, Jet Propulsion Laboratory..<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

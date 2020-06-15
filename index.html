@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta content="Distributed Systems, Multi-agent Robotic Systems, Task Planning, Multi-robot systems, Task Allocation, Scheduling, Planning, Planning for robotics" name="keywords" />
+<meta content="Computational task sharing in heterogeneous multi-robot systems over time-varying communication links" lang="en" name="description" xml:lang="en" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MOSAIC: Multi-Agent On Site Shared Analytics, Information, and Computing &mdash; MOSAIC 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MOSAIC schedulers" href="schedulers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> MOSAIC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="schedulers.html">MOSAIC schedulers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pdra.html">Pluggable Distributed Resource Allocator</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MOSAIC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>MOSAIC: Multi-Agent On Site Shared Analytics, Information, and Computing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mosaic-multi-agent-on-site-shared-analytics-information-and-computing">
+<h1>MOSAIC: Multi-Agent On Site Shared Analytics, Information, and Computing<a class="headerlink" href="#mosaic-multi-agent-on-site-shared-analytics-information-and-computing" title="Permalink to this headline">¶</a></h1>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+<iframe src="https://www.youtube-nocookie.com/embed/zTQ7Y4-ax2A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div><dl class="field-list simple">
+<dt class="field-odd">Authors</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Federico Rossi</p></li>
+<li><p>Marc Sanchez Net</p></li>
+<li><p>Tiago Stegun Vaquero</p></li>
+<li><p>Martina Troesch</p></li>
+<li><p>Joshua Vander Hook</p></li>
+</ul>
+</dd>
+<dt class="field-even">Contacts</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="mailto:marc&#46;sanchez&#46;net&#37;&#52;&#48;jpl&#46;nasa&#46;gov">marc<span>&#46;</span>sanchez<span>&#46;</span>net<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p></li>
+<li><p><a class="reference external" href="mailto:federico&#46;rossi&#37;&#52;&#48;jpl&#46;nasa&#46;gov">federico<span>&#46;</span>rossi<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p></li>
+<li><p><a class="reference external" href="mailto:tiago&#46;stegun&#46;vaquero&#37;&#52;&#48;jpl&#46;nasa&#46;gov">tiago<span>&#46;</span>stegun<span>&#46;</span>vaquero<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p></li>
+<li><p><a class="reference external" href="mailto:martina&#46;i&#46;troesch&#37;&#52;&#48;jpl&#46;nasa&#46;gov">martina<span>&#46;</span>i<span>&#46;</span>troesch<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p></li>
+<li><p><a class="reference external" href="mailto:hook&#37;&#52;&#48;jpl&#46;nasa&#46;gov">hook<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Organizations</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Jet Propulsion Laboratory, California Institute of Technology</dt><dd><ul class="simple">
+<li><p>Section 347, Mobility and Robotic Systems</p></li>
+<li><p>Section 332, Communications Research and Architectures</p></li>
+<li><p>Section 397, Planning and Execution Systems</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Address</dt>
+<dd class="field-even"><p>4800 Oak Grove Dr. Pasadena, CA 91109</p>
+</dd>
+<dt class="field-odd">Release</dt>
+<dd class="field-odd"><p>2.0.0</p>
+</dd>
+<dt class="field-even">Repository</dt>
+<dd class="field-even"><p><a class="reference external" href="https://github.com/nasa/mosaic">https://github.com/nasa/mosaic</a></p>
+</dd>
+<dt class="field-odd">Abstract</dt>
+<dd class="field-odd"><p>Computational task sharing in heterogeneous multi-robot systems over time-varying communication links</p>
+</dd>
+<dt class="field-even">Licensing</dt>
+<dd class="field-even"><p>Copyright (c) 2020, Jet Propulsion Laboratory.</p>
+</dd>
+</dl>
+<p>This website contains documentation for the MOSAIC schedulers and the Pluggable Distributed Resource Allocator (PDRA).</p>
+<p>Together, the tools in MOSAIC enable heterogeneous multi-robot systems
+to share computational tasks with complex dependencies among agents with
+heterogeneous computation capabilities over time-varying communication links.</p>
+<div class="section" id="id1">
+<h2><a class="reference external" href="schedulers.html">MOSAIC schedulers</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<img alt="MOSAIC schedules" src="_images/examples.png" />
+<p>We propose scheduling and task-allocation algorithms to share computational tasks
+among heterogeneous agents over time-varying communication links.</p>
+<p>Specifically, we propose:</p>
+<ul class="simple">
+<li><p>A mixed-integer programming algorithm for scheduling tasks in heterogeneous
+robotic networks with time-varying communication links. The scheduler can
+accommodate any non-cyclical dependencies between tasks and arbitrary
+time-varying communication links, handle optional tasks with associated rewards,
+and optimize cost functions including rewards for optional tasks, makespan,
+and energy usage. The scheduler is presented in [1].</p></li>
+<li><p>A mixed-integer programming algorithm for task allocation in  heterogeneous
+robotic networks with <em>periodic</em> communication links. The task allocation
+algorithm also accommodates any non-cyclical dependencies between tasks and
+handles optional tasks with associated rewards and maximum latency requirements;
+it can maximize reward from optional tasks or minimize energy use. The task
+allocation algorithm is presented in [2].</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2><a class="reference external" href="pdra.html">Pluggable Distributed Resource Allocator</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<img alt="Animation of the Pluggable Distributed Resource Allocator in action" src="_images/pdra.gif" />
+<p>The Pluggable Distributed Resource Allocator (PDRA) is a middleware for
+distributed computing in heterogeneous mobile robotic networks. It allows the
+MOSAIC schedulers to be easily “plugged” in existing autonomy executives with
+minimal software changes. PDRA sits between an existing single-agent
+planner/executor and existing computational resources (e.g. ROS packages). It
+intercepts the executor’s requests and, if needed, transparently routes them
+to other nodes for execution.
+Simulation results show that PDRA can reduce energy and CPU usage by over 50%
+in representative multi-robot scenarios compared to a naive scheduler; runs on
+embedded platforms; and performs well in delay- and disruption-tolerant networks
+(DTNs). PDRA is available to the community under an open-source license.</p>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+<iframe src="https://www.youtube-nocookie.com/embed/ufxmW0XsYDA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div></div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schedulers.html">MOSAIC schedulers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pdra.html">Pluggable Distributed Resource Allocator</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch,
+Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien,
+<a class="reference external" href="https://aaai.org/ojs/index.php/ICAPS/article/view/3556">“Mars On-Site Shared Analytics Information and Computing,”</a>
+in Proceedings of the Twenty-Ninth International Conference on Automated Planning
+and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.</p>
+<p>[2] Federico Rossi*, Tiago Stegun Vaquero*, Marc Sanchez Net,
+Maíra Saboia da Silva, and Joshua Vander Hook,
+<a class="reference external" href="https://arxiv.org/abs/2003.13813">“The Pluggable Distributed Resource Allocator (PDRA):a Middleware for Distributed Computing in Mobile Robotic Networks”</a>,
+under review.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="schedulers.html" class="btn btn-neutral float-right" title="MOSAIC schedulers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

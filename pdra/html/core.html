@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PDRA Core Classes &#8212; PDRA 2.0a documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PDRA Testing and Scaffolding" href="testing.html" />
+    <link rel="prev" title="Pluggable Distributed Resource Allocator (PDRA)" href="architecture.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          PDRA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#generic-system-goals">Generic System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#reserved-terms">Reserved Terms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#specific-system-goals">Specific System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#system-architecture">System Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#component-definitions">Component Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#implementation-description">Implementation Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#development-test-case">Development Test Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-system-implementation">ROS System Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#python-classes">Python Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-node-specification">ROS Node Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-signature-specification">ROS Signature Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#known-limitations">Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.ohandlers">PDRA Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.test_autonomy_brain">External Nodes</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">PDRA Core Classes</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="architecture.html" title="Previous Chapter: Pluggable Distributed Resource Allocator (PDRA)"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Pluggable Dis...</span>
+    </a>
+  </li>
+  <li>
+    <a href="testing.html" title="Next Chapter: PDRA Testing and Scaffolding"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">PDRA Testing ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Pluggable Distributed Resource Allocator (PDRA)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a></li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/core.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="pdra-core-classes">
+<h1>PDRA Core Classes<a class="headerlink" href="#pdra-core-classes" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.pdra.core"><span id="core"></span></span><dl class="class">
+<dt id="src.pdra.core.Dispatchable">
+<em class="property">class </em><code class="descclassname">src.pdra.core.</code><code class="descname">Dispatchable</code><span class="sig-paren">(</span><em>version='2.0'</em>, <em>uid=None</em>, <em>creation_time=None</em>, <em>priority=5</em>, <em>req_agent=None</em>, <em>resource_id=None</em>, <em>TTL=inf</em>, <em>dependents=None</em>, <em>predecessors=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Dispatchable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Dispatchable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Dispatchable interface. It should be subclassed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – Version - PDRA version</li>
+<li><strong>UUID</strong> – uid - Dispatchable unique identifier</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><strong>float</strong></a> – creation_time - POSIX UTC timestamp as float</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – req_agent - ID of the agent requesting this dispatchable</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><strong>int</strong></a> – priority - Lower is higher priority</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.pdra.core.Dispatchable.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>version='2.0'</em>, <em>uid=None</em>, <em>creation_time=None</em>, <em>priority=5</em>, <em>req_agent=None</em>, <em>resource_id=None</em>, <em>TTL=inf</em>, <em>dependents=None</em>, <em>predecessors=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Dispatchable.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Dispatchable.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class constructor</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="src.pdra.core.Dispatchable._new_uid">
+<em class="property">static </em><code class="descname">_new_uid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Dispatchable._new_uid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Dispatchable._new_uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new unique identifier for this dispatchable based on
+the host ID, sequence number, and current time</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return UUID:</th><td class="field-body">Unique identifier</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="src.pdra.core.Dispatchable.from_json">
+<em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>str_json</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Dispatchable.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Dispatchable.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a dispatchable from a JSON encoded string. Only class
+slots will be initialized by default.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>json</strong> – String JSON encoded</li>
+<li><strong>kwargs</strong> – Keyword arguments of <code class="docutils literal notranslate"><span class="pre">json.loads</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dispatchable class instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.pdra.core.Dispatchable.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Dispatchable.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Dispatchable.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize this dispatchable object to JSON. Only class slots
+will be serialized by default</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> – Keyword arguments of <code class="docutils literal notranslate"><span class="pre">json.dumps</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String, output of json.dumps</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.pdra.core.Dispatchable.valid">
+<code class="descname">valid</code><a class="headerlink" href="#src.pdra.core.Dispatchable.valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this dispatchable is valid</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.pdra.core.Obligation">
+<em class="property">class </em><code class="descclassname">src.pdra.core.</code><code class="descname">Obligation</code><span class="sig-paren">(</span><em>resource_id=None</em>, <em>parameters=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Obligation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Obligation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.pdra.core.Dispatchable" title="src.pdra.core.Dispatchable"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.pdra.core.Dispatchable</span></code></a></p>
+<p>A PDRA obligation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Ivar:</th><td class="field-body"><p class="first">See <code class="docutils literal notranslate"><span class="pre">Dispatchable</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – resource_id - ID of the resource required by this obligation</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – parameters - JSON encoded parameters for the obligation</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.pdra.core.Obligation.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>resource_id=None</em>, <em>parameters=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Obligation.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Obligation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class constructor</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.pdra.core.Result">
+<em class="property">class </em><code class="descclassname">src.pdra.core.</code><code class="descname">Result</code><span class="sig-paren">(</span><em>srv_agent=None</em>, <em>values=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.pdra.core.Dispatchable" title="src.pdra.core.Dispatchable"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.pdra.core.Dispatchable</span></code></a></p>
+<p>A PDRA result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Ivar:</th><td class="field-body"><p class="first">See <code class="docutils literal notranslate"><span class="pre">Dispatchable</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – srv_agent - ID of the agent that created this result</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – values - JSON encoded results</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.pdra.core.Result.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>srv_agent=None</em>, <em>values=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/core.html#Result.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.core.Result.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class constructor</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-src.pdra.dispatcher"></span><dl class="class">
+<dt id="src.pdra.dispatcher.Dispatcher">
+<em class="property">class </em><code class="descclassname">src.pdra.dispatcher.</code><code class="descname">Dispatcher</code><span class="sig-paren">(</span><em>agent_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/dispatcher.html#Dispatcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.dispatcher.Dispatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract dispatcher class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><strong>string</strong></a> – agent_id</li>
+<li><strong>PriorityQueue</strong> – _up_queue</li>
+<li><strong>PriorityQueue</strong> – _dn_queue</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><strong>dict</strong></a> – ohandlers</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><strong>dict</strong></a> – rhandlers</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><strong>object</strong></a> – chandler</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="src.pdra.dispatcher.Dispatcher.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>agent_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/dispatcher.html#Dispatcher.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.dispatcher.Dispatcher.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> – Agent ID</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.pdra.dispatcher.Dispatcher._run_acceptor">
+<code class="descname">_run_acceptor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/dispatcher.html#Dispatcher._run_acceptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.dispatcher.Dispatcher._run_acceptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The acceptor pulls from <code class="docutils literal notranslate"><span class="pre">self._up_queue</span></code> and directs the result
+depending on whether it is local or remote.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.pdra.dispatcher.Dispatcher._run_forwarder">
+<code class="descname">_run_forwarder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/dispatcher.html#Dispatcher._run_forwarder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.dispatcher.Dispatcher._run_forwarder" title="Permalink to this definition">¶</a></dt>
+<dd><p>The forwarder pulls from <code class="docutils literal notranslate"><span class="pre">self._dn_queue</span></code> and directs the
+dispatchable depending on the RAC input</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-src.pdra.rac"></span><dl class="class">
+<dt id="src.pdra.rac.abstract_resource_allocation_matcher">
+<em class="property">class </em><code class="descclassname">src.pdra.rac.</code><code class="descname">abstract_resource_allocation_matcher</code><span class="sig-paren">(</span><em>agent_id</em>, <em>agent_state_topic='/all/distware/agent_state'</em>, <em>network_state_topic='/all/distware/network_state'</em>, <em>problem_description_topic='/all/distware/problem_description'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/rac.html#abstract_resource_allocation_matcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.rac.abstract_resource_allocation_matcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="src.pdra.rac.example_resource_allocation_matcher">
+<em class="property">class </em><code class="descclassname">src.pdra.rac.</code><code class="descname">example_resource_allocation_matcher</code><span class="sig-paren">(</span><em>agent_id</em>, <em>agent_state_topic='/all/distware/agent_state'</em>, <em>network_state_topic='/all/distware/network_state'</em>, <em>problem_description_topic='/all/distware/problem_description'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/rac.html#example_resource_allocation_matcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.rac.example_resource_allocation_matcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.pdra.rac.abstract_resource_allocation_matcher" title="src.pdra.rac.abstract_resource_allocation_matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.pdra.rac.abstract_resource_allocation_matcher</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="src.pdra.rac.img_nav_drive_resource_allocation_matcher">
+<em class="property">class </em><code class="descclassname">src.pdra.rac.</code><code class="descname">img_nav_drive_resource_allocation_matcher</code><span class="sig-paren">(</span><em>agent_id</em>, <em>agent_state_topic='/all/distware/agent_state'</em>, <em>network_state_topic='/all/distware/network_state'</em>, <em>problem_description_topic='/all/distware/problem_description'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/pdra/rac.html#img_nav_drive_resource_allocation_matcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.pdra.rac.img_nav_drive_resource_allocation_matcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.pdra.rac.abstract_resource_allocation_matcher" title="src.pdra.rac.abstract_resource_allocation_matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.pdra.rac.abstract_resource_allocation_matcher</span></code></a></p>
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/core.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright (c) 2019, Jet Propulsion Laboratory..<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

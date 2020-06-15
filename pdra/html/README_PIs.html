@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MOSAIC Raspberry PIs Setup &#8212; PDRA 2.0a documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          PDRA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#generic-system-goals">Generic System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#reserved-terms">Reserved Terms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#specific-system-goals">Specific System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#system-architecture">System Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#component-definitions">Component Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#implementation-description">Implementation Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#development-test-case">Development Test Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-system-implementation">ROS System Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#python-classes">Python Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-node-specification">ROS Node Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#ros-signature-specification">ROS Signature Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#known-limitations">Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.ohandlers">PDRA Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#module-src.tests.test_autonomy_brain">External Nodes</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">MOSAIC Raspberry PIs Setup</a><ul>
+<li><a class="reference internal" href="#setting-up-the-raspberry-pis-with-wifi-router">Setting up the Raspberry PIs with Wifi Router</a></li>
+<li><a class="reference internal" href="#enabling-ntp-to-sync-time">Enabling NTP to sync time</a><ul>
+<li><a class="reference internal" href="#in-the-raspberry-pi-ntp-client">In the raspberry Pi (NTP client)</a></li>
+<li><a class="reference internal" href="#in-the-base-station-ntp-server-in-port-123">In the base station (NTP server, in port 123)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ssh-into-pis">SSH into PIs</a></li>
+<li><a class="reference internal" href="#ubiquity-robotics-environment-variables">Ubiquity Robotics Environment Variables</a></li>
+<li><a class="reference internal" href="#multi-master-fkie">Multi Master FKIE</a></li>
+<li><a class="reference internal" href="#multicast">Multicast</a></li>
+<li><a class="reference internal" href="#ros-setup">ROS Setup</a></li>
+<li><a class="reference internal" href="#os-services-basics">OS Services (basics)</a></li>
+<li><a class="reference internal" href="#existing-os-services-in-ubiquity-pi">Existing OS Services in (Ubiquity) PI</a><ul>
+<li><a class="reference internal" href="#roscore-service">roscore.service</a></li>
+<li><a class="reference internal" href="#magni-base-service">magni-base.service</a></li>
+<li><a class="reference internal" href="#pifi-service">pifi.service</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setting-up-os-service-to-start-ros-vehicle-launchers-at-boot-time">Setting up OS Service to Start ROS Vehicle Launchers at Boot Time</a><ul>
+<li><a class="reference internal" href="#create-the-service-file">Create the Service File</a></li>
+<li><a class="reference internal" href="#start-and-enable-the-service-permanently">Start and Enable the Service Permanently</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Pluggable Distributed Resource Allocator (PDRA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">PDRA Testing and Scaffolding</a></li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/README_PIs.md.txt"
+     rel="nofollow">Source</a>
+</div>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="mosaic-raspberry-pis-setup">
+<h1>MOSAIC Raspberry PIs Setup<a class="headerlink" href="#mosaic-raspberry-pis-setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-the-raspberry-pis-with-wifi-router">
+<h2>Setting up the Raspberry PIs with Wifi Router<a class="headerlink" href="#setting-up-the-raspberry-pis-with-wifi-router" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li>Log in into each pi using a monitor and connect to the wifi network.</li>
+<li>Then in the network manager, got to ‘Edit Connections…’, select the
+network provided by the router, click edit and the general tab check option
+‘All users may connect to this network’. Make sure that option ‘Automatically
+connect to this network when it is available’ is also checked. That will allow
+the system to connect to the wifi without having to login first.</li>
+</ol>
+<p>Access to the Raspberry PI through VM (parallels).</p>
+<p>In Parallels go to Hardware-&gt; Network and change the Source to Network Adapater (Bridged Network).
+Then the VM will connect to the WiFi as a separate machine. Do not use other adapters
+(cables/USB connected for ethernet) otherwise it will not connect.</p>
+</div>
+<div class="section" id="enabling-ntp-to-sync-time">
+<h2>Enabling NTP to sync time<a class="headerlink" href="#enabling-ntp-to-sync-time" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="in-the-raspberry-pi-ntp-client">
+<h3>In the raspberry Pi (NTP client)<a class="headerlink" href="#in-the-raspberry-pi-ntp-client" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li>edit file /etc/systemd/timesyncd.conf
+$ sudo nano /etc/systemd/timesyncd.conf
+Add the NTP provider’s IP address: NTP=ubuntustation.local</li>
+<li>Restart systemd-timesyncd.service</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo systemctl restart systemd-timesyncd.service
+</pre></div>
+</div>
+<ol class="simple">
+<li>We probably don’t need this! MAYBE??? set ntp sync to true:</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo timedatectl set-ntp true
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-the-base-station-ntp-server-in-port-123">
+<h3>In the base station (NTP server, in port 123)<a class="headerlink" href="#in-the-base-station-ntp-server-in-port-123" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li>Disable systemd-timesyncd.service</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo  systemctl disable systemd-timesyncd.service
+$ sudo timedatectl set-ntp false
+</pre></div>
+</div>
+<ol class="simple">
+<li>Install ntp</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install -y ntp
+</pre></div>
+</div>
+<ol class="simple">
+<li>Setting up NTP server configuration</li>
+</ol>
+<p>Set up the /etc/ntp.conf file to have the content below. Here we assume that the
+network IP range is 10.0.0.0.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help</span>
+
+<span class="n">driftfile</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ntp</span><span class="o">/</span><span class="n">ntp</span><span class="o">.</span><span class="n">drift</span>
+
+<span class="c1"># Enable this if you want statistics to be logged.</span>
+<span class="c1">#statsdir /var/log/ntpstats/</span>
+
+<span class="n">statistics</span> <span class="n">loopstats</span> <span class="n">peerstats</span> <span class="n">clockstats</span>
+<span class="n">filegen</span> <span class="n">loopstats</span> <span class="n">file</span> <span class="n">loopstats</span> <span class="nb">type</span> <span class="n">day</span> <span class="n">enable</span>
+<span class="n">filegen</span> <span class="n">peerstats</span> <span class="n">file</span> <span class="n">peerstats</span> <span class="nb">type</span> <span class="n">day</span> <span class="n">enable</span>
+<span class="n">filegen</span> <span class="n">clockstats</span> <span class="n">file</span> <span class="n">clockstats</span> <span class="nb">type</span> <span class="n">day</span> <span class="n">enable</span>
+
+<span class="c1"># Specify one or more NTP servers.</span>
+
+<span class="c1"># Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board</span>
+<span class="c1"># on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for</span>
+<span class="c1"># more information.</span>
+<span class="n">pool</span> <span class="mf">0.</span><span class="n">ubuntu</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">pool</span> <span class="mf">1.</span><span class="n">ubuntu</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">pool</span> <span class="mf">2.</span><span class="n">ubuntu</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">pool</span> <span class="mf">3.</span><span class="n">ubuntu</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+
+<span class="c1"># Use Ubuntu&#39;s ntp server as a fallback.</span>
+<span class="n">pool</span> <span class="n">ntp</span><span class="o">.</span><span class="n">ubuntu</span><span class="o">.</span><span class="n">com</span>
+
+<span class="c1"># Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for</span>
+<span class="c1"># details.  The web page &lt;http://support.ntp.org/bin/view/Support/AccessRestrictions&gt;</span>
+<span class="c1"># might also be helpful.</span>
+<span class="c1">#</span>
+<span class="c1"># Note that &quot;restrict&quot; applies to both servers and clients, so a configuration</span>
+<span class="c1"># that might be intended to block requests from certain clients could also end</span>
+<span class="c1"># up blocking replies from your own upstream servers.</span>
+
+<span class="c1"># By default, exchange time with everybody, but don&#39;t allow configuration.</span>
+<span class="n">restrict</span> <span class="o">-</span><span class="mi">4</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">notrap</span> <span class="n">nomodify</span> <span class="n">nopeer</span> <span class="n">noquery</span> <span class="n">limited</span>
+<span class="n">restrict</span> <span class="o">-</span><span class="mi">6</span> <span class="n">default</span> <span class="n">kod</span> <span class="n">notrap</span> <span class="n">nomodify</span> <span class="n">nopeer</span> <span class="n">noquery</span> <span class="n">limited</span>
+
+<span class="c1"># Local users may interrogate the ntp server more closely.</span>
+<span class="n">restrict</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="n">restrict</span> <span class="p">::</span><span class="mi">1</span>
+
+<span class="c1"># Needed for adding pool entries</span>
+<span class="n">restrict</span> <span class="n">source</span> <span class="n">notrap</span> <span class="n">nomodify</span> <span class="n">noquery</span>
+
+<span class="c1"># Clients from this (example!) subnet have unlimited access, but only if</span>
+<span class="c1"># cryptographically authenticated.</span>
+<span class="c1">#restrict 192.168.123.0 mask 255.255.255.0 notrust</span>
+<span class="n">restrict</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="n">mask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="n">nomodify</span> <span class="n">notrap</span>
+
+<span class="c1"># If you want to provide time to your local subnet, change the next line.</span>
+<span class="c1"># (Again, the address is an example only.)</span>
+<span class="n">broadcast</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.255</span>
+<span class="c1">#broadcast ubuntustation.local</span>
+<span class="n">broadcast</span> <span class="mf">224.0</span><span class="o">.</span><span class="mf">1.1</span>
+
+
+<span class="c1"># If you want to listen to time broadcasts on your local subnet, de-comment the</span>
+<span class="c1"># next lines.  Please do this only if you trust everybody on the network!</span>
+<span class="c1">#disable auth</span>
+<span class="c1">#broadcastclient</span>
+
+<span class="c1">#Changes recquired to use pps synchonisation as explained in documentation:</span>
+<span class="c1">#http://www.ntp.org/ntpfaq/NTP-s-config-adv.htm#AEN3918</span>
+
+<span class="c1">#server 127.127.8.1 mode 135 prefer    # Meinberg GPS167 with PPS</span>
+<span class="c1">#fudge 127.127.8.1 time1 0.0042        # relative to PPS for my hardware</span>
+
+<span class="c1">#server 127.127.22.1                   # ATOM(PPS)</span>
+<span class="c1">#fudge 127.127.22.1 flag3 1            # enable PPS API</span>
+
+<span class="n">server</span> <span class="mf">127.127</span><span class="o">.</span><span class="mf">1.0</span> <span class="n">prefer</span>
+<span class="n">fudge</span> <span class="mf">127.127</span><span class="o">.</span><span class="mf">1.0</span> <span class="n">stratum</span> <span class="mi">10</span>
+<span class="c1">#server ubuntustation.local</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li>Restart the server/base station</li>
+<li>Check status:</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ timedatectl
+</pre></div>
+</div>
+<p>We should see something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Local</span> <span class="n">time</span><span class="p">:</span> <span class="n">Fri</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">08</span> <span class="mi">15</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">55</span> <span class="n">PST</span>
+  <span class="n">Universal</span> <span class="n">time</span><span class="p">:</span> <span class="n">Fri</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">08</span> <span class="mi">23</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">55</span> <span class="n">UTC</span>
+        <span class="n">RTC</span> <span class="n">time</span><span class="p">:</span> <span class="n">Fri</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">08</span> <span class="mi">23</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">55</span>
+       <span class="n">Time</span> <span class="n">zone</span><span class="p">:</span> <span class="n">PST8PDT</span> <span class="p">(</span><span class="n">PST</span><span class="p">,</span> <span class="o">-</span><span class="mi">0800</span><span class="p">)</span>
+ <span class="n">Network</span> <span class="n">time</span> <span class="n">on</span><span class="p">:</span> <span class="n">no</span>
+<span class="n">NTP</span> <span class="n">synchronized</span><span class="p">:</span> <span class="n">yes</span>
+ <span class="n">RTC</span> <span class="ow">in</span> <span class="n">local</span> <span class="n">TZ</span><span class="p">:</span> <span class="n">no</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li>MAYBE??? set ntp sync to true</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo timedatectl set-ntp true
+</pre></div>
+</div>
+<p>If the server has to disconnect and reconnect to the local network, then
+on the server side run the following to restart the ntp server</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo /etc/init.d/ntp stop
+$ sudo /etc/init.d/ntp start
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ssh-into-pis">
+<h2>SSH into PIs<a class="headerlink" href="#ssh-into-pis" title="Permalink to this headline">¶</a></h2>
+<p>Connect to the same (wifi) network</p>
+<p>If terminal prevents access (WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED)
+We need to remove host hey first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ssh-keygen -f &quot;/Users/&lt;username&gt;/.ssh/known_hosts&quot; -R 10.42.0.1
+</pre></div>
+</div>
+<p>To ssh into the ubuntu vm running roscore, you might need to install openssh-server</p>
+</div>
+<div class="section" id="ubiquity-robotics-environment-variables">
+<h2>Ubiquity Robotics Environment Variables<a class="headerlink" href="#ubiquity-robotics-environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>The image provided by Ubiquity has some ROS env setup which can be found in
+.bashrc
+/etc/ubiquity/env.sh</p>
+</div>
+<div class="section" id="multi-master-fkie">
+<h2>Multi Master FKIE<a class="headerlink" href="#multi-master-fkie" title="Permalink to this headline">¶</a></h2>
+<p>Install it through apt-get_transform</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install ros-kinetic-multimaster-fkie
+</pre></div>
+</div>
+<p>In ~/.bashrc make sure we have the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ros</span><span class="o">/</span><span class="n">kinetic</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">bash</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">catkin_ws</span><span class="o">/</span><span class="n">devel</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">bash</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ubiquity</span><span class="o">/</span><span class="n">env</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">export</span> <span class="n">ROS_PARALLEL_JOBS</span><span class="o">=-</span><span class="n">j2</span> <span class="c1"># Limit the number of compile threads due to memory</span>
+<span class="n">export</span> <span class="n">ROS_WORKSPACE</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">catkin_ws</span><span class="o">/</span>
+<span class="n">export</span> <span class="n">HOSTNAME</span>
+</pre></div>
+</div>
+<p>In the above setup export HOSTNAME allows we get the name of the vehicle in
+the launch file by using $(env HOSTNAME)</p>
+<p>In /etc/ubiquity/env.sh you will see that ROS_HOSTNAME=$HOSTNAME.local
+and ROS_MASTER_URI=$HOSTNAME:11311. So the base station computer (ubuntustation)
+has also to set up these env variable this way.</p>
+</div>
+<div class="section" id="multicast">
+<h2>Multicast<a class="headerlink" href="#multicast" title="Permalink to this headline">¶</a></h2>
+<p>Check if  multicast is enabled</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+</pre></div>
+</div>
+<p>If 0, then it is enabled. If 1, it is not.</p>
+<p>To temporary enable the multicast feature, execute the following command, however,
+when the computer restarts, this configuration will be lost.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo sh -c &quot;echo 0 &gt;/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts&quot;
+</pre></div>
+</div>
+<p>To permanently enable the multicast feature, edit the /etc/sysctl.conf file and add the following line, or uncomment it, if it already exists, and change its default value</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">icmp_echo_ignore_broadcasts</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>In order for the changes to take effect, execute the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo service procps restart
+</pre></div>
+</div>
+<p>To check which multicast groups are already defined in a computer, execute the following
+command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ netstat -g
+</pre></div>
+</div>
+<p>This command will report all the IP addresses enabled for multicast for each of the network
+interfaces available, both for IPv4 and IPv6. The standard IP address for multicast is 224.0.0.1,
+that should appear on the list provided by the last command, and it is the one we will use.
+At this point, to check whether the multicast feature is working or not, execute the following
+command, at any computer.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ping 224.0.0.1
+</pre></div>
+</div>
+<p>If everything is configured properly, you should get a reply from each computer in the
+common network at each iteration.</p>
+</div>
+<div class="section" id="ros-setup">
+<h2>ROS Setup<a class="headerlink" href="#ros-setup" title="Permalink to this headline">¶</a></h2>
+<p>Copy the three ros packages:</p>
+<ul class="simple">
+<li>pose_publisher</li>
+<li>vehicle_launcher</li>
+<li>vehicle_network_manager</li>
+</ul>
+<p>Change the initial position of the vehicle in the main.launch file of pose_publisher</p>
+<p>Change the network ion_file argument in the main.launch file in vehicle_network_manager to</p>
+<p>TODO: move this to ENV variable
+“/home/ubuntu/rtd_dtn_mesh/9X_current_info.txt” where X is the rpi number</p>
+<p>To start the vehicle launcher automatically at boot time,
+please check how to set up an OS service in the topics below.</p>
+</div>
+<div class="section" id="os-services-basics">
+<h2>OS Services (basics)<a class="headerlink" href="#os-services-basics" title="Permalink to this headline">¶</a></h2>
+<p>To show a service:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ systemctl show &lt;service&gt;.service
+</pre></div>
+</div>
+<p>To check if it’s running (and where the file is located):
+$ sudo systemctl status <service>.service
+To find:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ find / -name &lt;service&gt;.service
+</pre></div>
+</div>
+<p>Where to find them, usually:
+/etc/systemd/system/
+/lib/systemd/system/
+/usr/lib/systemd/system/</p>
+<p>Instruction on how to create a service:
+https://www.linode.com/docs/quick-answers/linux/start-service-at-boot/</p>
+</div>
+<div class="section" id="existing-os-services-in-ubiquity-pi">
+<h2>Existing OS Services in (Ubiquity) PI<a class="headerlink" href="#existing-os-services-in-ubiquity-pi" title="Permalink to this headline">¶</a></h2>
+<p>By default there are a few services that run at startup:</p>
+<div class="section" id="roscore-service">
+<h3>roscore.service<a class="headerlink" href="#roscore-service" title="Permalink to this headline">¶</a></h3>
+<p>/etc/systemd/system/roscore.service
+This one starts roscore. It can be disabled by:
+$ sudo systemctl disable roscore.service
+or stopped by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo systemctl stop roscore.service
+</pre></div>
+</div>
+</div>
+<div class="section" id="magni-base-service">
+<h3>magni-base.service<a class="headerlink" href="#magni-base-service" title="Permalink to this headline">¶</a></h3>
+<p>/etc/systemd/system/magni-base.service
+This one runs a script (/usr/sbin/magni-base) starts a launch file (roslaunch magni_demos teleop.launch) for a default robot. They recommend disabling it
+if not using their robot.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ systemctl disable magni-base.service
+</pre></div>
+</div>
+</div>
+<div class="section" id="pifi-service">
+<h3>pifi.service<a class="headerlink" href="#pifi-service" title="Permalink to this headline">¶</a></h3>
+<p>/lib/systemd/system/pifi.service
+The only other non-standard running by default is pifi, their headless network management tool</p>
+<p>If we must run code before roscore, you can add Before=roscore.service to the systemd service file for that code.</p>
+</div>
+</div>
+<div class="section" id="setting-up-os-service-to-start-ros-vehicle-launchers-at-boot-time">
+<h2>Setting up OS Service to Start ROS Vehicle Launchers at Boot Time<a class="headerlink" href="#setting-up-os-service-to-start-ros-vehicle-launchers-at-boot-time" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-the-service-file">
+<h3>Create the Service File<a class="headerlink" href="#create-the-service-file" title="Permalink to this headline">¶</a></h3>
+<p>Create a Unit file to define a systemd service in /lib/systemd/system/mams_pi.service with sudo permission, for example by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo nano /lib/systemd/system/mams_pi.service
+</pre></div>
+</div>
+<p>with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">ROS</span> <span class="n">Launch</span> <span class="n">start</span> <span class="k">for</span> <span class="n">MAMS</span> <span class="n">packages</span>
+<span class="n">Requires</span><span class="o">=</span><span class="n">roscore</span><span class="o">.</span><span class="n">service</span>
+<span class="n">PartOf</span><span class="o">=</span><span class="n">roscore</span><span class="o">.</span><span class="n">service</span>
+<span class="n">After</span><span class="o">=</span><span class="n">NetworkManager</span><span class="o">.</span><span class="n">service</span> <span class="n">time</span><span class="o">-</span><span class="n">sync</span><span class="o">.</span><span class="n">target</span> <span class="n">roscore</span><span class="o">.</span><span class="n">service</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">simple</span>
+<span class="n">User</span><span class="o">=</span><span class="n">ubuntu</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">catkin_ws</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">vehicle_launcher</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">start_mams_pi</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>This defines a simple service that will launch the code from mams at boot time. It will
+actually launch after roscore.service is active.
+The critical part is the ExecStart directive, which specifies the command that will be run to start the service. In this case, the ros package vehicle_launcher should already come with
+the script. Make sure the script is executable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ chmod +x /home/ubuntu/catkin_ws/src/vehicle_launcher/scripts/start_mams_pi.sh
+</pre></div>
+</div>
+<p>In the script start_mams_pi.sh change the value of the variable VEHICLE_NAME to
+the name of the pi node. For example, node_91 or node_95.</p>
+</div>
+<div class="section" id="start-and-enable-the-service-permanently">
+<h3>Start and Enable the Service Permanently<a class="headerlink" href="#start-and-enable-the-service-permanently" title="Permalink to this headline">¶</a></h3>
+<p>Once you have a unit file, you are ready to test the service:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo systemctl start mams_pi
+</pre></div>
+</div>
+<p>Check the status of the service:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo systemctl status mams_pi
+</pre></div>
+</div>
+<p>Finally, use the enable command to ensure that the service starts whenever the system boots:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mams_pi</span>
+</pre></div>
+</div>
+<p>Reboot the system and check if the service is activity_end_states:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo systemctl status mams_pi
+</pre></div>
+</div>
+<p>You can also check if the ros topics are available as expected:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rostopic list
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/README_PIs.md.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright (c) 2019, Jet Propulsion Laboratory..<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

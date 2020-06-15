@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.tests.test_world_state_monitor &#8212; PDRA 2.0a documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          PDRA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Pluggable Distributed Resource Allocator (PDRA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#centrally-controlled-distributed-system">Centrally Controlled Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#single-layer-distributed-system">Single-Layer Distributed System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#multi-layer-distributed-system">Multi-layer Distributed System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#generic-system-goals">Generic System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#definitions-and-reserved-terms">Definitions and Reserved Terms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#reserved-terms">Reserved Terms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#pdra-scope">PDRA Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#specific-system-goals">Specific System Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#system-architecture">System Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#component-definitions">Component Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#execution-and-control-planes">Execution and Control Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#implementation-description">Implementation Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#development-test-case">Development Test Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#ros-system-implementation">ROS System Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#python-classes">Python Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#ros-node-specification">ROS Node Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#ros-signature-specification">ROS Signature Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#known-limitations">Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#repository-structure">Repository Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#motivating-example">Motivating Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">PDRA Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../testing.html">PDRA Testing and Scaffolding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing.html#module-src.tests.ohandlers">PDRA Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing.html#module-src.tests.test_autonomy_brain">External Nodes</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for src.tests.test_world_state_monitor</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> Copyright 2019 by California Institute of Technology.  ALL RIGHTS RESERVED.</span>
+<span class="sd"> United  States  Government  sponsorship  acknowledged.   Any commercial use</span>
+<span class="sd"> must   be  negotiated  with  the  Office  of  Technology  Transfer  at  the</span>
+<span class="sd"> California Institute of Technology.</span>
+<span class="sd"> </span>
+<span class="sd"> This software may be subject to  U.S. export control laws  and regulations.</span>
+<span class="sd"> By accepting this document,  the user agrees to comply  with all applicable</span>
+<span class="sd"> U.S. export laws and regulations.  User  has the responsibility  to  obtain</span>
+<span class="sd"> export  licenses,  or  other  export  authority  as may be required  before</span>
+<span class="sd"> exporting  such  information  to  foreign  countries or providing access to</span>
+<span class="sd"> foreign persons.</span>
+<span class="sd"> </span>
+<span class="sd"> This  software  is a copy  and  may not be current.  The latest  version is</span>
+<span class="sd"> maintained by and may be obtained from the Mobility  and  Robotics  Sytstem</span>
+<span class="sd"> Section (347) at the Jet  Propulsion  Laboratory.   Suggestions and patches</span>
+<span class="sd"> are welcome and should be sent to the software&#39;s maintainer.</span>
+<span class="sd"> </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">defaults_scaffolding</span> <span class="k">as</span> <span class="nn">def_vals</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">String</span><span class="p">,</span> <span class="n">Int32</span>
+
+<div class="viewcode-block" id="world_state_monitor"><a class="viewcode-back" href="../../../testing.html#src.tests.test_world_state_monitor.world_state_monitor">[docs]</a><span class="k">class</span> <span class="nc">world_state_monitor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">def_vals</span><span class="o">.</span><span class="n">PUB_RATE</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_state</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;node_91&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;energy_usage_tx&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;energy_usage_rx&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;battery_capacity&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">&#39;battery_level&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">&#39;battery_discrete_level&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                       <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;backlog_volume&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="s1">&#39;node_92&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;energy_usage_tx&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;energy_usage_rx&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;battery_capacity&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">&#39;battery_level&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s1">&#39;battery_discrete_level&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                       <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;backlog_volume&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span><span class="c1">#{&#39;id&#39;: &#39;d1&#39;, &#39;size&#39;: 2, &#39;destination&#39;: &#39;node_4&#39;}]},</span>
+            <span class="c1"># &#39;node_93&#39;: {&#39;energy_usage_tx&#39;: 4, &#39;energy_usage_rx&#39;: 2, &#39;battery_capacity&#39;: 200, &#39;battery_level&#39;: 100,</span>
+            <span class="c1">#            &#39;data&#39;: []},</span>
+            <span class="s1">&#39;base_station&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;energy_usage_tx&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;energy_usage_rx&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;battery_capacity&#39;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">,</span> <span class="s1">&#39;battery_level&#39;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">,</span> <span class="s1">&#39;battery_discrete_level&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                       <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;backlog_volume&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_state</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;base_station&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                 <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;node_92&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                 <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;node_91&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                 <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+            <span class="p">]</span>
+
+        <span class="c1"># Rate at which world plan is published</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_ctrl</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Rate</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="c1"># Publisher for agent state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_agent</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s1">&#39;/agent_state&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span>
+                                         <span class="n">queue_size</span><span class="o">=</span><span class="n">def_vals</span><span class="o">.</span><span class="n">PUB_QUEUE_SIZE</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_network</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s1">&#39;/contact_plan&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span>
+                                           <span class="n">queue_size</span><span class="o">=</span><span class="n">def_vals</span><span class="o">.</span><span class="n">PUB_QUEUE_SIZE</span><span class="p">)</span>
+
+        <span class="c1"># HACK to switch allocation</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s1">&#39;/all/distware/wsm/switch&#39;</span><span class="p">,</span> <span class="n">Int32</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_switch_wsm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_state_switch</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Fetch topics from other agents to find out who is active</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topics</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_published_topics</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_switch_wsm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_create_link</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">destinaton</span><span class="p">):</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="mf">11.0</span><span class="p">,</span>
+                    <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="n">destinaton</span><span class="p">,</span>
+                    <span class="s2">&quot;energy_cost&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                    <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">origin</span><span class="p">,</span>
+                    <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="mf">1.7976931348623157e+308</span><span class="p">,</span>
+                    <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">}</span>
+            <span class="k">return</span> <span class="n">link</span>
+        <span class="n">_comm_network</span> <span class="o">=</span> <span class="p">[</span><span class="n">_create_link</span><span class="p">(</span>
+            <span class="s1">&#39;node_91&#39;</span><span class="p">,</span> <span class="s1">&#39;node_91&#39;</span><span class="p">),</span> <span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Everyone can talk to everyone</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_91&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;node_91&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;base_station&#39;</span><span class="p">,</span> <span class="s1">&#39;node_91&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_91&#39;</span><span class="p">,</span> <span class="s1">&#39;base_station&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;base_station&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;base_station&#39;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># 1 can talk to base</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;base_station&#39;</span><span class="p">,</span> <span class="s1">&#39;node_91&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_91&#39;</span><span class="p">,</span> <span class="s1">&#39;base_station&#39;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># 2 can talk to base</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;base_station&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;base_station&#39;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># 1 can talk to bs through 2</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_91&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;node_91&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;base_station&#39;</span><span class="p">,</span> <span class="s1">&#39;node_92&#39;</span><span class="p">))</span>
+            <span class="n">_comm_network</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_link</span><span class="p">(</span><span class="s1">&#39;node_92&#39;</span><span class="p">,</span> <span class="s1">&#39;base_station&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Disconnected</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_state</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;CommunicationNetwork&quot;</span><span class="p">:</span> <span class="n">_comm_network</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Do until ROS finishes</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+            <span class="c1"># Publish a string mindlessly</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pub_agent</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agent_state</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pub_network</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_state</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="c1"># Wait for a while</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rate_ctrl</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Start ROS node</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s1">&#39;wsm_test&#39;</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Get the rate</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;~rate&#39;</span><span class="p">,</span> <span class="n">def_vals</span><span class="o">.</span><span class="n">PUB_RATE</span><span class="p">)</span>
+
+    <span class="c1"># Create and run WSM</span>
+    <span class="n">wsm</span> <span class="o">=</span> <span class="n">world_state_monitor</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+    <span class="n">wsm</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright (c) 2019, Jet Propulsion Laboratory..<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

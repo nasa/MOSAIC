@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Task allocation algorithm for robotic networks with periodic connectivity &mdash; MOSAIC schedulers 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Usage Examples" href="Examples.html" />
+    <link rel="prev" title="2. Time-varying scheduling algorithm" href="Scheduling.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MOSAIC schedulers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduling.html">2. Time-varying scheduling algorithm</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Task allocation algorithm for robotic networks with periodic connectivity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#problem-parameters">3.1. Problem Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization-variables">3.2. Optimization Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization-objective">3.3. Optimization Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#problem-formulation">3.4. Problem Formulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">3.4.1. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#latency">3.4.2. Latency</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">3.5. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">3.6. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">4. Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">5. API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_documentation.html">6. Modules documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MOSAIC schedulers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><span class="section-number">3. </span>Task allocation algorithm for robotic networks with periodic connectivity</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Allocation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="task-allocation-algorithm-for-robotic-networks-with-periodic-connectivity">
+<span id="time-invariant"></span><h1><span class="section-number">3. </span>Task allocation algorithm for robotic networks with periodic connectivity<a class="headerlink" href="#task-allocation-algorithm-for-robotic-networks-with-periodic-connectivity" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we propose a task allocation algorithm suitable for
+multi-agent systems with <em>periodic</em> or <em>static</em> network connectivity.</p>
+<p>A full description of the algorithm is available in <a class="reference external" href="#references">our paper</a>, which also
+presents a <em>distributed</em> implementation through a shared-world approach.</p>
+<p>The goal of the algorithm is to allocate computational tasks to agents
+while satisfying constraints on:</p>
+<ul class="simple">
+<li><p>Logical dependencies between tasks: certain tasks require as input
+the outputs of other tasks;</p></li>
+<li><p>Maximum latency of data products: the inputs to a task must be
+delivered to the agent performing it within a maximum latency from
+the moment they are computed;</p></li>
+<li><p>Maximum computational load of computing agents;</p></li>
+<li><p>Maximum throughout of communication links.</p></li>
+</ul>
+<p>We cast the problem as a mixed-integer linear program (MILP) in a
+network flow framework. Namely, data products transmitted from a task to
+another are modeled as a network flow with an origin at the agent
+performing the parent task and a destination at the the agent performing
+the child task.</p>
+<p>The key modeling assumption of the task allocation algorithm is that the
+average available throughput on communication links is approximately
+constant over a representative time period <span class="math notranslate nohighlight">\({T}\)</span>. With
+this assumption, the problem is modeled through a time-invariant graph,
+where nodes represent agents, edges represent communication links, and
+binary decision variables capture the allocation of tasks to agents.</p>
+<div class="section" id="problem-parameters">
+<h2><span class="section-number">3.1. </span>Problem Parameters<a class="headerlink" href="#problem-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The problem is parameterized by the following properties:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\({T}\)</span>, the time period of interest;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\mathbb{T}}\)</span>, the set of computational tasks to be
+allocated in the time period of interest;</p></li>
+<li><p><span class="math notranslate nohighlight">\({R({{t}})}\)</span>, the set of tasks that
+require task <span class="math notranslate nohighlight">\(t\)</span>’s data products as inputs. Tasks
+<span class="math notranslate nohighlight">\(\tau\in {R({{t}})}\)</span> are denoted as
+<em>children</em> of <span class="math notranslate nohighlight">\({t}\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({d_{{t}}}\)</span>, the size of the data product
+of task <span class="math notranslate nohighlight">\(t\)</span>, in bits;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\mathbb{R}}\subseteq {\mathbb{T}}\)</span>, the
+set of <em>required</em> tasks that must be executed;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\mathbb{O}}= {\mathbb{T}}\setminus {\mathbb{R}}\)</span>,
+the set of <em>optional</em> tasks;</p></li>
+<li><p><span class="math notranslate nohighlight">\({r({t})}\)</span>, the reward for planning the
+execution of optional tasks
+<span class="math notranslate nohighlight">\({t}\in{\mathbb{O}}\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\mathbb{N}}\)</span>, the set of available agents;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\mathbb{E}}\)</span>, the set of pairs of agents
+<span class="math notranslate nohighlight">\((i, j)\)</span> that can directly communicate through a radio link;</p></li>
+<li><p><span class="math notranslate nohighlight">\({c_{{t}{i}}}\)</span>, the
+computational load (i.e., the average fraction of a CPU core,
+averaged over the time period <span class="math notranslate nohighlight">\(T\)</span>) required to perform task
+<span class="math notranslate nohighlight">\(t\)</span> once on agent <span class="math notranslate nohighlight">\(i\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({e_{{t}{i}}}\)</span>, the average
+power required to perform task <span class="math notranslate nohighlight">\(t\)</span> once on node <span class="math notranslate nohighlight">\(i\)</span> over
+time <span class="math notranslate nohighlight">\(T\)</span>, in W;</p></li>
+<li><p><span class="math notranslate nohighlight">\({c^{\text{out}}_{ij}}\)</span>, the computational load
+(i.e., the fraction of a CPU core) required to encode one bit of
+information per second on the outbound stream on link <span class="math notranslate nohighlight">\((i,j)\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({c^{\text{in}}_{ij}}\)</span>, the computational load to
+decode one bit of information per second from the inbound stream on
+<span class="math notranslate nohighlight">\((i,j)\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({e^{\text{out}}_{ij}}\)</span>, the energy (in J/bit)
+required to encode and transmit one bit per second on the outbound
+stream on link <span class="math notranslate nohighlight">\((i,j)\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({e^{\text{in}}_{ij}}\)</span>, the energy (in J/bit)
+required to decode one bit per second from the inbound stream on link
+<span class="math notranslate nohighlight">\((i,j)\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({\overline{b}_{i,j}}\)</span>, the maximum available
+throughput (in bits/s) on the radio link
+<span class="math notranslate nohighlight">\((i,j) \in {\mathbb{E}}\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\({l_{i,j}}\)</span>, the light-speed latency of link
+<span class="math notranslate nohighlight">\((i,j)\)</span> (in s);</p></li>
+<li><p><span class="math notranslate nohighlight">\({\overline{c}_{{i}}}\)</span>, the maximum
+computational load of node <span class="math notranslate nohighlight">\(i\)</span> (i.e., the number of CPU cores
+available at node <span class="math notranslate nohighlight">\({i}\)</span>);</p></li>
+<li><p><span class="math notranslate nohighlight">\({\overline{l}_{{t},\tau}}\)</span> is the
+maximum acceptable latency (in s) for the data products of task
+<span class="math notranslate nohighlight">\({t}\)</span> required by task <span class="math notranslate nohighlight">\(\tau\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="optimization-variables">
+<h2><span class="section-number">3.2. </span>Optimization Variables<a class="headerlink" href="#optimization-variables" title="Permalink to this headline">¶</a></h2>
+<p>The optimization variables are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X\)</span>, a matrix of Boolean variables of size
+<span class="math notranslate nohighlight">\(|{\mathbb{N}}|\)</span> by
+<span class="math notranslate nohighlight">\(|{\mathbb{T}}|\)</span>. <span class="math notranslate nohighlight">\(X(i,t)\)</span> is set to 1 if task
+<span class="math notranslate nohighlight">\(t\)</span> is assigned to agent <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise;</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span>, a matrix of real-valued variables of size
+<span class="math notranslate nohighlight">\(|{\mathbb{E}}|\)</span> by
+<span class="math notranslate nohighlight">\(\sum_{t\in{\mathbb{T}}}|{R({t})}|\)</span>.
+<span class="math notranslate nohighlight">\(C(i,j,t,\tau)\)</span> is the amount of data products of task
+<span class="math notranslate nohighlight">\(t\)</span> (in bits per second) transmitted on link <span class="math notranslate nohighlight">\((i,j)\)</span> and
+that will be used as input by task <span class="math notranslate nohighlight">\(\tau\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span>, a matrix of real-valued variables of size
+<span class="math notranslate nohighlight">\(|{\mathbb{E}}|\)</span> by
+<span class="math notranslate nohighlight">\(|{\mathbb{T}}|\)</span>. <span class="math notranslate nohighlight">\(B(i,j,t)\)</span> is the amount of
+bandwidth used by data products of task <span class="math notranslate nohighlight">\(t\)</span> on link
+<span class="math notranslate nohighlight">\((i,j)\)</span> (irrespective of the destination).</p></li>
+</ul>
+<p>The variables <span class="math notranslate nohighlight">\(C\)</span> keep track of data products separately according
+to the requiring child task; this enables the proposed model to to (i)
+capture the average latency of the data products to multiple
+destinations (as discussed <a class="reference external" href="#latency">below</a>) and
+(ii) represent logical dependencies between tasks by considering the
+requiring task as an “information sink”. However, identical data
+transmitted on the same link should not be duplicated, irrespective of
+the destination. Variables <span class="math notranslate nohighlight">\(B\)</span> capture the fact that, in a
+practical implementation, different data flows <span class="math notranslate nohighlight">\(C\)</span> containing the
+same underlying data product are de-duplicated and transmitted once per
+communication link.</p>
+</div>
+<div class="section" id="optimization-objective">
+<h2><span class="section-number">3.3. </span>Optimization Objective<a class="headerlink" href="#optimization-objective" title="Permalink to this headline">¶</a></h2>
+<p>The optimization objective is the weighted sum of two terms capturing
+(i) a reward for completing optional tasks and (ii) the power required
+to solve the problem. The individual cost functions can be captured as
+follows.</p>
+<ul>
+<li><p>Maximize the sum of the rewards for completed optional tasks:</p>
+<div class="math notranslate nohighlight">
+\[R_r =   \sum_{j\in{\mathbb{N}}} \sum_{t\in{\mathbb{T}}}  {r(t)} X(j,t) \label{eq:MILPgoal}\]</div>
+</li>
+<li><p>Minimize the power cost of the problem:</p>
+<div class="math notranslate nohighlight">
+\[R_e = - \sum_{j\in{\mathbb{N}}} \sum_{t\in{\mathbb{T}}} {e_{tj}}X(j,t) + \sum_{(i,j)\in{\mathbb{E}}} \sum_{t\in{\mathbb{N}}} ({e^{\text{out}}_{ij}}+{e^{\text{in}}_{ij}}) B(i,j,t)\]</div>
+</li>
+</ul>
+<p>The optimization objective can then be expressed as
+<span class="math notranslate nohighlight">\(R = \alpha R_r + (1-\alpha) R_e,\)</span>, where <span class="math notranslate nohighlight">\(\alpha\)</span> is the
+relative weight of the two reward functions. [eq:MILP:costs]</p>
+</div>
+<div class="section" id="problem-formulation">
+<h2><span class="section-number">3.4. </span>Problem Formulation<a class="headerlink" href="#problem-formulation" title="Permalink to this headline">¶</a></h2>
+<p>The problem can be posed as a mixed-integer linear program as follows.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;\max_{X, C, B}  R \label{eq:MILP:cost}\\
+&amp;\text{subject to:}\nonumber \\
+&amp; \sum_{j\in {\mathbb{N}}} X(j,t) = 1 \qquad \forall t \in {\mathbb{R}}\label{eq:MILP:requiredtasks} \\
+%
+&amp; \sum_{j\in {\mathbb{N}}} X(j,t) \leq 1 \qquad \forall t \in {\mathbb{O}}\label{eq:MILP:optionaltasks} \\
+%
+&amp; X(j,t) \frac{{d_{t}}}{{T}} + \sum_{i: (i,j)\in{\mathbb{E}}} C(i,j,t,\tau) \geq X(j,\tau) \frac{{d_{t}}}{{T}} + \sum_{k:(j,k\in{\mathbb{E}}} C(j,k,t\tau) \quad \forall j \in {\mathbb{N}}, t\in{\mathbb{T}}, \tau \in {R({t})} \label{eq:MILP:prereqs} \\
+%
+&amp; B(i,j,t) \geq C(i,j,t,\tau) \quad \forall (i,j) \in {\mathbb{E}}, t\in {\mathbb{T}}, \tau\in {R({t})} \label{eq:MILP:multiplex}\\
+%
+&amp; \sum_{t\in{\mathbb{T}}} {c_{tj}} X(j,t) + \sum_{i: (i,j) \in{\mathbb{E}}}\sum_{t\in{\mathbb{T}}} {c^{\text{in}}_{ij}}B(i,j,t) \nonumber + \sum_{k: (j,k) \in{\mathbb{E}}}\sum_{t\in{\mathbb{T}}} {c^{\text{out}}_{jk}} B(j,k,t) \leq {\overline{c}_{j}}  \qquad \forall j\in{\mathbb{N}}\label{eq:MILP:computation}\\
+%
+&amp;\sum_{t\in\ {\mathbb{T}}} B(i,j,t) \leq {\overline{b}_{i,j}} \qquad \forall (i,j) \in {\mathbb{E}}\label{eq:MILP:bandwidth}\\ %Note: we assume we transmit at the max bandwidth whenever available.
+%
+&amp; \sum_{(i, j) \in{\mathbb{E}}} \left({l_{i,j}} + \frac{{d_{t}}}{{\overline{b}_{i,j}}}\right) C(i,j,t, \tau) \frac{{T}}{{d_{t}}}    \leq {\overline{l}_{t,\tau}} \quad \forall t\in {\mathbb{T}}, \tau   \in {R({t})}
+\label{eq:MILP:latency}\end{aligned}\end{split}\]</div>
+<p>The first constraint ensures
+that all required tasks are allocated.
+The second constraint ensures
+that optional tasks are allocated at most once.
+The third constraint  (discussed
+<a class="reference external" href="#prerequisites">below</a>) ensures that nodes
+only execute a task if they have access to the data products of its
+pre-requisites.
+The fourth constraint
+ensures that the variable <span class="math notranslate nohighlight">\(D\)</span> is an upper bound on the data
+throughput used by data products of task <span class="math notranslate nohighlight">\(t\)</span>.
+The fifth constraint enforces that
+the computational capacity of each node is not exceeded.
+The sixth constraint ensures that the
+transmissions on a link do not exceed the available bandwidth.
+Finally,
+the seventh constraint (discussed <a class="reference external" href="#latency">below</a>) guarantees that data products are
+delivered to dependent tasks within a maximum acceptable latency.</p>
+<div class="section" id="prerequisites">
+<span id="id1"></span><h3><span class="section-number">3.4.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>The prerequisites constraint ensures that a copy of
+the data product of task <span class="math notranslate nohighlight">\(t\)</span> is created at the node where task
+<span class="math notranslate nohighlight">\(t\)</span> is performed, and it is consumed at the node where task
+<span class="math notranslate nohighlight">\(\tau\)</span> is performed. At other nodes, information can be relayed,
+but neither created nor destroyed.</p>
+</div>
+<div class="section" id="latency">
+<span id="id2"></span><h3><span class="section-number">3.4.2. </span>Latency<a class="headerlink" href="#latency" title="Permalink to this headline">¶</a></h3>
+<p>The latency constraint ensures that the
+<em>average</em> latency of data products of task <span class="math notranslate nohighlight">\(t\)</span> used by task
+<span class="math notranslate nohighlight">\(\tau\)</span> is smaller than <span class="math notranslate nohighlight">\(\overline{l}_{t,\tau}\)</span>. The latency
+for the data products of task <span class="math notranslate nohighlight">\(t\)</span> destined for task <span class="math notranslate nohighlight">\(\tau\)</span>
+on a <em>given</em> path <span class="math notranslate nohighlight">\(p=\{(u,v), (v, w), \ldots, \}\)</span> is
+<span class="math notranslate nohighlight">\(\sum_{(i,j) \in p} ({l_{i,j}} + {d_{t}}/{\overline{b}_{i,j}})\)</span>.
+If data products are sent on multiple paths <span class="math notranslate nohighlight">\(p_1, \ldots, p_m\)</span>,
+with path <span class="math notranslate nohighlight">\(p_k\)</span> carrying a fraction <span class="math notranslate nohighlight">\(f_k\)</span> of the data
+product, the average latency is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+ l_{t,\tau} &amp; = \sum_{k=1}^m f_k \sum_{(i,j)\in p_i} ({l_{i,j}} + {d_{t}}/{\overline{b}_{i,j}}) = \sum_{(i,j) \in {\mathbb{E}}} ({l_{i,j}} + {d_{t}}/{\overline{b}_{i,j}}) \sum_{k=1}^m 1_{(i,j)\in p_k} f_k\end{aligned}\]</div>
+<p>The flow <span class="math notranslate nohighlight">\(C(i,j,t,\tau)\)</span> captures the sum of path flows on all
+paths carrying data products of <span class="math notranslate nohighlight">\(t\)</span> for task <span class="math notranslate nohighlight">\(\tau\)</span>. The
+overall amount of flow on all paths is the size of the data product
+<span class="math notranslate nohighlight">\(d_t\)</span> divided by the time period <span class="math notranslate nohighlight">\(T\)</span>. Accordingly, the
+average latency can be rewritten as</p>
+<div class="math notranslate nohighlight">
+\[l_{t,\tau} = \sum_{(i,j) \in {\mathbb{E}}} ({l_{i,j}} + {d_{t}}/{\overline{b}_{i,j}}) C(i,j,t,\tau)\frac{{T}}{{d_{t}}}\]</div>
+<p>in accordance with the latency constraint.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2><span class="section-number">3.5. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The function <a class="reference internal" href="class_documentation.html#mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver" title="mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.JSONSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSolver</span></code></a> provides
+an easy interface to the task allocation solver.
+For a full description of other available interfaces, see <a class="reference internal" href="class_documentation.html#ti-class-documentation"><span class="std std-ref">Task allocation algorithm for robotic networks with periodic connectivity: full implementation</span></a>.</p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">mosaic_schedulers.schedulers.ti_milp.MOSAICTISolver.</code><code class="sig-name descname">JSONSolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">JSONProblemDescription</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">solver</span><span class="o">=</span><span class="default_value">'GLPK'</span></em>, <em class="sig-param"><span class="n">TimeLimit</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#JSONSolver"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Creates an instance of the time-invariant problem based on a problem input in the format
+described in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>JSONProblemDescription</strong> (<em>str</em><em>, </em><em>optional</em>) – a JSON description of the problem. See the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a> for a detailed description.</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to print status and debug messages. Defaults to False</p></li>
+<li><p><strong>solver</strong> (<em>str</em><em>, </em><em>optional</em>) – the solver to use. Should be ‘GLPK’, ‘CPLEX’, or ‘SCIP’, defaults to ‘GLPK’.</p></li>
+<li><p><strong>TimeLimit</strong> (<em>float</em><em>, </em><em>optional</em>) – a time limit after which to stop the optimizer. Defaults to None (no time limit).
+Note that certain solvers (in particular, GLPK) may not honor the time limit.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – if the JSONProblemDescription is not valid.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This solver does not support disjunctive prerequirements (do this task OR that task).
+If a problem with disjunctive prerequirement is passed, the solver will assert.</p>
+</div>
+<dl class="py method">
+<dt>
+<code class="sig-name descname">schedule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mosaic_schedulers/schedulers/ti_milp/MOSAICTISolver.html#JSONSolver.schedule"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Solve the scheduling problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A solution in the JSON format described in the <a class="reference internal" href="API.html"><span class="doc">API reference</span></a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="references">
+<h2><span class="section-number">3.6. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>Federico Rossi*, Tiago Stegun Vaquero*, Marc Sanchez Net, Maíra Saboia da Silva, and Joshua Vander Hook, <a class="reference external" href="https://arxiv.org/abs/2003.13813">“The Pluggable Distributed Resource Allocator (PDRA): a Middleware for Distributed Computing in Mobile Robotic Networks,”</a> under review.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Examples.html" class="btn btn-neutral float-right" title="4. Usage Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Scheduling.html" class="btn btn-neutral float-left" title="2. Time-varying scheduling algorithm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, California Institute of Technology (&#34;Caltech&#34;)
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
