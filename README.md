@@ -38,6 +38,10 @@ Simulation results show that PDRA can reduce energy and CPU usage by over 50\% i
 
 <!-- [![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=VID) -->
 
+## Installation and Usage
+
+Detailed documentation is available at [`nasa.github.io/MOSAIC`](https://nasa.github.io/MOSAIC/).
+
 ## References
 
 \[1\] Joshua Vander Hook, Tiago Vaquero, Federico Rossi, Martina Troesch, Marc Sanchez Net, Joshua Schoolcraft, Jean-Pierre de la Croix, and Steve Chien, ["Mars On-Site Shared Analytics Information and Computing,"](https://aaai.org/ojs/index.php/ICAPS/article/view/3556) in Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling, vol. 29, no. 1, pp. 707-715, July 2019.
